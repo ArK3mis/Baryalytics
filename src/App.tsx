@@ -275,6 +275,27 @@ const AUTH_CSS = `
 `;
 
 
+/* ── RESPONSIVE HOOK ──────────────────────────────────────────────── */
+const useW = () => {
+  const [w, setW] = React.useState(window.innerWidth);
+  React.useEffect(()=>{
+    const h = ()=>setW(window.innerWidth);
+    window.addEventListener("resize",h);
+    return ()=>window.removeEventListener("resize",h);
+  },[]);
+  return w;
+};
+
+// Module-level responsive grid helpers (read window width directly)
+// Components outside App use these; App uses the reactive isMob versions
+const colsW = (desktop:number): string => {
+  const w = window.innerWidth;
+  if(w <= 600) return desktop >= 3 ? "1fr 1fr" : "1fr";
+  if(w <= 900) return desktop >= 4 ? "1fr 1fr" : desktop === 3 ? "1fr 1fr" : "1fr";
+  return `repeat(${desktop},1fr)`;
+};
+const colsSplitW = (a:string, b:string): string => window.innerWidth <= 900 ? "1fr" : `${a} ${b}`;
+
 const G = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -390,6 +411,81 @@ const G = `
     transition:all 0.2s;
   }
   .stat-forecast:hover{border-color:rgba(129,140,248,0.25);transform:translateY(-2px);}
+
+  /* ── RESPONSIVE HELPERS ── */
+  .mob-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .mob-scroll::-webkit-scrollbar{height:3px;}
+
+  /* ── MOBILE NAV ── */
+  .mob-drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:rgba(13,13,22,0.98);backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,0.09);z-index:200;transform:translateX(-100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:24px 16px;}
+  .mob-drawer.open{transform:translateX(0);}
+  .mob-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;display:none;}
+  .mob-drawer-overlay.open{display:block;}
+  .mob-nav-btn{display:none;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);cursor:pointer;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);flex-shrink:0;}
+  .mob-nav-btn svg{pointer-events:none;}
+
+  @media(max-width:900px){
+    /* Show hamburger, hide center nav pills */
+    .mob-nav-btn{display:flex;}
+    .nav-pills-center{display:none!important;}
+    .nav-left-welcome{display:none!important;}
+
+    /* Shrink main padding */
+    main{padding-left:16px!important;padding-right:16px!important;}
+
+    /* Floating nav wrapper — reduce side padding */
+    .nav-float-wrap{padding:0 12px!important;}
+
+    /* All grids → responsive */
+    .grid-5col{grid-template-columns:repeat(2,1fr)!important;}
+    .grid-4col{grid-template-columns:repeat(2,1fr)!important;}
+    .grid-3col{grid-template-columns:1fr 1fr!important;}
+    .grid-2col{grid-template-columns:1fr!important;}
+    .grid-split{grid-template-columns:1fr!important;}
+    .grid-ai{grid-template-columns:1fr!important;}
+
+    /* Settings layout: sidebar stacks above content */
+    .settings-layout{flex-direction:column!important;}
+    .settings-sidebar{width:100%!important;position:static!important;}
+    .settings-sidebar > div{display:grid;grid-template-columns:repeat(4,1fr);}
+
+    /* Finance heatmap: allow horizontal scroll */
+    .heatmap-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+
+    /* Tables: force scroll wrapper */
+    .table-scroll{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+    .th,.td{white-space:nowrap;}
+
+    /* Cards: smaller padding */
+    .card{padding:14px!important;}
+
+    /* Stat numbers: smaller on mobile */
+    .stat-num{font-size:20px!important;}
+
+    /* Appearance hero banner */
+    .appear-hero{padding:20px 16px!important;}
+  }
+
+  @media(max-width:600px){
+    .grid-5col{grid-template-columns:1fr 1fr!important;}
+    .grid-4col{grid-template-columns:1fr 1fr!important;}
+    .grid-3col{grid-template-columns:1fr!important;}
+    .settings-sidebar > div{grid-template-columns:repeat(2,1fr);}
+
+    /* Reduce chart heights */
+    .chart-tall{height:200px!important;}
+
+    /* Nav: tighter */
+    .nav-bar{border-radius:14px!important;}
+
+    /* Export button: icon only */
+    .export-btn span.export-label{display:none;}
+  }
+
+  @media(max-width:400px){
+    .grid-5col{grid-template-columns:1fr!important;}
+    .grid-4col{grid-template-columns:1fr!important;}
+  }
 `;
 
 /* ── TOOLTIPS ───────────────────────────────────────────────────── */
@@ -463,7 +559,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* KPI Cards */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+      <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Yesterday's Sales",value:"₱10,000",sub:"Dec 31, 2025",icon:TrendingUp,color:"#34d399",bg:"rgba(52,211,153,0.1)",change:"+5.2%",up:true},
           {label:"Today's Predicted",value:"₱10,800",sub:"Jan 1, 2026",icon:Sparkles,color:"#818cf8",bg:"rgba(129,140,248,0.1)",change:"+8.0%",up:true},
@@ -485,7 +581,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* Charts Row */}
-      <div className="fu3" style={{display:"grid",gridTemplateColumns:"1.4fr 1fr",gap:16}}>
+      <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.4fr","1fr"),gap:16}}>
         {/* Past vs Predicted Line Chart */}
         <div className="card">
           <div className="card-title">
@@ -537,7 +633,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* Comparison Table + AI Insights */}
-      <div className="fu4" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+      <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
         {/* Comparison Table */}
         <div className="card">
           <div className="card-title">Previous vs Predicted Sales Comparison</div>
@@ -596,7 +692,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* Summary Forecasts */}
-      <div className="fu5" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
+      <div className="fu5 grid-3col" style={{display:"grid",gridTemplateColumns:colsW(3),gap:16}}>
         {[
           {label:"Predicted Sales — Tomorrow",value:"₱10,800",note:"Jan 2, 2026 · Based on Dec 31 trend",color:"#818cf8",bg:"rgba(129,140,248,0.08)",border:"rgba(129,140,248,0.2)"},
           {label:"Predicted Sales — Next 7 Days",value:"₱76,500",note:"Jan 2–8, 2026 · Avg ₱10,928/day",color:"#38bdf8",bg:"rgba(56,189,248,0.08)",border:"rgba(56,189,248,0.2)"},
@@ -683,7 +779,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── KPI Summary ── */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+      <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Top Demand Product",  value:"Coca-Cola 1.5L", sub:"Predicted 400 units",   color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:Package},
           {label:"Highest Growth",      value:"+28.9%",         sub:"Iphone 15 this week",   color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:TrendingUp},
@@ -705,7 +801,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Charts ── */}
-      <div className="fu3" style={{display:"grid",gridTemplateColumns:"1.3fr 1fr",gap:16}}>
+      <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.3fr","1fr"),gap:16}}>
 
         {/* Bar chart — predicted demand per product */}
         <div className="card">
@@ -804,7 +900,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Top Products Table + AI Recommendations ── */}
-      <div className="fu4" style={{display:"grid",gridTemplateColumns:"1.1fr 1fr",gap:16}}>
+      <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.1fr","1fr"),gap:16}}>
 
         {/* Top Demand Products Table */}
         <div className="card" style={{padding:0}}>
@@ -869,7 +965,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
               </div>
               <span className="chip-up" style={{marginLeft:"auto"}}><TrendingUp size={10}/>+{selectedProduct.change}%</span>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+            <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10}}>
               {[
                 {l:"Previous",v:selectedProduct.prev+" units",c:"rgba(255,255,255,0.45)"},
                 {l:"Predicted",v:selectedProduct.predicted+" units",c:"#34d399"},
@@ -1117,7 +1213,7 @@ const Inventory = () => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:20}}>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+      <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
         <div className="card">
           <div className="card-title">Available Stock <button className="card-x"><X size={13}/></button></div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
@@ -1638,7 +1734,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
       )}
 
       {/* ── KPI Cards ── */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+      <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Critical Items",    value:String(INV_PRODUCTS.filter(p=>p.urgency==="critical").length), sub:"Need restock today",   color:"#fb7185", bg:"rgba(251,113,133,0.1)", I:AlertTriangle},
           {label:"High Priority",     value:String(INV_PRODUCTS.filter(p=>p.urgency==="high").length),    sub:"Restock within 7 days",color:"#fbbf24", bg:"rgba(251,191,36,0.1)",  I:TrendingUp},
@@ -1662,7 +1758,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Charts Row ── */}
-      <div className="fu3" style={{display:"grid",gridTemplateColumns:"1.3fr 1fr",gap:16}}>
+      <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.3fr","1fr"),gap:16}}>
 
         {/* Stock vs Predicted Demand */}
         <div className="card">
@@ -1806,7 +1902,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
             <p style={{fontSize:12,color:"rgba(255,255,255,0.3)",marginTop:1}}>Products that need immediate attention within 7 days</p>
           </div>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:14}}>
           {urgent.map(p => {
             const u = urgMap[p.urgency];
             const reorderQty = p.restock - p.stock;
@@ -1823,7 +1919,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
                   </div>
                 </div>
 
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
+                <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:8,marginBottom:12}}>
                   {[
                     {l:"Current",   v:p.stock,      c:"rgba(255,255,255,0.7)"},
                     {l:"Demand",    v:p.demand,     c:u.color},
@@ -1917,7 +2013,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── KPI Cards ── */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+      <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Predicted Revenue",  value:`₱${nextMonth.revenue.toLocaleString()}`,  sub:"January 2026",    color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:TrendingUp,  change:`+${revenueGrowth}%`, up:true},
           {label:"Predicted Expenses", value:`₱${nextMonth.expenses.toLocaleString()}`, sub:"January 2026",    color:"#fb7185", bg:"rgba(251,113,133,0.1)", I:Receipt,     change:`+${expenseGrowth}%`, up:false},
@@ -1941,7 +2037,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Charts Row ── */}
-      <div className="fu3" style={{display:"grid",gridTemplateColumns:"1.3fr 1fr",gap:16}}>
+      <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.3fr","1fr"),gap:16}}>
 
         {/* Profit Trend Line Chart */}
         <div className="card">
@@ -2030,12 +2126,12 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Last Month vs Next Month Comparison + AI Insights ── */}
-      <div className="fu4" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+      <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
 
         {/* Comparison Table */}
         <div className="card">
           <div className="card-title">Last Month vs Predicted Next Month</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,marginBottom:20}}>
+          <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:12,marginBottom:20}}>
             {[
               {label:"Revenue",  last:lastMonth.revenue,  next:nextMonth.revenue,  color:"#34d399"},
               {label:"Expenses", last:lastMonth.expenses, next:nextMonth.expenses, color:"#fb7185"},
@@ -2136,7 +2232,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── 3-Month Forecast Summary ── */}
-      <div className="fu5" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
+      <div className="fu5 grid-3col" style={{display:"grid",gridTemplateColumns:colsW(3),gap:16}}>
         {PROFIT_HISTORY.slice(6).map((m,i)=>{
           const prev = PROFIT_HISTORY[5+i];
           const revG = (((m.revenue-prev.revenue)/prev.revenue)*100).toFixed(1);
@@ -2156,7 +2252,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
                 </div>
                 <span className="chip-up"><TrendingUp size={10}/>+{proG}%</span>
               </div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:14}}>
+              <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10,marginBottom:14}}>
                 {[
                   {l:"Revenue",  v:`₱${(m.revenue/1000).toFixed(0)}k`,  c:"#34d399"},
                   {l:"Expenses", v:`₱${(m.expenses/1000).toFixed(0)}k`, c:"#fb7185"},
@@ -2271,7 +2367,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── KPI Cards ── */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:14}}>
+      <div className="fu2 grid-5col" style={{display:"grid",gridTemplateColumns:colsW(5),gap:14}}>
         {EXP_CATEGORIES.map(c => {
           const prev = (lastMonth as any)[c.key];
           const next = (nextMonth as any)[c.key];
@@ -2298,7 +2394,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Total + vs last month ── */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"1fr 2fr",gap:16}}>
+      <div className="fu2 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","2fr"),gap:16}}>
 
         {/* Total next month */}
         <div style={{background:"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.04))",border:"1px solid rgba(251,113,133,0.22)",borderRadius:16,padding:"22px 24px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
@@ -2366,7 +2462,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Charts ── */}
-      <div className="fu3" style={{display:"grid",gridTemplateColumns:"1fr 1.6fr",gap:16}}>
+      <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","1.6fr"),gap:16}}>
 
         {/* Pie chart — expense distribution */}
         <div className="card">
@@ -2655,7 +2751,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── KPI Cards ── */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+      <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Peak Shopping Hour",  value: peaks[0].label.split("–")[0].trim(), sub:`${filter} peak window`, color:"#a78bfa", bg:"rgba(167,139,250,0.1)", I:Users},
           {label:"Top Product",         value:"Coca-Cola 1.5L",        sub:`#1 most purchased`,       color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:Package},
@@ -2698,6 +2794,8 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
         </div>
 
         {/* Hour axis labels — all 24, evenly spaced */}
+        <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch" as any}}>
+        <div style={{minWidth:600}}>
         <div style={{display:"grid",gridTemplateColumns:"40px repeat(24,1fr)",gap:3,marginBottom:4}}>
           <div/>
           {HOURS.map((h,i)=>(
@@ -2753,9 +2851,11 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
             })}
           </div>
         </div>
+        </div>{/* end minWidth */}
+        </div>{/* end heatmap scroll */}
 
         {/* Peak callout strips */}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginTop:14}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10,marginTop:14}}>
           {peaks.map((p,i)=>{
             const colors=["#fb7185","#fbbf24","#a78bfa"];
             const c=colors[i];
@@ -2777,7 +2877,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Peak breakdown + Bought Together (below heatmap) ── */}
-      <div className="fu4" style={{display:"grid",gridTemplateColumns:"1.2fr 1fr",gap:16}}>
+      <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.2fr","1fr"),gap:16}}>
 
         {/* Day-of-week activity summary */}
         <div className="card">
@@ -2843,7 +2943,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
       </div>
 
       {/* ── Bar Chart + Loyalty Table ── */}
-      <div className="fu4" style={{display:"grid",gridTemplateColumns:"1fr 1.1fr",gap:16}}>
+      <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","1.1fr"),gap:16}}>
 
         {/* Most Purchased Bar Chart */}
         <div className="card">
@@ -2982,7 +3082,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           </div>
           <h3 style={{fontSize:15,fontWeight:700,color:"#fff"}}>Frequently Bought Together</h3>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:12}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(5),gap:12}}>
           {BOUGHT_TOGETHER.map((bt,i)=>(
             <div key={i} style={{
               background:`${bt.color}0a`,border:`1px solid ${bt.color}25`,
@@ -3113,7 +3213,7 @@ const Finance = () => {
       </div>
 
       {/* ══ 2. PROFIT OVERVIEW CARDS ══ */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+      <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Daily Profit",   value:`₱${(FIN_CURR_PROFIT/30).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}`, sub:"Avg today",  color:"#34d399",  bg:"rgba(52,211,153,0.1)",  I:TrendingUp,  chg:"+5.2%",  up:true},
           {label:"Monthly Profit", value:`₱${FIN_CURR_PROFIT.toLocaleString()}`,                                      sub:"January 2026",color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:BarChart3,   chg:`+${FIN_PROFIT_GROWTH}%`, up:true},
@@ -3172,7 +3272,7 @@ const Finance = () => {
       </div>
 
       {/* ══ 4. EXPENSE TRACKING ══ */}
-      <div className="fu3" style={{display:"grid",gridTemplateColumns:"1fr 1.5fr",gap:16}}>
+      <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","1.5fr"),gap:16}}>
 
         {/* Pie */}
         <div className="card">
@@ -3248,7 +3348,7 @@ const Finance = () => {
       </div>
 
       {/* ══ 5. NET INCOME + COMPARISON + MARGIN ══ */}
-      <div className="fu4" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:16}}>
+      <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsW(3),gap:16}}>
 
         {/* Net Income card */}
         <div style={{background:isProfit?"linear-gradient(135deg,rgba(52,211,153,0.1),rgba(52,211,153,0.03))":"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.03))",border:`1px solid ${isProfit?"rgba(52,211,153,0.25)":"rgba(251,113,133,0.25)"}`,borderRadius:16,padding:"22px 24px"}}>
@@ -3334,7 +3434,7 @@ const Finance = () => {
               Profit Margin Analysis
             </div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:10,marginBottom:14}}>
             {[
               {l:"Gross Profit",  v:`₱${grossProfit.toLocaleString()}`,   c:"#34d399"},
               {l:"Net Profit",    v:`₱${FIN_CURR_PROFIT.toLocaleString()}`,c:"#818cf8"},
@@ -3369,7 +3469,7 @@ const Finance = () => {
       </div>
 
       {/* ══ 6. CASH FLOW ══ */}
-      <div className="fu4" style={{display:"grid",gridTemplateColumns:"1fr 2fr",gap:16}}>
+      <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","2fr"),gap:16}}>
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -3430,7 +3530,7 @@ const Finance = () => {
       </div>
 
       {/* ══ 7. BUDGET TRACKER ══ */}
-      <div className="fu5" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+      <div className="fu5 grid-split" style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -3497,7 +3597,7 @@ const Finance = () => {
             </div>
             <span className="badge-v" style={{fontSize:10}}>Jul 2025 – Jan 2026</span>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}}>
+          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:10,marginBottom:14}}>
             {[
               {l:"YTD Revenue",  v:`₱${(YTD.rev/1000000).toFixed(2)}M`,  c:"#34d399",  bg:"rgba(52,211,153,0.08)",  border:"rgba(52,211,153,0.2)"},
               {l:"YTD Expenses", v:`₱${(YTD.exp/1000000).toFixed(2)}M`,  c:"#fb7185",  bg:"rgba(251,113,133,0.08)", border:"rgba(251,113,133,0.2)"},
@@ -3539,7 +3639,7 @@ const Finance = () => {
           </div>
           <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Download or export financial statements</span>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:12}}>
           {[
             {title:"Profit & Loss Summary", desc:"Revenue, expenses, and net profit breakdown for the selected period.", icon:TrendingUp,  color:"#34d399"},
             {title:"Expense Report",        desc:"Detailed categorized expense report with monthly comparisons.",        icon:Receipt,     color:"#fb7185"},
@@ -3686,7 +3786,7 @@ const UserPage = () => {
       </div>
 
       {/* ── Stat Cards ── */}
-      <div className="fu2" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:14}}>
+      <div className="fu2 grid-5col" style={{display:"grid",gridTemplateColumns:colsW(5),gap:14}}>
         {[
           {label:"Total Users",    value:stats.total,    color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:Users},
           {label:"Active Users",   value:stats.active,   color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:PackageCheck},
@@ -3832,7 +3932,7 @@ const UserPage = () => {
       {tab==="roles"&&(
         <div className="fu3" style={{display:"flex",flexDirection:"column",gap:16}}>
           {/* Role definition cards */}
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14}}>
+          <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:14}}>
             {(Object.entries(ROLE_COLORS) as [URole, typeof ROLE_COLORS[URole]][]).map(([role,rc])=>(
               <div key={role} style={{background:rc.bg,border:`1px solid ${rc.border}`,borderRadius:14,padding:"18px 20px"}}>
                 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
@@ -4022,11 +4122,11 @@ const UserPage = () => {
             <h3 style={{fontSize:18,fontWeight:700,color:"#fff",marginBottom:24}}>{modal==="add"?"Add New User":"Edit User"}</h3>
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
               <FLD label="FULL NAME" ch={<input value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} className="inp" placeholder="e.g. Maria Santos"/>}/>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
                 <FLD label="USERNAME" ch={<input value={form.username} onChange={e=>setForm(f=>({...f,username:e.target.value}))} className="inp" placeholder="msantos"/>}/>
                 <FLD label="EMAIL" ch={<input value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} className="inp" placeholder="maria@email.com"/>}/>
               </div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+              <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
                 <FLD label="ROLE" ch={
                   <select value={form.role} onChange={e=>setForm(f=>({...f,role:e.target.value as URole}))} className="inp">
                     {["Admin","Manager","Staff"].map(r=><option key={r} value={r}>{r}</option>)}
@@ -4098,7 +4198,7 @@ const AIHub = ({ onOpen }: { onOpen: (key: string) => void }) => (
         <p style={{fontSize:12,color:"rgba(255,255,255,0.3)",marginTop:2}}>Powered by advanced machine learning models — click a card to explore</p>
       </div>
     </div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14}}>
+    <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:14}}>
       {aiFeatItems.map(item=>(
         <div key={item.key} className="ai-card" onClick={()=>onOpen(item.key)} style={{position:"relative"}}>
           {(item.key==="predict"||item.key==="demand"||item.key==="inventory"||item.key==="profit"||item.key==="expense"||item.key==="customer") && (
@@ -4174,27 +4274,30 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
   `;
 
   const isLogin = mode === "login";
+  const authW = useW();
+  const authMob = authW <= 640;
 
   return (
     <div style={{
       position:"fixed",inset:0,background:"#080812",
-      display:"flex",overflow:"hidden",fontFamily:"'Inter',sans-serif",
+      display:"flex",flexDirection:authMob?"column":"row",
+      overflow:authMob?"auto":"hidden",fontFamily:"'Inter',sans-serif",
     }}>
       <style>{G_AUTH}</style>
 
       {/* ── Animated background grid ── */}
-      <div style={{position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(212,175,55,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.03) 1px,transparent 1px)",backgroundSize:"60px 60px",animation:"gridPulse 4s ease infinite",pointerEvents:"none"}}/>
+      <div style={{position:"fixed",inset:0,backgroundImage:"linear-gradient(rgba(212,175,55,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.03) 1px,transparent 1px)",backgroundSize:"60px 60px",animation:"gridPulse 4s ease infinite",pointerEvents:"none"}}/>
 
       {/* ── Floating orbs ── */}
       {orbs.map((o,i)=>(
-        <div key={i} style={{position:"absolute",top:o.top,left:o.left,width:o.w,height:o.h,borderRadius:"50%",background:o.c,filter:"blur(60px)",animation:`floatOrb ${o.dur}s ease-in-out infinite`,animationDelay:`${i*1.3}s`,pointerEvents:"none"}}/>
+        <div key={i} style={{position:"fixed",top:o.top,left:o.left,width:o.w,height:o.h,borderRadius:"50%",background:o.c,filter:"blur(60px)",animation:`floatOrb ${o.dur}s ease-in-out infinite`,animationDelay:`${i*1.3}s`,pointerEvents:"none"}}/>
       ))}
 
       {/* ── Scan line ── */}
-      <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,rgba(212,175,55,0.15),transparent)",animation:"scanLine 8s linear infinite",pointerEvents:"none"}}/>
+      <div style={{position:"fixed",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,rgba(212,175,55,0.15),transparent)",animation:"scanLine 8s linear infinite",pointerEvents:"none"}}/>
 
-      {/* ══ LEFT PANEL ══ */}
-      <div style={{
+      {/* ══ LEFT PANEL — hidden on mobile ══ */}
+      {!authMob&&<div style={{
         flex:1, position:"relative", overflow:"hidden",
         display:"flex",alignItems:"center",justifyContent:"center",
         transition:"flex 0.5s cubic-bezier(0.4,0,0.2,1)",
@@ -4303,13 +4406,16 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
           <div style={{position:"absolute",bottom:20,left:20,width:30,height:30,borderBottom:"2px solid rgba(212,175,55,0.3)",borderLeft:"2px solid rgba(212,175,55,0.3)",borderRadius:"0 0 0 3px"}}/>
           <div style={{position:"absolute",bottom:20,right:20,width:30,height:30,borderBottom:"2px solid rgba(212,175,55,0.3)",borderRight:"2px solid rgba(212,175,55,0.3)",borderRadius:"0 0 3px 0"}}/>
         </div>
-      </div>
+      </div>}
 
       {/* ══ RIGHT PANEL — Form ══ */}
       <div style={{
-        width:"48%",minWidth:420,position:"relative",
+        width:authMob?"100%":"48%",
+        minWidth:authMob?"unset":"420px",
+        minHeight:authMob?"100vh":"unset",
+        position:"relative",
         background:"rgba(12,12,24,0.96)",
-        borderLeft:"1px solid rgba(212,175,55,0.12)",
+        borderLeft:authMob?"none":"1px solid rgba(212,175,55,0.12)",
         display:"flex",alignItems:"center",justifyContent:"center",
         overflow:"hidden",
       }}>
@@ -4319,15 +4425,28 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
         <div style={{position:"absolute",top:0,right:0,width:300,height:300,background:"radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 70%)",pointerEvents:"none"}}/>
 
         <div style={{
-          width:"100%",maxWidth:420,padding:"0 48px",
+          width:"100%",maxWidth:420,padding:authMob?"24px 24px 40px":"0 48px",
           opacity:fadeMode?0:1,transform:fadeMode?"translateY(10px)":"translateY(0)",
           transition:"opacity 0.22s ease,transform 0.22s ease",
           animation:"authSlideR 0.7s ease both",
         }}>
           {/* Form header */}
-          <div style={{marginBottom:36,textAlign:"center"}}>
+          <div style={{marginBottom:authMob?24:36,textAlign:"center"}}>
+            {/* Mobile: show mini logo since left panel is hidden */}
+            {authMob&&(
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:20}}>
+                <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(145deg,#b8860b,#d4af37)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 0 20px rgba(212,175,55,0.4)"}}>
+                  <span style={{fontSize:18,fontWeight:900,color:"#000"}}>B</span>
+                </div>
+                <div style={{
+                  fontSize:20,fontWeight:900,letterSpacing:"0.06em",
+                  background:"linear-gradient(90deg,#b8860b,#d4af37,#f0c040)",
+                  WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",
+                }}>BARYALYTICS</div>
+              </div>
+            )}
             <div style={{
-              fontSize:36,fontWeight:800,color:"#fff",letterSpacing:"-0.02em",marginBottom:6,
+              fontSize:authMob?28:36,fontWeight:800,color:"#fff",letterSpacing:"-0.02em",marginBottom:6,
               fontFamily:"'Playfair Display',serif",
             }}>{isLogin?"Login":"Sign up"}</div>
             <div style={{fontSize:13,color:"rgba(255,255,255,0.3)"}}>
@@ -4727,7 +4846,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
     </select>
   );
 
-  const Card = ({title,icon,color="#818cf8",children}:{title:string;icon:string;color?:string;children:React.ReactNode}) => (
+  const Card = ({title,icon,color="#818cf8",children}:{title:string;icon:string;color?:string;children?:React.ReactNode}) => (
     <div className="card fu1" style={{marginBottom:16}}>
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20}}>
         <div style={{width:36,height:36,borderRadius:10,background:`${color}18`,border:`1px solid ${color}28`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{icon}</div>
@@ -4759,7 +4878,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
   const content: Record<string,React.ReactNode> = {
     profile: (
       <Card title="Profile Settings" icon="👤" color="#818cf8">
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
           <Field label="FULL NAME"><SInp value={pName} onChange={setPName} placeholder="e.g. Juan dela Cruz"/></Field>
           <Field label="EMAIL ADDRESS"><SInp value={pEmail} onChange={setPEmail} placeholder="email@example.com" type="email"/></Field>
           <Field label="CONTACT NUMBER"><SInp value={pPhone} onChange={setPPhone} placeholder="+63 9XX XXX XXXX"/></Field>
@@ -4778,7 +4897,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         <div style={{marginTop:16,padding:"1px",background:"rgba(255,255,255,0.06)",borderRadius:14}}>
           <div style={{background:"#13131f",borderRadius:13,padding:"16px"}}>
             <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.5)",letterSpacing:"0.07em",marginBottom:12}}>CHANGE PASSWORD</div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+            <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
               <Field label="NEW PASSWORD"><SInp value={newPw} onChange={setNewPw} type="password" placeholder="Enter new password"/></Field>
               <Field label="CONFIRM PASSWORD"><SInp value={confPw} onChange={setConfPw} type="password" placeholder="Confirm new password"/></Field>
             </div>
@@ -4790,7 +4909,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
     business: (
       <Card title="Business Information" icon="🏢" color="#34d399">
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
           <Field label="BUSINESS NAME"><SInp value={bName} onChange={setBName} placeholder="Your Store Name"/></Field>
           <Field label="BUSINESS EMAIL"><SInp value={bEmail} onChange={setBEmail} placeholder="info@store.com" type="email"/></Field>
           <Field label="CONTACT NUMBER"><SInp value={bPhone} onChange={setBPhone} placeholder="+63 2 XXXX XXXX"/></Field>
@@ -4816,7 +4935,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
     system: (
       <Card title="System Preferences" icon="⚙️" color="#fbbf24">
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
           <Field label="CURRENCY FORMAT">
             <SSel value={currency} onChange={setCurrency} options={["PHP ₱ – Philippine Peso","USD $ – US Dollar","EUR € – Euro","JPY ¥ – Japanese Yen"]}/>
           </Field>
@@ -4862,7 +4981,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:2}}>Liza Pangilinan's account had 4 failed login attempts today. Account has been auto-suspended.</div>
           </div>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16,marginBottom:16}}>
           <Field label="CHANGE PASSWORD">
             <SInp value={newPw} onChange={setNewPw} type="password" placeholder="New password"/>
           </Field>
@@ -4889,7 +5008,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
     backup: (
       <Card title="Backup & Restore" icon="💾" color="#a78bfa">
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12,marginBottom:20}}>
           {[{icon:"📅",label:"Last Backup",value:lastBackup,c:"#818cf8"},{icon:"📦",label:"Backup Size",value:backupSize,c:"#34d399"}].map(s=>(
             <div key={s.label} style={{padding:"16px",background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:12}}>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
@@ -4992,7 +5111,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         {/* ── Mode selector ── */}
         <div className="card" style={{marginBottom:16}}>
           <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",marginBottom:16}}>COLOR MODE</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
             {[
               {id:true,  emoji:"🌙", title:"Dark Mode",  sub:"Easy on the eyes, reduces glare",   accent:"#818cf8"},
               {id:false, emoji:"☀️", title:"Light Mode", sub:"Clean and bright for daytime use",  accent:"#fbbf24"},
@@ -5022,7 +5141,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                     ))}
                   </div>
                   {/* Mini cards */}
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:4,padding:"5px 6px"}}>
+                  <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:4,padding:"5px 6px"}}>
                     {[0,1,2].map(i=>(
                       <div key={i} style={{height:18,borderRadius:4,background:m.id?"rgba(255,255,255,0.04)":"rgba(0,0,30,0.05)",border:`1px solid ${m.id?"rgba(255,255,255,0.06)":"rgba(0,0,30,0.07)"}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
                         <div style={{height:3,width:16,borderRadius:99,background:i===0?appColor:m.id?"rgba(255,255,255,0.15)":"rgba(0,0,30,0.12)"}}/>
@@ -5128,7 +5247,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         {/* ── Layout style ── */}
         <div className="card" style={{marginBottom:16}}>
           <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",marginBottom:14}}>DASHBOARD LAYOUT</div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
+          <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10}}>
             {["Default","Compact","Expanded"].map(l=>(
               <button key={l} onClick={()=>setLayout(l)} style={{
                 padding:"14px 12px",borderRadius:12,cursor:"pointer",
@@ -5161,7 +5280,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         <div style={{marginBottom:10,padding:"12px 16px",background:"rgba(251,191,36,0.06)",border:"1px solid rgba(251,191,36,0.18)",borderRadius:12,fontSize:11,color:"rgba(255,255,255,0.4)",lineHeight:1.6}}>
           These values are automatically applied when recording sales, managing inventory, or generating financial reports. Changing them will affect all future calculations.
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:16,marginTop:16}}>
+        <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:16,marginTop:16}}>
           <Field label="DEFAULT TAX RATE (%)">
             <div style={{position:"relative"}}>
               <SInp value={taxRate} onChange={setTaxRate} placeholder="12"/>
@@ -5178,7 +5297,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             <SInp value={lowStockTh} onChange={setLowStockTh} placeholder="20"/>
           </Field>
         </div>
-        <div style={{marginTop:16,display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+        <div style={{marginTop:16,display:"grid",gridTemplateColumns:colsW(3),gap:10}}>
           {[{label:"Tax Rate",value:`${taxRate}%`,c:"#34d399"},{label:"Profit Margin",value:`${margin}%`,c:"#38bdf8"},{label:"Low Stock at",value:`${lowStockTh} units`,c:"#fbbf24"}].map(s=>(
             <div key={s.label} style={{padding:"12px 14px",background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:11,textAlign:"center"}}>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginBottom:4}}>{s.label}</div>
@@ -5208,9 +5327,9 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         document.body
       )}
 
-      <div style={{display:"flex",gap:20,alignItems:"flex-start"}}>
+      <div style={{display:"flex",gap:20,alignItems:"flex-start",flexDirection:window.innerWidth<=900?"column":"row"}}>
         {/* Sidebar */}
-        <div style={{width:220,flexShrink:0}}>
+        <div style={{width:window.innerWidth<=900?"100%":"220px",flexShrink:0}}>
           <div style={{background:"#13131f",border:"1px solid rgba(255,255,255,0.07)",borderRadius:16,overflow:"hidden",position:"sticky",top:88}}>
             {sections.map((s,i)=>(
               <button key={s.id} onClick={()=>setActiveSection(s.id)} style={{
@@ -5248,7 +5367,20 @@ export default function App() {
   const [aiPage, setAiPage]          = useState<string|null>(null);
   const [showNotif, setShowNotif]    = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [mobileOpen, setMobileOpen]  = useState(false);
   const [isDark, setIsDark]          = useState(true);
+
+  // Responsive breakpoints
+  const W = useW();
+  const isMob  = W <= 900;
+  const isSm   = W <= 600;
+  // Responsive grid helper
+  const cols = (desktop:number): string => {
+    if(isSm)  return desktop >= 3 ? "1fr 1fr" : "1fr";
+    if(isMob) return desktop >= 4 ? "1fr 1fr" : desktop === 3 ? "1fr 1fr" : "1fr";
+    return `repeat(${desktop},1fr)`;
+  };
+  const colsSplit = (a:string,b:string): string => isMob ? "1fr" : `${a} ${b}`;
   const [appColor, setAppColor]      = useState("#34d399");
 
   // Dynamic theme CSS injected globally
@@ -5438,31 +5570,89 @@ export default function App() {
         <div className="bg-tl"/><div className="bg-br"/>
 
         {/* NAV — floating pill wrapper */}
-        <div style={{position:"fixed",top:16,left:0,right:0,zIndex:50,display:"flex",justifyContent:"center",padding:"0 24px",pointerEvents:"none"}}>
+        {/* Mobile drawer overlay */}
+        <div className={`mob-drawer-overlay${mobileOpen?" open":""}`} onClick={()=>setMobileOpen(false)}/>
+        {/* Mobile slide-in drawer */}
+        <div className={`mob-drawer${mobileOpen?" open":""}`}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24}}>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <div style={{width:28,height:28,borderRadius:8,background:"linear-gradient(135deg,#b8860b,#d4af37)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>B</div>
+              <span style={{fontSize:14,fontWeight:800,color:"#fff",letterSpacing:"0.04em"}}>BARYALYTICS</span>
+            </div>
+            <button onClick={()=>setMobileOpen(false)} style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:"rgba(255,255,255,0.5)"}}>✕</button>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:4,flex:1}}>
+            {nav.map(item=>{
+              const I=icons[item];
+              return (
+                <button key={item} onClick={()=>{setPage(item);setAiPage(null);setMobileOpen(false);}} style={{
+                  display:"flex",alignItems:"center",gap:12,padding:"12px 14px",borderRadius:12,
+                  background:page===item?`rgba(${acR},${acG},${acB},0.12)`:"none",
+                  border:`1px solid ${page===item?`rgba(${acR},${acG},${acB},0.25)`:"transparent"}`,
+                  cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",transition:"all 0.15s",
+                }}>
+                  <I size={16} color={page===item?appColor:"rgba(255,255,255,0.45)"}/>
+                  <span style={{fontSize:13,fontWeight:page===item?700:500,color:page===item?appColor:"rgba(255,255,255,0.55)"}}>{item}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div style={{borderTop:"1px solid rgba(255,255,255,0.07)",paddingTop:16,display:"flex",flexDirection:"column",gap:8}}>
+            <button onClick={()=>{setPage("Settings");setMobileOpen(false);}} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,background:"rgba(129,140,248,0.08)",border:"1px solid rgba(129,140,248,0.15)",cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span style={{fontSize:13,fontWeight:600,color:"#818cf8"}}>Settings</span>
+            </button>
+            <button onClick={()=>setAuthed(false)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,background:"rgba(251,113,133,0.08)",border:"1px solid rgba(251,113,133,0.15)",cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fb7185" strokeWidth="2" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span style={{fontSize:13,fontWeight:600,color:"#fb7185"}}>Logout</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="nav-float-wrap" style={{position:"fixed",top:16,left:0,right:0,zIndex:50,display:"flex",justifyContent:"center",padding:"0 24px",pointerEvents:"none"}}>
           <nav className="nav-bar" style={{
             display:"flex",alignItems:"center",justifyContent:"space-between",
-            padding:"0 8px 0 16px",height:52,width:"100%",maxWidth:1180,
+            padding:"0 8px 0 12px",height:52,width:"100%",maxWidth:1180,
             pointerEvents:"all",
           }}>
-            {/* Left — brand + welcome */}
-            <div style={{display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
-              <div style={{display:"flex",alignItems:"center",gap:7}}>
-                {(()=>{const I=icons[page];return <I size={16} color={lm?"rgba(0,0,40,0.55)":"rgba(255,255,255,0.7)"}/>;})()}
-                <span style={{fontSize:12,fontWeight:700,color:lm?"rgba(0,0,40,0.55)":"rgba(255,255,255,0.55)",letterSpacing:"0.08em"}}>{page.toUpperCase()}</span>
-              </div>
-              <div style={{width:1,height:14,background:lm?"rgba(0,0,40,0.12)":"rgba(255,255,255,0.1)",margin:"0 4px"}}/>
-              <span style={{fontSize:12,color:lm?"rgba(0,0,40,0.4)":"rgba(255,255,255,0.3)"}}>Hi, <span style={{color:lm?"rgba(0,0,40,0.65)":"rgba(255,255,255,0.55)",fontWeight:600}}>{authName.split(" ")[0]}</span></span>
-            </div>
+            {/* Hamburger — mobile only, JS-controlled */}
+            {isMob&&(
+              <button onClick={()=>setMobileOpen(true)} style={{width:34,height:34,borderRadius:10,background:lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.06)",border:`1px solid ${lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.1)"}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:lm?"rgba(0,0,40,0.6)":"rgba(255,255,255,0.7)",flexShrink:0}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              </button>
+            )}
 
-            {/* Center — nav pills */}
-            <div style={{display:"flex",alignItems:"center",gap:2,position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
-              {nav.map(item=>(
-                <button key={item} onClick={()=>{setPage(item);setAiPage(null);}} className={page===item?"nav-pill-active":"nav-pill"}>{item}</button>
-              ))}
-            </div>
+            {/* Left — brand + welcome — desktop only */}
+            {!isMob&&(
+              <div style={{display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
+                <div style={{display:"flex",alignItems:"center",gap:7}}>
+                  {(()=>{const I=icons[page];return <I size={16} color={lm?"rgba(0,0,40,0.55)":"rgba(255,255,255,0.7)"}/>;})()}
+                  <span style={{fontSize:12,fontWeight:700,color:lm?"rgba(0,0,40,0.55)":"rgba(255,255,255,0.55)",letterSpacing:"0.08em"}}>{page.toUpperCase()}</span>
+                </div>
+                <div style={{width:1,height:14,background:lm?"rgba(0,0,40,0.12)":"rgba(255,255,255,0.1)",margin:"0 4px"}}/>
+                <span style={{fontSize:12,color:lm?"rgba(0,0,40,0.4)":"rgba(255,255,255,0.3)"}}>Hi, <span style={{color:lm?"rgba(0,0,40,0.65)":"rgba(255,255,255,0.55)",fontWeight:600}}>{authName.split(" ")[0]}</span></span>
+              </div>
+            )}
+
+            {/* Mobile center: current page label */}
+            {isMob&&(
+              <div style={{display:"flex",alignItems:"center",gap:7,position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
+                {(()=>{const I=icons[page];return <I size={14} color={appColor}/>;})()}
+                <span style={{fontSize:13,fontWeight:700,color:lm?"#1a1a2e":"#fff",letterSpacing:"0.05em"}}>{page.toUpperCase()}</span>
+              </div>
+            )}
+
+            {/* Center — nav pills — desktop only */}
+            {!isMob&&(
+              <div style={{display:"flex",alignItems:"center",gap:2,position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
+                {nav.map(item=>(
+                  <button key={item} onClick={()=>{setPage(item);setAiPage(null);}} className={page===item?"nav-pill-active":"nav-pill"}>{item}</button>
+                ))}
+              </div>
+            )}
 
             {/* Right — actions */}
-            <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
+            <div style={{display:"flex",alignItems:"center",gap:isMob?6:8,flexShrink:0}}>
               {/* Bell */}
               <button onClick={()=>setShowNotif(v=>!v)} style={{position:"relative",background:showNotif?"rgba(129,140,248,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showNotif?"rgba(129,140,248,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,borderRadius:999,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showNotif?"#818cf8":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",transition:"all 0.18s"}}>
                 <Bell size={15} className={showNotif?"":"bell-new"}/>
@@ -5481,8 +5671,8 @@ export default function App() {
                   <div style={{width:24,height:24,borderRadius:"50%",background:"linear-gradient(135deg,rgba(184,134,11,0.6),rgba(212,175,55,0.35))",border:"1px solid rgba(212,175,55,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                     <User size={12} color="#d4af37"/>
                   </div>
-                  <span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.7)",letterSpacing:"0.04em"}}>{authName.split(" ")[0].toUpperCase()}</span>
-                  <ChevronDown size={11} color="rgba(255,255,255,0.3)" style={{transform:showUserMenu?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.18s"}}/>
+                  <span style={{fontSize:12,fontWeight:700,color:lm?"rgba(0,0,40,0.7)":"rgba(255,255,255,0.7)",letterSpacing:"0.04em"}}>{authName.split(" ")[0].toUpperCase()}</span>
+                  <ChevronDown size={11} color={lm?"rgba(0,0,40,0.3)":"rgba(255,255,255,0.3)"} style={{transform:showUserMenu?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.18s"}}/>
                 </button>
 
                 {showUserMenu&&ReactDOM.createPortal(
@@ -5491,22 +5681,20 @@ export default function App() {
                       onMouseDown={e=>e.stopPropagation()}
                       style={{
                         position:"absolute",top:72,right:24,width:200,
-                        background:"rgba(15,15,28,0.97)",
-                        border:"1px solid rgba(212,175,55,0.18)",
+                        background:lm?"rgba(240,242,248,0.98)":"rgba(15,15,28,0.97)",
+                        border:`1px solid ${lm?"rgba(0,0,40,0.1)":"rgba(212,175,55,0.18)"}`,
                         borderRadius:16,overflow:"hidden",
-                        boxShadow:"0 20px 60px rgba(0,0,0,0.6)",
+                        boxShadow:"0 20px 60px rgba(0,0,0,0.4)",
                         animation:"fadeUp 0.18s ease both",
                       }}
                     >
-                      {/* User info header */}
-                      <div style={{padding:"14px 16px 12px",borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
+                      <div style={{padding:"14px 16px 12px",borderBottom:`1px solid ${lm?"rgba(0,0,40,0.07)":"rgba(255,255,255,0.06)"}`}}>
                         <div style={{width:36,height:36,borderRadius:"50%",background:"linear-gradient(135deg,rgba(184,134,11,0.5),rgba(212,175,55,0.3))",border:"1px solid rgba(212,175,55,0.3)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
                           <User size={16} color="#d4af37"/>
                         </div>
-                        <div style={{fontSize:13,fontWeight:700,color:"#fff"}}>{authName}</div>
-                        <div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:2}}>Administrator</div>
+                        <div style={{fontSize:13,fontWeight:700,color:lm?"#1a1a2e":"#fff"}}>{authName}</div>
+                        <div style={{fontSize:11,color:lm?"rgba(0,0,40,0.4)":"rgba(255,255,255,0.3)",marginTop:2}}>Administrator</div>
                       </div>
-                      {/* Settings item */}
                       <button
                         onMouseDown={e=>{e.stopPropagation();setPage("Settings");setShowUserMenu(false);}}
                         style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"11px 16px",background:"none",border:"none",cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"background 0.12s"}}
@@ -5516,11 +5704,9 @@ export default function App() {
                         <div style={{width:28,height:28,borderRadius:8,background:"rgba(129,140,248,0.1)",border:"1px solid rgba(129,140,248,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                         </div>
-                        <span style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>Settings</span>
+                        <span style={{fontSize:13,fontWeight:600,color:lm?"rgba(0,0,40,0.7)":"rgba(255,255,255,0.7)"}}>Settings</span>
                       </button>
-                      {/* Divider */}
-                      <div style={{height:1,background:"rgba(255,255,255,0.05)",margin:"0 12px"}}/>
-                      {/* Logout item */}
+                      <div style={{height:1,background:lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",margin:"0 12px"}}/>
                       <button
                         onMouseDown={e=>{e.stopPropagation();setAuthed(false);setShowUserMenu(false);}}
                         style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"11px 16px 14px",background:"none",border:"none",cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"background 0.12s"}}
@@ -5544,21 +5730,21 @@ export default function App() {
         {/* Extra top spacer so content never slides under the floating bar */}
         <div style={{height:88}}/>
 
-        <main style={{position:"relative",zIndex:10,maxWidth:1440,margin:"0 auto",padding:"0 24px 48px"}}>
+        <main style={{position:"relative",zIndex:10,maxWidth:1440,margin:"0 auto",padding:`0 ${isMob?"16px":"24px"} 48px`}}>
 
           {/* ── DASHBOARD ── */}
           {page==="Dashboard"&&(
             <>
               {/* STAT CARDS */}
-              <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:16,marginBottom:20}}>
+              <div className="grid-5col" style={{display:"grid",gridTemplateColumns:cols(5),gap:16,marginBottom:20}}>
                 <div className="card">
                   <div className="card-title">Daily Sales <button className="card-x"><X size={13}/></button></div>
-                  <div style={{fontSize:26,fontWeight:700,color:"#fff",marginTop:2}}>₱167,001</div>
+                  <div className="stat-num" style={{fontSize:26,fontWeight:700,color:"#fff",marginTop:2}}>₱167,001</div>
                   <div style={{marginTop:8}}><span className="chip-up"><TrendingUp size={10}/> 15%</span></div>
                 </div>
                 <div className="card">
                   <div className="card-title">Monthly Sales <button className="card-x"><X size={13}/></button></div>
-                  <div style={{fontSize:26,fontWeight:700,color:"#fff",marginTop:2}}>₱12.5 M</div>
+                  <div className="stat-num" style={{fontSize:26,fontWeight:700,color:"#fff",marginTop:2}}>₱12.5 M</div>
                   <div style={{marginTop:8}}><span className="chip-up"><TrendingUp size={10}/> 10%</span></div>
                 </div>
                 <div className="card">
@@ -5591,7 +5777,7 @@ export default function App() {
               </div>
 
               {/* CHARTS */}
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:16,marginBottom:20}}>
+              <div style={{display:"grid",gridTemplateColumns:cols(3),gap:16,marginBottom:20}}>
                 <div className="card" style={{display:"flex",flexDirection:"column",minHeight:290}}>
                   <div className="card-title">Sales Overview <button className="card-x"><X size={13}/></button></div>
                   <div className="tab-wrap" style={{marginBottom:16}}>
@@ -5669,7 +5855,7 @@ export default function App() {
               </div>
 
               {/* BOTTOM ROW */}
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:16,marginBottom:28}}>
+              <div style={{display:"grid",gridTemplateColumns:cols(3),gap:16,marginBottom:28}}>
                 <div className="card">
                   <div className="card-title">Top Products <button className="card-x"><X size={13}/></button></div>
                   <div style={{display:"flex",flexDirection:"column",gap:18,marginTop:6}}>
