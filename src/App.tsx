@@ -2393,7 +2393,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
                 <Tooltip content={({active,payload})=>{
                   if(!active||!payload?.length)return null;
                   const p=payload[0];
-                  const pct=((p.value/nextTotal)*100).toFixed(1);
+                  const pct=(((p.value as number)/nextTotal)*100).toFixed(1);
                   return(
                     <div style={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,padding:"10px 14px",fontSize:12}}>
                       <div style={{color:(p.payload as any).color,fontWeight:700,marginBottom:4}}>{p.name}</div>
@@ -4582,7 +4582,7 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
                     display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,
                     position:"relative",
                   }}>
-                    {n.icon||m.icon}
+                    {(n as any).icon||m.icon}
                     {n.urgent&&!n.read&&(
                       <div style={{position:"absolute",top:-3,right:-3,width:10,height:10,borderRadius:"50%",background:"#fb7185",border:"2px solid #0f0f1e",animation:"urgentPulse 1.5s ease infinite"}}/>
                     )}
