@@ -1,0 +1,50 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="40%" cy="35%" r="65%">
+      <stop offset="0%"   stop-color="#c9950a"/>
+      <stop offset="50%"  stop-color="#a07208"/>
+      <stop offset="100%" stop-color="#3a2600"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="60%" cy="60%" r="55%">
+      <stop offset="0%"   stop-color="#d4af37" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#3a2600" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Golden circle background -->
+  <circle cx="256" cy="256" r="248" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="248" fill="url(#shine)"/>
+
+  <!-- White bold B -->
+  <text x="62" y="360"
+    fill="white"
+    font-size="300"
+    font-weight="900"
+    font-family="Arial Black, Arial, sans-serif"
+    letter-spacing="-8">B</text>
+
+  <!-- White baseline bar -->
+  <rect x="62" y="378" width="280" height="34" rx="17" fill="white"/>
+
+  <!-- Blue upward trend line -->
+  <polyline
+    points="100,370 160,275 220,305 340,130"
+    fill="none"
+    stroke="#38bdf8"
+    stroke-width="26"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+  <!-- Blue arrowhead -->
+  <polygon points="340,130 295,152 318,192" fill="#38bdf8"/>
+
+  <!-- Red upward trend line (slightly below) -->
+  <polyline
+    points="100,370 160,295 220,325 340,160"
+    fill="none"
+    stroke="#ef4444"
+    stroke-width="20"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+  <!-- Red arrowhead -->
+  <polygon points="340,160 298,174 318,210" fill="#ef4444"/>
+</svg>
