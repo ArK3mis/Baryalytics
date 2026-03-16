@@ -385,6 +385,16 @@ const G = `
   @keyframes bellWiggle{0%,100%{transform:rotate(0deg)}15%{transform:rotate(18deg)}30%{transform:rotate(-16deg)}45%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}75%{transform:rotate(4deg)}}
   .bell-new{animation:bellWiggle 0.7s ease both;}
 
+  @keyframes rowSlideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes expiryPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,113,133,0.4)}60%{box-shadow:0 0 0 8px rgba(251,113,133,0)}}
+  @keyframes warnBounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}
+  @keyframes countUp{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
+  @keyframes slideRight{from{width:0}to{width:var(--bar-w,100%)}}
+  .row-new{animation:rowSlideIn 0.35s ease both;}
+  .expiry-warn{animation:expiryPulse 2s ease infinite;}
+  .warn-icon{animation:warnBounce 1.8s ease infinite;}
+  .count-pop{animation:countUp 0.4s cubic-bezier(0.34,1.56,0.64,1) both;}
+
   .export-wrap{position:relative;display:inline-flex;}
   .export-btn{display:flex;align-items:center;gap:7px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.22);border-radius:10px;color:#a5b4fc;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;}
   .export-btn:hover{background:rgba(129,140,248,0.2);border-color:rgba(129,140,248,0.38);color:#c7d2fe;}
@@ -1191,30 +1201,110 @@ const ExportMenu = ({label="Export"}:{label?:string}) => {
 
 /* ── INVENTORY COMPONENT ──────────────────────────────────────────── */
 const Inventory = () => {
-  const [view,setView] = useState("main");
-  const [inv,setInv] = useState([
-    {id:1,name:"Wireless Headphones",cat:"Electronics",stocks:20,bp:650,sp:750},
-    {id:2,name:"Running Shoes",cat:"Shoes",stocks:50,bp:400,sp:550},
-    {id:3,name:"T-Shirts",cat:"Clothing",stocks:25,bp:320,sp:550},
+  const TAX_RATE = 0.12;
+  const today = new Date();
+  const daysUntil = (d:string) => Math.ceil((new Date(d).getTime()-today.getTime())/(1000*60*60*24));
+
+  const [view,setView]   = useState("main");
+  const [inv,setInv]     = useState([
+    {id:1, name:"Wireless Headphones", cat:"Electronics",  stocks:20, bp:650,  sp:750,  expiry:"2026-06-15"},
+    {id:2, name:"Running Shoes",        cat:"Shoes",        stocks:50, bp:400,  sp:550,  expiry:"2027-01-10"},
+    {id:3, name:"T-Shirts",             cat:"Clothing",     stocks:25, bp:320,  sp:550,  expiry:"2028-05-01"},
+    {id:4, name:"Vitamin C 500mg",      cat:"Health",       stocks:8,  bp:120,  sp:185,  expiry:"2026-04-02"},
+    {id:5, name:"Canned Sardines",      cat:"Food & Bev",   stocks:60, bp:45,   sp:72,   expiry:"2026-03-28"},
   ]);
-  const [nP,setnP] = useState({name:"",cat:"Electronics",supplier:"",bp:"",sp:"",stocks:0});
-  const [dP,setdP] = useState<any>(null);
-  const [uP,setuP] = useState<any>(null);
-  const [q,setQ] = useState("");
+  const [nP,setnP]   = useState({name:"",cat:"Electronics",supplier:"",bp:"",sp:"",stocks:0,expiry:""});
+  const [dP,setdP]   = useState<any>(null);
+  const [uP,setuP]   = useState<any>(null);
+  const [q,setQ]     = useState("");
+  const [newId,setNewId] = useState<number|null>(null);
+
+  // ── Stock change log ──
+  const [stockLog, setStockLog] = useState([
+    {id:1, product:"Wireless Headphones", action:"Restock",    qty:"+20", user:"Juan dela Cruz",    ts:"2026-03-10 09:12 AM"},
+    {id:2, product:"Running Shoes",        action:"Restock",    qty:"+50", user:"Maria Santos",      ts:"2026-03-10 09:30 AM"},
+    {id:3, product:"T-Shirts",             action:"Restock",    qty:"+25", user:"Juan dela Cruz",    ts:"2026-03-11 02:14 PM"},
+    {id:4, product:"Vitamin C 500mg",      action:"Sale",       qty:"-12", user:"Ana Reyes",         ts:"2026-03-12 11:05 AM"},
+    {id:5, product:"Canned Sardines",      action:"Restock",    qty:"+60", user:"Carlo Mendoza",     ts:"2026-03-13 08:47 AM"},
+    {id:6, product:"Wireless Headphones",  action:"Adjustment", qty:"-3",  user:"Juan dela Cruz",    ts:"2026-03-14 03:22 PM"},
+  ]);
+
+  // ── Undo ──
   const [hist,setHist] = useState<any[][]>([]);
-  const save=()=>setHist(h=>[...h,inv]);
-  const undo=()=>{if(hist.length){setInv(hist[hist.length-1]);setHist(h=>h.slice(0,-1));}};
-  const add=()=>{if(!nP.name)return;save();setInv(p=>[...p,{id:Math.max(0,...p.map(i=>i.id))+1,name:nP.name,cat:nP.cat,stocks:nP.stocks,bp:+nP.bp,sp:+nP.sp}]);setnP({name:"",cat:"Electronics",supplier:"",bp:"",sp:"",stocks:0});setView("main");};
-  const del=()=>{if(dP){save();setInv(p=>p.filter(i=>i.id!==dP.id));setdP(null);}};
-  const upd=()=>{if(uP){save();setInv(p=>p.map(i=>i.id===uP.id?uP:i));setView("main");}};
-  const stat=(s:number)=>s<=0?{l:"Out of Stock",c:"badge-r"}:s<=20?{l:"Low Stock",c:"badge-a"}:{l:"In Stock",c:"badge-g"};
-  const fil=inv.filter(i=>i.name.toLowerCase().includes(q.toLowerCase())||i.cat.toLowerCase().includes(q.toLowerCase()));
-  const cats=["Electronics","Shoes","Clothing","Accessories","Sports Equipment","Beauty Products","Food & Beverages"];
+  const save = () => setHist(h=>[...h, inv]);
+  const undo = () => { if(hist.length){ setInv(hist[hist.length-1]); setHist(h=>h.slice(0,-1)); } };
+
+  const addLog = (product:string, action:string, qty:string, user="Juan dela Cruz") => {
+    const now = new Date();
+    const ts = now.toLocaleString("en-US",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+    setStockLog(l=>[{id:l.length+1,product,action,qty,user,ts},...l]);
+  };
+
+  const add = () => {
+    if(!nP.name) return;
+    save();
+    const id = Math.max(0,...inv.map(i=>i.id))+1;
+    setInv(p=>[...p,{id,name:nP.name,cat:nP.cat,stocks:nP.stocks,bp:+nP.bp,sp:+nP.sp,expiry:nP.expiry||""}]);
+    addLog(nP.name,"Added",`+${nP.stocks}`);
+    setNewId(id);
+    setTimeout(()=>setNewId(null),1200);
+    setnP({name:"",cat:"Electronics",supplier:"",bp:"",sp:"",stocks:0,expiry:""});
+    setView("main");
+  };
+  const del = () => {
+    if(dP){ save(); addLog(dP.name,"Deleted","—"); setInv(p=>p.filter(i=>i.id!==dP.id)); setdP(null); }
+  };
+  const upd = () => {
+    if(uP){
+      const old = inv.find(i=>i.id===uP.id);
+      const diff = uP.stocks-(old?.stocks||0);
+      save();
+      setInv(p=>p.map(i=>i.id===uP.id?uP:i));
+      addLog(uP.name,"Updated", diff>=0?`+${diff}`:`${diff}`);
+      setView("main");
+    }
+  };
+
+  const stat = (s:number) => s<=0?{l:"Out of Stock",c:"badge-r"}:s<=20?{l:"Low Stock",c:"badge-a"}:{l:"In Stock",c:"badge-g"};
+  const fil  = inv.filter(i=>i.name.toLowerCase().includes(q.toLowerCase())||i.cat.toLowerCase().includes(q.toLowerCase()));
+  const cats = ["Electronics","Shoes","Clothing","Accessories","Sports Equipment","Beauty Products","Food & Beverages","Health"];
+
+  // ── Expiry helpers ──
+  const expiring  = inv.filter(i=>i.expiry && daysUntil(i.expiry)<=30 && daysUntil(i.expiry)>0);
+  const expired   = inv.filter(i=>i.expiry && daysUntil(i.expiry)<=0);
+  const expiryColor = (d:string) => { const n=daysUntil(d); return n<=0?"#fb7185":n<=7?"#f97316":n<=30?"#fbbf24":"#34d399"; };
+  const expiryBg    = (d:string) => { const n=daysUntil(d); return n<=0?"rgba(251,113,133,0.12)":n<=7?"rgba(249,115,22,0.1)":n<=30?"rgba(251,191,36,0.08)":"rgba(52,211,153,0.06)"; };
+  const expiryLabel = (d:string) => { const n=daysUntil(d); return n<=0?"Expired":n<=7?`${n}d left`:n<=30?`${n}d left`:""; };
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:20}}>
+
+      {/* ── Expiry alert banner ── */}
+      {(expired.length>0||expiring.length>0)&&(
+        <div className="fu1 expiry-warn" style={{background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.25)",borderRadius:14,padding:"14px 18px"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+            <span className="warn-icon" style={{fontSize:20}}>⚠️</span>
+            <span style={{fontSize:13,fontWeight:700,color:"#fda4af"}}>
+              {expired.length>0&&`${expired.length} expired product${expired.length>1?"s":""}`}
+              {expired.length>0&&expiring.length>0&&" · "}
+              {expiring.length>0&&`${expiring.length} expiring within 30 days`}
+            </span>
+          </div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+            {[...expired,...expiring].map(i=>(
+              <div key={i.id} style={{display:"flex",alignItems:"center",gap:7,padding:"5px 12px",background:expiryBg(i.expiry),border:`1px solid ${expiryColor(i.expiry)}30`,borderRadius:999,fontSize:11}}>
+                <div style={{width:6,height:6,borderRadius:"50%",background:expiryColor(i.expiry),flexShrink:0}} className="pulse"/>
+                <span style={{color:"rgba(255,255,255,0.75)",fontWeight:600}}>{i.name}</span>
+                <span style={{color:expiryColor(i.expiry),fontWeight:700}}>{expiryLabel(i.expiry)||"Expires "+i.expiry}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Stat cards ── */}
       <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
-        <div className="card">
+        <div className="card count-pop">
           <div className="card-title">Available Stock <button className="card-x"><X size={13}/></button></div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"baseline",gap:8}}>
@@ -1224,29 +1314,39 @@ const Inventory = () => {
             <div style={{padding:12,background:"rgba(52,211,153,0.1)",borderRadius:"50%"}}><PackageCheck size={28} color="#34d399"/></div>
           </div>
         </div>
-        <div className="card">
-          <div className="card-title">Low Stock Alerts <button className="card-x"><X size={13}/></button></div>
+        <div className="card count-pop" style={{animationDelay:"0.1s"}}>
+          <div className="card-title">Low / Expired Alerts <button className="card-x"><X size={13}/></button></div>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-            <div style={{display:"flex",alignItems:"baseline",gap:8}}>
-              <span style={{fontSize:42,fontWeight:700,color:"#fb7185"}}>{inv.filter(i=>i.stocks<=20).length}</span>
-              <span style={{fontSize:18,color:"rgba(251,113,133,0.7)",fontWeight:500}}>products</span>
+            <div>
+              <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+                <span style={{fontSize:36,fontWeight:700,color:"#fb7185"}}>{inv.filter(i=>i.stocks<=20).length}</span>
+                <span style={{fontSize:14,color:"rgba(251,113,133,0.7)"}}>low stock</span>
+              </div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.35)",marginTop:4}}>{expired.length} expired · {expiring.length} expiring soon</div>
             </div>
             <div style={{padding:12,background:"rgba(251,113,133,0.1)",borderRadius:"50%"}}><PackageMinus size={28} color="#fb7185"/></div>
           </div>
         </div>
       </div>
 
+      {/* ── Toolbar ── */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12}}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <div style={{position:"relative"}}>
             <Search size={14} style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",color:"rgba(255,255,255,0.3)"}}/>
-            <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search products..." className="inp" style={{paddingLeft:36,width:260}}/>
+            <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search products…" className="inp" style={{paddingLeft:36,width:240}}/>
           </div>
           <button onClick={()=>setQ("")} className="btn" style={{padding:"9px 12px"}}><Undo2 size={14}/></button>
         </div>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-          {[["add","Add Product"],["delete","Delete Product"],["update","Update Product"],["history","Stock History"]].map(([v,l])=>(
-            <button key={v} onClick={()=>{if(v==="update"&&inv.length)setuP(inv[0]);setView(v);}} className="btn">{l}</button>
+          {[["add","+ Add"],["delete","Delete"],["update","Update"],["history","📋 Log"],["expiry","🗓 Expiry"]].map(([v,l])=>(
+            <button key={v} onClick={()=>{if(v==="update"&&inv.length)setuP(inv[0]);setView(v);}}
+              className="btn"
+              style={v==="add"?{background:"rgba(52,211,153,0.12)",borderColor:"rgba(52,211,153,0.25)",color:"#6ee7b7"}:
+                     v==="history"?{background:"rgba(129,140,248,0.1)",borderColor:"rgba(129,140,248,0.22)",color:"#a5b4fc"}:
+                     v==="expiry"?{background:"rgba(251,191,36,0.1)",borderColor:"rgba(251,191,36,0.22)",color:"#fde68a"}:undefined}>
+              {l}
+            </button>
           ))}
           <button onClick={undo} disabled={!hist.length} className="btn" style={{opacity:hist.length?1:0.4,display:"flex",alignItems:"center",gap:6,background:hist.length?"rgba(52,211,153,0.12)":undefined,borderColor:hist.length?"rgba(52,211,153,0.2)":undefined,color:hist.length?"#6ee7b7":undefined}}>
             <Undo2 size={14}/> Undo
@@ -1254,150 +1354,259 @@ const Inventory = () => {
         </div>
       </div>
 
+      {/* ── Main table ── */}
       {view==="main"&&(
-        <div className="card" style={{padding:0}}>
+        <div className="card fu1" style={{padding:0}}>
           <div style={{overflowX:"auto"}}>
-            <table style={{width:"100%",borderCollapse:"collapse"}}>
-              <thead><tr>{["Product Name","Category","Stocks","Billing Price","Selling Price","Status"].map(h=><th key={h} className="th">{h}</th>)}</tr></thead>
+            <table style={{width:"100%",borderCollapse:"collapse",minWidth:640}}>
+              <thead><tr>{["Product","Category","Stocks","Buy Price","Sell Price","Expiry","Status"].map(h=><th key={h} className="th">{h}</th>)}</tr></thead>
               <tbody>
-                {fil.map(item=>{const s=stat(item.stocks);return(
-                  <tr key={item.id} className="tr">
-                    <td className="td" style={{color:"#38bdf8",fontWeight:500}}>{item.name}</td>
-                    <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{item.cat}</td>
-                    <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{item.stocks}</td>
-                    <td className="td" style={{color:"#fda4af"}}>₱ {item.bp.toFixed(2)}</td>
-                    <td className="td" style={{color:"#6ee7b7"}}>₱ {item.sp.toFixed(2)}</td>
-                    <td className="td"><span className={s.c}>{s.l}</span></td>
-                  </tr>
-                );})}
+                {fil.map((item,idx)=>{
+                  const s=stat(item.stocks);
+                  const ec=item.expiry?expiryColor(item.expiry):"";
+                  const el=item.expiry?expiryLabel(item.expiry):"";
+                  return(
+                    <tr key={item.id} className={`tr${item.id===newId?" row-new":""}`} style={{animationDelay:`${idx*40}ms`}}>
+                      <td className="td" style={{color:"#38bdf8",fontWeight:600}}>{item.name}</td>
+                      <td className="td" style={{color:"rgba(255,255,255,0.5)"}}>{item.cat}</td>
+                      <td className="td">
+                        <span style={{color:item.stocks<=20?"#fbbf24":"rgba(255,255,255,0.65)",fontWeight:600}}>{item.stocks}</span>
+                      </td>
+                      <td className="td" style={{color:"#fda4af"}}>₱{item.bp.toFixed(2)}</td>
+                      <td className="td" style={{color:"#6ee7b7"}}>₱{item.sp.toFixed(2)}</td>
+                      <td className="td">
+                        {item.expiry?(
+                          <span style={{display:"inline-flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:999,fontSize:11,fontWeight:700,background:expiryBg(item.expiry),color:ec,border:`1px solid ${ec}30`}}>
+                            {el&&<span className={daysUntil(item.expiry)<=7?"pulse":""} style={{width:5,height:5,borderRadius:"50%",background:ec,flexShrink:0}}/>}
+                            {el||item.expiry}
+                          </span>
+                        ):<span style={{color:"rgba(255,255,255,0.2)",fontSize:11}}>—</span>}
+                      </td>
+                      <td className="td"><span className={s.c}>{s.l}</span></td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
       )}
+
+      {/* ── Add product ── */}
       {view==="add"&&(
-        <div className="card">
-          <h2 style={{fontSize:20,fontWeight:700,color:"#fff",marginBottom:24}}>Add New Stock Item</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:14,maxWidth:520}}>
-            {[["Product Name","name","text"],["Supplier","supplier","text"],["Billing Price ₱","bp","number"],["Selling Price ₱","sp","number"]].map(([l,f,t])=>(
-              <div key={f} style={{display:"flex",alignItems:"center",gap:16}}>
-                <label style={{width:170,fontSize:14,color:"rgba(255,255,255,0.5)",fontWeight:500}}>{l}</label>
-                <input type={t} value={(nP as any)[f]} onChange={e=>setnP({...nP,[f]:e.target.value})} className="inp" style={{flex:1}}/>
+        <div className="card fu1">
+          <h2 style={{fontSize:18,fontWeight:700,color:"#fff",marginBottom:20}}>Add New Product</h2>
+          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
+            {([["Product Name","name","text"],["Supplier","supplier","text"],["Buy Price ₱","bp","number"],["Sell Price ₱","sp","number"]] as [string,string,string][]).map(([l,f,t])=>(
+              <div key={f}>
+                <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>{l.toUpperCase()}</label>
+                <input type={t} value={(nP as any)[f]} onChange={e=>setnP({...nP,[f]:e.target.value})} className="inp"/>
               </div>
             ))}
-            <div style={{display:"flex",alignItems:"center",gap:16}}>
-              <label style={{width:170,fontSize:14,color:"rgba(255,255,255,0.5)"}}>Category</label>
-              <select value={nP.cat} onChange={e=>setnP({...nP,cat:e.target.value})} className="inp" style={{flex:1}}>{cats.map(c=><option key={c}>{c}</option>)}</select>
+            <div>
+              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>CATEGORY</label>
+              <select value={nP.cat} onChange={e=>setnP({...nP,cat:e.target.value})} className="inp">{cats.map(c=><option key={c}>{c}</option>)}</select>
             </div>
-            <div style={{display:"flex",alignItems:"center",gap:16}}>
-              <label style={{width:170,fontSize:14,color:"rgba(255,255,255,0.5)"}}>Initial Stock</label>
+            <div>
+              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>EXPIRY DATE</label>
+              <input type="date" value={nP.expiry} onChange={e=>setnP({...nP,expiry:e.target.value})} className="inp"/>
+            </div>
+            <div style={{gridColumn:"1/-1"}}>
+              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:8}}>INITIAL STOCK</label>
               <div style={{display:"flex",alignItems:"center",gap:8}}>
-                <button onClick={()=>setnP({...nP,stocks:nP.stocks+1})} className="btn" style={{padding:"7px 10px"}}><Plus size={14}/></button>
-                <input type="number" value={nP.stocks} onChange={e=>setnP({...nP,stocks:Math.max(0,+e.target.value||0)})} className="inp" style={{width:70,textAlign:"center"}}/>
-                <button onClick={()=>setnP({...nP,stocks:Math.max(0,nP.stocks-1)})} className="btn" style={{padding:"7px 10px"}}><Minus size={14}/></button>
+                <button onClick={()=>setnP({...nP,stocks:Math.max(0,nP.stocks-1)})} className="btn" style={{padding:"7px 12px"}}><Minus size={14}/></button>
+                <input type="number" value={nP.stocks} onChange={e=>setnP({...nP,stocks:Math.max(0,+e.target.value||0)})} className="inp" style={{width:80,textAlign:"center"}}/>
+                <button onClick={()=>setnP({...nP,stocks:nP.stocks+1})} className="btn" style={{padding:"7px 12px"}}><Plus size={14}/></button>
               </div>
             </div>
           </div>
-          <div style={{display:"flex",gap:10,marginTop:24}}>
+          <div style={{display:"flex",gap:10,marginTop:20}}>
             <button onClick={add} className="btn-g">Add Product</button>
             <button onClick={()=>setView("main")} className="btn">Cancel</button>
           </div>
         </div>
       )}
+
+      {/* ── Delete product ── */}
       {view==="delete"&&(
-        <div className="card">
+        <div className="card fu1">
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-            <h2 style={{fontSize:20,fontWeight:700,color:"#fb7185"}}>Delete a Product</h2>
-            <button onClick={()=>setView("main")} className="btn">Done</button>
+            <h2 style={{fontSize:18,fontWeight:700,color:"#fb7185"}}>Delete a Product</h2>
+            <button onClick={()=>setView("main")} className="btn" style={{padding:"6px 12px",fontSize:12}}>← Back</button>
           </div>
-          <div style={{overflowX:"auto"}}>
-            <table style={{width:"100%",borderCollapse:"collapse"}}>
-              <thead><tr>{["Product Name","Category","Stocks","Billing","Selling","Status",""].map(h=><th key={h} className="th">{h}</th>)}</tr></thead>
-              <tbody>
-                {inv.map(item=>{const s=stat(item.stocks);return(
-                  <tr key={item.id} className="tr">
-                    <td className="td" style={{color:"#38bdf8",fontWeight:500}}>{item.name}</td>
-                    <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{item.cat}</td>
-                    <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{item.stocks}</td>
-                    <td className="td" style={{color:"#fda4af"}}>₱{item.bp.toFixed(2)}</td>
-                    <td className="td" style={{color:"#6ee7b7"}}>₱{item.sp.toFixed(2)}</td>
-                    <td className="td"><span className={s.c}>{s.l}</span></td>
-                    <td className="td"><button onClick={()=>setdP(item)} style={{background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:8,padding:"5px 8px",cursor:"pointer",color:"#fda4af"}}><Trash2 size={14}/></button></td>
-                  </tr>
-                );})}
-              </tbody>
-            </table>
+          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
+            <div style={{gridColumn:"1/-1"}}>
+              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>SELECT PRODUCT</label>
+              <select value={dP?.id||""} onChange={e=>setdP(inv.find(i=>i.id===+e.target.value)||null)} className="inp">
+                <option value="">Choose product…</option>
+                {inv.map(i=><option key={i.id} value={i.id}>{i.name}</option>)}
+              </select>
+            </div>
           </div>
           {dP&&(
-            <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.65)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100}}>
-              <div style={{background:"#13131f",border:"1px solid rgba(251,113,133,0.25)",borderRadius:20,padding:36,maxWidth:400,width:"90%",textAlign:"center"}}>
-                <AlertTriangle size={44} color="#fb7185" style={{margin:"0 auto 16px"}}/>
-                <h3 style={{fontSize:20,fontWeight:700,color:"#fff",marginBottom:8}}>Delete Product?</h3>
-                <p style={{color:"rgba(255,255,255,0.4)",fontSize:14,marginBottom:24}}>Delete <span style={{color:"#fda4af",fontWeight:600}}>{dP.name}</span>? This cannot be undone.</p>
-                <div style={{display:"flex",gap:10,justifyContent:"center"}}>
-                  <button onClick={del} className="btn-r" style={{flex:1}}>Yes, Delete</button>
-                  <button onClick={()=>setdP(null)} className="btn" style={{flex:1}}>Cancel</button>
-                </div>
+            <div style={{marginTop:16,padding:16,background:"rgba(251,113,133,0.06)",border:"1px solid rgba(251,113,133,0.18)",borderRadius:12}}>
+              <p style={{color:"rgba(255,255,255,0.5)",fontSize:13,marginBottom:14}}>Delete <span style={{color:"#fda4af",fontWeight:700}}>{dP.name}</span>? This cannot be undone.</p>
+              <div style={{display:"flex",gap:10}}>
+                <button onClick={del} className="btn-r">Confirm Delete</button>
+                <button onClick={()=>setdP(null)} className="btn">Cancel</button>
               </div>
             </div>
           )}
+          {!dP&&<button onClick={()=>setView("main")} className="btn" style={{marginTop:16}}>Close</button>}
         </div>
       )}
+
+      {/* ── Update product ── */}
       {view==="update"&&(
-        <div className="card">
-          <h2 style={{fontSize:20,fontWeight:700,color:"#fff",marginBottom:20,letterSpacing:"0.04em"}}>UPDATE PRODUCT</h2>
-          <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:20,maxWidth:520}}>
-            <label style={{width:200,fontSize:14,color:"rgba(255,255,255,0.5)"}}>Select Product to Update</label>
-            <select value={uP?.id||""} onChange={e=>setuP(inv.find(i=>i.id===+e.target.value)||null)} className="inp" style={{flex:1}}>
+        <div className="card fu1">
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+            <h2 style={{fontSize:18,fontWeight:700,color:"#fff"}}>Update Product</h2>
+            <button onClick={()=>setView("main")} className="btn" style={{padding:"6px 12px",fontSize:12}}>← Back</button>
+          </div>
+          <div style={{marginBottom:16}}>
+            <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>SELECT PRODUCT</label>
+            <select value={uP?.id||""} onChange={e=>setuP(inv.find(i=>i.id===+e.target.value)||null)} className="inp" style={{maxWidth:320}}>
               {inv.map(i=><option key={i.id} value={i.id}>{i.name}</option>)}
             </select>
           </div>
           {uP&&(
-            <div style={{display:"flex",flexDirection:"column",gap:14,maxWidth:520}}>
-              <div style={{display:"flex",alignItems:"center",gap:16}}>
-                <label style={{width:200,fontSize:14,color:"rgba(255,255,255,0.5)"}}>Stock Available</label>
-                <div style={{display:"flex",alignItems:"center",gap:8}}>
-                  <button onClick={()=>setuP({...uP,stocks:uP.stocks+1})} className="btn" style={{padding:"7px 10px"}}><Plus size={14}/></button>
-                  <input type="number" value={uP.stocks} onChange={e=>setuP({...uP,stocks:Math.max(0,+e.target.value||0)})} className="inp" style={{width:70,textAlign:"center"}}/>
-                  <button onClick={()=>setuP({...uP,stocks:Math.max(0,uP.stocks-1)})} className="btn" style={{padding:"7px 10px"}}><Minus size={14}/></button>
-                </div>
-              </div>
-              {[["New Billing Price ₱","bp"],["New Selling Price ₱","sp"]].map(([l,f])=>(
-                <div key={f} style={{display:"flex",alignItems:"center",gap:16}}>
-                  <label style={{width:200,fontSize:14,color:"rgba(255,255,255,0.5)"}}>{l}</label>
-                  <input type="number" value={(uP as any)[f]} onChange={e=>setuP({...uP,[f]:+e.target.value})} className="inp" style={{width:160}}/>
+            <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
+              {([["Product Name","name","text"],["Buy Price ₱","bp","number"],["Sell Price ₱","sp","number"]] as [string,string,string][]).map(([l,f,t])=>(
+                <div key={f}>
+                  <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>{l.toUpperCase()}</label>
+                  <input type={t} value={uP[f]} onChange={e=>setuP({...uP,[f]:t==="number"?+e.target.value:e.target.value})} className="inp"/>
                 </div>
               ))}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>EXPIRY DATE</label>
+                <input type="date" value={uP.expiry||""} onChange={e=>setuP({...uP,expiry:e.target.value})} className="inp"/>
+              </div>
+              <div style={{gridColumn:"1/-1"}}>
+                <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:8}}>STOCK QTY</label>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <button onClick={()=>setuP({...uP,stocks:Math.max(0,uP.stocks-1)})} className="btn" style={{padding:"7px 12px"}}><Minus size={14}/></button>
+                  <input type="number" value={uP.stocks} onChange={e=>setuP({...uP,stocks:Math.max(0,+e.target.value||0)})} className="inp" style={{width:80,textAlign:"center"}}/>
+                  <button onClick={()=>setuP({...uP,stocks:uP.stocks+1})} className="btn" style={{padding:"7px 12px"}}><Plus size={14}/></button>
+                </div>
+              </div>
             </div>
           )}
-          <div style={{display:"flex",gap:10,marginTop:24}}>
-            <button onClick={upd} className="btn-g">CONFIRM</button>
+          <div style={{display:"flex",gap:10,marginTop:20}}>
+            <button onClick={upd} className="btn-g">Save Changes</button>
             <button onClick={()=>setView("main")} className="btn">Cancel</button>
           </div>
         </div>
       )}
+
+      {/* ── Stock change log ── */}
       {view==="history"&&(
-        <div className="card">
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
-            <h2 style={{fontSize:20,fontWeight:700,color:"#fff"}}>Stocking History</h2>
-            <ExportMenu label="Export History"/>
+        <div className="card fu1">
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:34,height:34,borderRadius:10,background:"rgba(129,140,248,0.12)",border:"1px solid rgba(129,140,248,0.22)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <ClipboardList size={16} color="#818cf8"/>
+              </div>
+              <div>
+                <div style={{fontSize:15,fontWeight:700,color:"#fff"}}>Stock Change Log</div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:1}}>Every add, update and delete is recorded here</div>
+              </div>
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              <ExportMenu label="Export Log"/>
+              <button onClick={()=>setView("main")} className="btn" style={{padding:"7px 14px",fontSize:12}}>← Back</button>
+            </div>
           </div>
-          <table style={{width:"100%",borderCollapse:"collapse"}}>
-            <thead><tr>{["Name","Category","Stocks","Billing Price","Selling Price","Date"].map(h=><th key={h} className="th">{h}</th>)}</tr></thead>
-            <tbody>
-              {[["IPhone 6","Electronics",100,11000,4000,"2025-05-03"],["IPhone 15","Electronics",50,14000,2000,"2025-02-03"],["Running Shoes","Footwear",75,320,320,"2025-04-17"]].map(([n,c,s,b,sp,d])=>(
-                <tr key={String(n)} className="tr">
-                  <td className="td" style={{color:"#38bdf8",fontWeight:500}}>{n}</td>
-                  <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{c}</td>
-                  <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{s}</td>
-                  <td className="td" style={{color:"#fda4af"}}>₱ {Number(b).toFixed(2)}</td>
-                  <td className="td" style={{color:"#6ee7b7"}}>₱ {Number(sp).toFixed(2)}</td>
-                  <td className="td" style={{color:"rgba(255,255,255,0.4)"}}>{d}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button onClick={()=>setView("main")} className="btn" style={{marginTop:20}}>Close</button>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {stockLog.map((entry,i)=>{
+              const isAdd   = entry.action==="Added"||entry.qty.startsWith("+");
+              const isDel   = entry.action==="Deleted";
+              const isAdj   = entry.action==="Adjustment";
+              const color   = isDel?"#fb7185":isAdd?"#34d399":"#fbbf24";
+              const bg      = isDel?"rgba(251,113,133,0.06)":isAdd?"rgba(52,211,153,0.05)":"rgba(251,191,36,0.05)";
+              const icon    = isDel?"🗑️":entry.action==="Added"?"📦":entry.action==="Sale"?"🛒":"✏️";
+              return (
+                <div key={entry.id} className="row-new" style={{
+                  animationDelay:`${i*40}ms`,
+                  display:"flex",alignItems:"center",gap:14,
+                  padding:"12px 16px",
+                  background:bg,
+                  border:`1px solid ${color}18`,
+                  borderRadius:12,
+                  flexWrap:"wrap",
+                }}>
+                  <div style={{width:34,height:34,borderRadius:10,background:`${color}15`,border:`1px solid ${color}25`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{icon}</div>
+                  <div style={{flex:1,minWidth:120}}>
+                    <div style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.85)"}}>{entry.product}</div>
+                    <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:2}}>{entry.action}</div>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <span style={{fontSize:15,fontWeight:800,color}}>{entry.qty}</span>
+                    <span style={{fontSize:10,color:"rgba(255,255,255,0.25)"}}>units</span>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:6,padding:"5px 12px",background:"rgba(255,255,255,0.03)",borderRadius:999,border:"1px solid rgba(255,255,255,0.07)"}}>
+                    <User size={11} color="rgba(255,255,255,0.4)"/>
+                    <span style={{fontSize:11,color:"rgba(255,255,255,0.5)",fontWeight:600}}>{entry.user}</span>
+                  </div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.28)",fontFamily:"monospace",flexShrink:0}}>{entry.ts}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ── Expiry tracker ── */}
+      {view==="expiry"&&(
+        <div className="card fu1">
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:34,height:34,borderRadius:10,background:"rgba(251,191,36,0.12)",border:"1px solid rgba(251,191,36,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🗓</div>
+              <div>
+                <div style={{fontSize:15,fontWeight:700,color:"#fff"}}>Expiry Date Tracker</div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginTop:1}}>Monitor product shelf life and act before it's too late</div>
+              </div>
+            </div>
+            <button onClick={()=>setView("main")} className="btn" style={{padding:"7px 14px",fontSize:12}}>← Back</button>
+          </div>
+
+          {/* Legend */}
+          <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
+            {[{c:"#fb7185",l:"Expired"},{c:"#f97316",l:"≤ 7 days"},{c:"#fbbf24",l:"≤ 30 days"},{c:"#34d399",l:"Safe"}].map(b=>(
+              <div key={b.l} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 12px",background:`${b.c}10`,border:`1px solid ${b.c}25`,borderRadius:999,fontSize:11,color:b.c,fontWeight:600}}>
+                <div style={{width:6,height:6,borderRadius:"50%",background:b.c}}/>
+                {b.l}
+              </div>
+            ))}
+          </div>
+
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {[...inv].sort((a,b)=>new Date(a.expiry||"2099-01-01").getTime()-new Date(b.expiry||"2099-01-01").getTime()).map((item,i)=>{
+              if(!item.expiry) return null;
+              const days = daysUntil(item.expiry);
+              const c = expiryColor(item.expiry);
+              const pct = Math.max(0,Math.min(100,100-(days/365*100)));
+              return (
+                <div key={item.id} className="row-new" style={{animationDelay:`${i*50}ms`,padding:"14px 16px",background:`${c}08`,border:`1.5px solid ${c}25`,borderRadius:14}}>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10,flexWrap:"wrap",gap:8}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10}}>
+                      <span style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.85)"}}>{item.name}</span>
+                      <span style={{fontSize:10,color:"rgba(255,255,255,0.35)",background:"rgba(255,255,255,0.05)",padding:"2px 8px",borderRadius:999}}>{item.cat}</span>
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",gap:10}}>
+                      <span style={{fontSize:11,color:"rgba(255,255,255,0.4)"}}>Expires: <span style={{color:c,fontWeight:700}}>{item.expiry}</span></span>
+                      <span style={{fontSize:13,fontWeight:800,color:c,padding:"3px 12px",background:`${c}15`,border:`1px solid ${c}30`,borderRadius:999,animation:days<=7?"expiryPulse 2s ease infinite":"none"}}>
+                        {days<=0?"EXPIRED":`${days}d`}
+                      </span>
+                    </div>
+                  </div>
+                  {/* Days bar */}
+                  <div style={{height:5,background:"rgba(255,255,255,0.06)",borderRadius:99,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${Math.min(100,Math.max(0,(365-days)/365*100))}%`,background:`linear-gradient(90deg,${c}80,${c})`,borderRadius:99,transition:"width 0.5s ease"}}/>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
@@ -1406,49 +1615,207 @@ const Inventory = () => {
 
 /* ── SALES COMPONENT ──────────────────────────────────────────────── */
 const Sales = () => {
-  const [tab,setTab] = useState("Daily Sales");
-  const items = [
-    {id:1,name:"Wireless Headphones",cat:"Electronics",qty:20,total:15000,profit:2000,trend:"up"},
-    {id:2,name:"Running Shoes",cat:"Footwear",qty:50,total:27500,profit:7500,trend:"up"},
-    {id:3,name:"T-Shirts",cat:"Clothing",qty:25,total:13750,profit:5750,trend:"mid"},
-    {id:4,name:"PS5",cat:"Electronics",qty:67,total:2345000,profit:670000,trend:"up"},
-    {id:5,name:"Tilapia",cat:"Food",qty:35,total:5600,profit:1400,trend:"down"},
-  ];
-  const fmt=(v:number)=>`₱ ${v.toLocaleString("en-US",{minimumFractionDigits:2})}`;
+  const TAX_RATE = 0.12;
+  const [tab, setTab] = useState("Daily");
+
+  const salesData: Record<string, {id:number;name:string;cat:string;qty:number;bp:number;sp:number}[]> = {
+    Daily: [
+      {id:1, name:"Wireless Headphones", cat:"Electronics", qty:5,  bp:650,  sp:750},
+      {id:2, name:"Running Shoes",        cat:"Footwear",    qty:12, bp:400,  sp:550},
+      {id:3, name:"T-Shirts",             cat:"Clothing",    qty:8,  bp:320,  sp:550},
+      {id:4, name:"PS5",                  cat:"Electronics", qty:2,  bp:18000,sp:22000},
+      {id:5, name:"Tilapia",              cat:"Food",        qty:3,  bp:120,  sp:160},
+      {id:6, name:"Vitamin C 500mg",      cat:"Health",      qty:1,  bp:120,  sp:185},
+    ],
+    Monthly: [
+      {id:1, name:"Wireless Headphones", cat:"Electronics", qty:60,  bp:650,  sp:750},
+      {id:2, name:"Running Shoes",        cat:"Footwear",    qty:140, bp:400,  sp:550},
+      {id:3, name:"T-Shirts",             cat:"Clothing",    qty:95,  bp:320,  sp:550},
+      {id:4, name:"PS5",                  cat:"Electronics", qty:25,  bp:18000,sp:22000},
+      {id:5, name:"Tilapia",              cat:"Food",        qty:18,  bp:120,  sp:160},
+      {id:6, name:"Vitamin C 500mg",      cat:"Health",      qty:8,   bp:120,  sp:185},
+    ],
+    Yearly: [
+      {id:1, name:"Wireless Headphones", cat:"Electronics", qty:720,  bp:650,  sp:750},
+      {id:2, name:"Running Shoes",        cat:"Footwear",    qty:1680, bp:400,  sp:550},
+      {id:3, name:"T-Shirts",             cat:"Clothing",    qty:1140, bp:320,  sp:550},
+      {id:4, name:"PS5",                  cat:"Electronics", qty:300,  bp:18000,sp:22000},
+      {id:5, name:"Tilapia",              cat:"Food",        qty:216,  bp:120,  sp:160},
+      {id:6, name:"Vitamin C 500mg",      cat:"Health",      qty:96,   bp:120,  sp:185},
+    ],
+  };
+
+  const items = salesData[tab];
+
+  // ── Auto-computed values ──
+  const rows = items.map(i=>{
+    const totalSales  = i.qty * i.sp;
+    const totalCost   = i.qty * i.bp;
+    const profit      = totalSales - totalCost;
+    const tax         = totalSales * TAX_RATE;
+    const netProfit   = profit - tax;
+    const margin      = totalSales > 0 ? (profit/totalSales*100) : 0;
+    return {...i, totalSales, totalCost, profit, tax, netProfit, margin};
+  });
+
+  const totals = rows.reduce((a,r)=>({
+    sales:   a.sales   + r.totalSales,
+    cost:    a.cost    + r.totalCost,
+    profit:  a.profit  + r.profit,
+    tax:     a.tax     + r.tax,
+    net:     a.net     + r.netProfit,
+    qty:     a.qty     + r.qty,
+  }),{sales:0,cost:0,profit:0,tax:0,net:0,qty:0});
+
+  const sortedByQty    = [...rows].sort((a,b)=>b.qty-a.qty);
+  const bestSellers    = sortedByQty.slice(0,2);
+  const slowMovers     = sortedByQty.slice(-2).reverse();
+
+  const fmt = (v:number) => `₱${v.toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+
+  const StatCard = ({icon,label,value,sub,color,bg}:{icon:string;label:string;value:string;sub?:string;color:string;bg:string}) => (
+    <div className="card count-pop" style={{background:bg,border:`1px solid ${color}25`}}>
+      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:8}}>
+        <div style={{fontSize:10,fontWeight:700,color:`${color}bb`,letterSpacing:"0.08em"}}>{label.toUpperCase()}</div>
+        <span style={{fontSize:20}}>{icon}</span>
+      </div>
+      <div style={{fontSize:22,fontWeight:800,color,lineHeight:1,marginBottom:4}}>{value}</div>
+      {sub&&<div style={{fontSize:11,color:"rgba(255,255,255,0.35)"}}>{sub}</div>}
+    </div>
+  );
+
   return (
     <div style={{display:"flex",flexDirection:"column",gap:20}}>
+
+      {/* ── Summary stat cards ── */}
+      <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:14}}>
+        <StatCard icon="💰" label="Total Sales"  value={fmt(totals.sales)}  sub={`${totals.qty} units sold`}           color="#34d399" bg="rgba(52,211,153,0.06)"/>
+        <StatCard icon="📈" label="Gross Profit" value={fmt(totals.profit)} sub={`Margin: ${(totals.profit/totals.sales*100).toFixed(1)}%`} color="#38bdf8" bg="rgba(56,189,248,0.06)"/>
+        <StatCard icon="🧾" label="Tax (12% VAT)" value={fmt(totals.tax)}   sub="Value-added tax"                       color="#fbbf24" bg="rgba(251,191,36,0.06)"/>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14}}>
+        <StatCard icon="🏆" label="Net Profit"   value={fmt(totals.net)}    sub="After tax deduction"                   color="#a78bfa" bg="rgba(167,139,250,0.06)"/>
+        <StatCard icon="📦" label="Total COGS"   value={fmt(totals.cost)}   sub="Cost of goods sold"                    color="#fb7185" bg="rgba(251,113,133,0.06)"/>
+      </div>
+
+      {/* ── Best & slow movers ── */}
+      <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14}}>
+
+        {/* Best sellers */}
+        <div className="card fu2">
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{width:32,height:32,borderRadius:9,background:"rgba(52,211,153,0.12)",border:"1px solid rgba(52,211,153,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🏆</div>
+            <div>
+              <div style={{fontSize:13,fontWeight:700,color:"#fff"}}>Best Sellers</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Top performing — {tab.toLowerCase()}</div>
+            </div>
+          </div>
+          {bestSellers.map((item,i)=>(
+            <div key={item.id} style={{display:"flex",alignItems:"center",gap:12,marginBottom:i<bestSellers.length-1?10:0}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:"rgba(52,211,153,0.12)",border:"1px solid rgba(52,211,153,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,color:"#34d399",flexShrink:0}}>#{i+1}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.85)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{item.name}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:2}}>{item.qty} units · {fmt(item.totalSales)}</div>
+                <div style={{height:3,background:"rgba(255,255,255,0.06)",borderRadius:99,marginTop:5}}>
+                  <div style={{height:"100%",width:`${Math.min(100,(item.qty/sortedByQty[0].qty)*100)}%`,background:"linear-gradient(90deg,#34d399,#38bdf8)",borderRadius:99}}/>
+                </div>
+              </div>
+              <span className="chip-up"><TrendingUp size={9}/> {item.margin.toFixed(0)}%</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Slow movers */}
+        <div className="card fu2">
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+            <div style={{width:32,height:32,borderRadius:9,background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🐢</div>
+            <div>
+              <div style={{fontSize:13,fontWeight:700,color:"#fff"}}>Slow Movers</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Low volume — need attention</div>
+            </div>
+          </div>
+          {slowMovers.map((item,i)=>(
+            <div key={item.id} style={{display:"flex",alignItems:"center",gap:12,marginBottom:i<slowMovers.length-1?10:0}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"rgba(255,255,255,0.3)",flexShrink:0}}>⚠</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{item.name}</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:2}}>{item.qty} units · {fmt(item.totalSales)}</div>
+                <div style={{height:3,background:"rgba(255,255,255,0.06)",borderRadius:99,marginTop:5}}>
+                  <div style={{height:"100%",width:`${Math.min(100,(item.qty/sortedByQty[0].qty)*100)}%`,background:"linear-gradient(90deg,#fb7185,#f97316)",borderRadius:99}}/>
+                </div>
+              </div>
+              <span className="chip-down"><TrendingDown size={9}/> {item.margin.toFixed(0)}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Sales table ── */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12}}>
         <div className="tab-wrap">
-          {["Daily Sales","Monthly Sales","Yearly Sales"].map(t=>(
+          {["Daily","Monthly","Yearly"].map(t=>(
             <button key={t} onClick={()=>setTab(t)} className={tab===t?"tab-on":"tab-off"}>{t}</button>
           ))}
         </div>
         <ExportMenu label="Export Sales"/>
       </div>
-      <div className="card" style={{padding:0}}>
+
+      <div className="card fu3" style={{padding:0}}>
         <div style={{overflowX:"auto"}}>
-          <table style={{width:"100%",borderCollapse:"collapse",minWidth:680}}>
-            <thead><tr>{["Product Name","Category","Quantity Sold","Total Sales","Profit","Trend"].map(h=><th key={h} className="th">{h}</th>)}</tr></thead>
+          <table style={{width:"100%",borderCollapse:"collapse",minWidth:780}}>
+            <thead>
+              <tr>
+                {["Product","Category","Qty Sold","Total Sales","COGS","Gross Profit","Tax (12%)","Net Profit","Margin"].map(h=>(
+                  <th key={h} className="th">{h}</th>
+                ))}
+              </tr>
+            </thead>
             <tbody>
-              {items.map(item=>(
-                <tr key={item.id} className="tr">
-                  <td className="td" style={{color:"#38bdf8",fontWeight:500}}>{item.name}</td>
-                  <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{item.cat}</td>
-                  <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{item.qty}</td>
-                  <td className="td" style={{color:"#6ee7b7",fontWeight:600}}>{fmt(item.total)}</td>
-                  <td className="td" style={{color:"#6ee7b7",fontWeight:600}}>{fmt(item.profit)}</td>
+              {rows.map((item,idx)=>(
+                <tr key={item.id} className="tr row-new" style={{animationDelay:`${idx*40}ms`}}>
+                  <td className="td" style={{color:"#38bdf8",fontWeight:600,whiteSpace:"nowrap"}}>{item.name}</td>
+                  <td className="td" style={{color:"rgba(255,255,255,0.5)"}}>{item.cat}</td>
+                  <td className="td" style={{color:"rgba(255,255,255,0.7)",fontWeight:600}}>{item.qty}</td>
+                  <td className="td" style={{color:"#6ee7b7",fontWeight:600}}>{fmt(item.totalSales)}</td>
+                  <td className="td" style={{color:"rgba(255,255,255,0.45)"}}>{fmt(item.totalCost)}</td>
+                  <td className="td" style={{color:"#34d399",fontWeight:600}}>{fmt(item.profit)}</td>
+                  <td className="td" style={{color:"#fbbf24"}}>{fmt(item.tax)}</td>
+                  <td className="td" style={{color:"#a78bfa",fontWeight:700}}>{fmt(item.netProfit)}</td>
                   <td className="td">
-                    <div style={{display:"flex",justifyContent:"center"}}>
-                      {item.trend==="up"&&<TrendingUp size={22} color="#34d399" strokeWidth={2.5}/>}
-                      {item.trend==="down"&&<TrendingDown size={22} color="#fb7185" strokeWidth={2.5}/>}
-                      {item.trend==="mid"&&<div style={{width:22,height:3,background:"#38bdf8",borderRadius:99}}/>}
-                    </div>
+                    <span style={{
+                      display:"inline-flex",alignItems:"center",gap:4,
+                      padding:"3px 10px",borderRadius:999,fontSize:11,fontWeight:700,
+                      background:item.margin>=30?"rgba(52,211,153,0.1)":item.margin>=15?"rgba(251,191,36,0.1)":"rgba(251,113,133,0.1)",
+                      color:item.margin>=30?"#34d399":item.margin>=15?"#fbbf24":"#fb7185",
+                    }}>
+                      {item.margin>=30?<TrendingUp size={9}/>:<TrendingDown size={9}/>}
+                      {item.margin.toFixed(1)}%
+                    </span>
                   </td>
                 </tr>
               ))}
             </tbody>
+            {/* Totals row */}
+            <tfoot>
+              <tr style={{borderTop:"2px solid rgba(255,255,255,0.08)"}}>
+                <td className="td" colSpan={2} style={{fontWeight:800,color:"rgba(255,255,255,0.7)",fontSize:12,letterSpacing:"0.05em"}}>TOTAL</td>
+                <td className="td" style={{fontWeight:700,color:"rgba(255,255,255,0.7)"}}>{totals.qty}</td>
+                <td className="td" style={{fontWeight:800,color:"#6ee7b7"}}>{fmt(totals.sales)}</td>
+                <td className="td" style={{fontWeight:700,color:"rgba(255,255,255,0.45)"}}>{fmt(totals.cost)}</td>
+                <td className="td" style={{fontWeight:800,color:"#34d399"}}>{fmt(totals.profit)}</td>
+                <td className="td" style={{fontWeight:700,color:"#fbbf24"}}>{fmt(totals.tax)}</td>
+                <td className="td" style={{fontWeight:800,color:"#a78bfa"}}>{fmt(totals.net)}</td>
+                <td className="td" style={{fontWeight:700,color:"rgba(255,255,255,0.4)",fontSize:12}}>{(totals.profit/totals.sales*100).toFixed(1)}%</td>
+              </tr>
+            </tfoot>
           </table>
         </div>
+      </div>
+
+      {/* Tax info note */}
+      <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 16px",background:"rgba(251,191,36,0.05)",border:"1px solid rgba(251,191,36,0.15)",borderRadius:10}}>
+        <span style={{fontSize:14}}>🧾</span>
+        <span style={{fontSize:11,color:"rgba(255,255,255,0.4)"}}>Tax computed at <strong style={{color:"#fbbf24"}}>12% VAT</strong> on gross sales. Net Profit = Gross Profit − Tax. Adjust tax rate in <strong style={{color:"rgba(255,255,255,0.5)"}}>Settings → Default Values</strong>.</span>
       </div>
     </div>
   );
