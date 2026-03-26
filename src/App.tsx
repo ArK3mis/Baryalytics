@@ -276,6 +276,57 @@ const AUTH_CSS = `
 
 
 /* ── RESPONSIVE HOOK ──────────────────────────────────────────────── */
+/* ── BARYALYTICS LOGO COMPONENT ───────────────────────────────────── */
+// Faithful to the uploaded logo: golden circle, white B, white baseline bar,
+// blue upward arrow line, red upward arrow line
+const BaryalyticsLogo = ({size=52}:{size?:number}) => {
+  const s = size;
+  const cx = s*0.5, cy = s*0.5, r = s*0.46;
+  // B text sits left ~20% in, baseline bar is ~60% from top
+  // Chart lines rise from bottom-left to top-right like the real logo
+  return (
+    <svg width={s} height={s} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      {/* Outer golden circle — matches the logo */}
+      <defs>
+        <radialGradient id="bLogo_bg" cx="40%" cy="35%" r="65%">
+          <stop offset="0%"   stopColor="#c9950a"/>
+          <stop offset="50%"  stopColor="#a07208"/>
+          <stop offset="100%" stopColor="#3a2600"/>
+        </radialGradient>
+        <radialGradient id="bLogo_bg2" cx="60%" cy="60%" r="55%">
+          <stop offset="0%"   stopColor="#d4af37" stopOpacity="0.4"/>
+          <stop offset="100%" stopColor="#3a2600" stopOpacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="47" fill="url(#bLogo_bg)"/>
+      <circle cx="50" cy="50" r="47" fill="url(#bLogo_bg2)"/>
+
+      {/* White B — large, bold, left-aligned like the real logo */}
+      <text x="14" y="68" fill="white" fontSize="56" fontWeight="900"
+        fontFamily="Arial Black, Arial, sans-serif" letterSpacing="-2">B</text>
+
+      {/* White horizontal baseline bar — thick, just like the logo */}
+      <rect x="14" y="74" width="50" height="6" rx="3" fill="white"/>
+
+      {/* Blue upward trend line with arrowhead — matches logo */}
+      <polyline
+        points="24,72 34,55 44,60 64,28"
+        fill="none" stroke="#38bdf8" strokeWidth="4.5"
+        strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Blue arrowhead */}
+      <polygon points="64,28 56,30 62,36" fill="#38bdf8"/>
+
+      {/* Red upward trend line with arrowhead — slightly offset below blue */}
+      <polyline
+        points="24,72 34,58 44,63 64,33"
+        fill="none" stroke="#ef4444" strokeWidth="3.5"
+        strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Red arrowhead */}
+      <polygon points="64,33 57,34 62,40" fill="#ef4444"/>
+    </svg>
+  );
+};
+
 const useW = () => {
   const [w, setW] = React.useState(window.innerWidth);
   React.useEffect(()=>{
@@ -394,6 +445,13 @@ const G = `
   .expiry-warn{animation:expiryPulse 2s ease infinite;}
   .warn-icon{animation:warnBounce 1.8s ease infinite;}
   .count-pop{animation:countUp 0.4s cubic-bezier(0.34,1.56,0.64,1) both;}
+
+  @keyframes formShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+  .form-shake{animation:formShake 0.4s ease both;}
+  .inp-err{border-color:rgba(251,113,133,0.7)!important;background:rgba(251,113,133,0.06)!important;box-shadow:0 0 0 3px rgba(251,113,133,0.12)!important;}
+  .inp-err:focus{border-color:#fb7185!important;box-shadow:0 0 0 3px rgba(251,113,133,0.2)!important;}
+  .lbl-err{color:#fda4af!important;}
+  .err-msg{font-size:11px;color:#fda4af;margin-top:5px;display:flex;align-items:center;gap:4px;animation:fadeUp 0.2s ease both;}
 
   .export-wrap{position:relative;display:inline-flex;}
   .export-btn{display:flex;align-items:center;gap:7px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.22);border-radius:10px;color:#a5b4fc;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;}
@@ -1218,6 +1276,11 @@ const Inventory = () => {
   const [uP,setuP]   = useState<any>(null);
   const [q,setQ]     = useState("");
   const [newId,setNewId] = useState<number|null>(null);
+  const [invErrors, setInvErrors] = useState<Record<string,boolean>>({});
+  const [invShake,  setInvShake]  = useState(false);
+
+  const invShakeForm = () => { setInvShake(true); setTimeout(()=>setInvShake(false),400); };
+  const invClearErr  = (f:string) => setInvErrors(e=>({...e,[f]:false}));
 
   // ── Stock change log ──
   const [stockLog, setStockLog] = useState([
@@ -1241,7 +1304,12 @@ const Inventory = () => {
   };
 
   const add = () => {
-    if(!nP.name) return;
+    const errs: Record<string,boolean> = {};
+    if(!nP.name)       errs.name = true;
+    if(!nP.bp)         errs.bp   = true;
+    if(!nP.sp)         errs.sp   = true;
+    if(Object.keys(errs).length){ setInvErrors(errs); invShakeForm(); return; }
+    setInvErrors({});
     save();
     const id = Math.max(0,...inv.map(i=>i.id))+1;
     setInv(p=>[...p,{id,name:nP.name,cat:nP.cat,stocks:nP.stocks,bp:+nP.bp,sp:+nP.sp,expiry:nP.expiry||""}]);
@@ -1256,6 +1324,12 @@ const Inventory = () => {
   };
   const upd = () => {
     if(uP){
+      const errs: Record<string,boolean> = {};
+      if(!uP.name) errs.uname = true;
+      if(!uP.bp)   errs.ubp   = true;
+      if(!uP.sp)   errs.usp   = true;
+      if(Object.keys(errs).length){ setInvErrors(errs); invShakeForm(); return; }
+      setInvErrors({});
       const old = inv.find(i=>i.id===uP.id);
       const diff = uP.stocks-(old?.stocks||0);
       save();
@@ -1394,15 +1468,33 @@ const Inventory = () => {
 
       {/* ── Add product ── */}
       {view==="add"&&(
-        <div className="card fu1">
-          <h2 style={{fontSize:18,fontWeight:700,color:"#fff",marginBottom:20}}>Add New Product</h2>
-          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
-            {([["Product Name","name","text"],["Supplier","supplier","text"],["Buy Price ₱","bp","number"],["Sell Price ₱","sp","number"]] as [string,string,string][]).map(([l,f,t])=>(
-              <div key={f}>
-                <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>{l.toUpperCase()}</label>
-                <input type={t} value={(nP as any)[f]} onChange={e=>setnP({...nP,[f]:e.target.value})} className="inp"/>
+        <div className={`card fu1${invShake?" form-shake":""}`}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+            <h2 style={{fontSize:18,fontWeight:700,color:"#fff"}}>Add New Product</h2>
+            {Object.values(invErrors).some(Boolean)&&(
+              <div style={{display:"flex",alignItems:"center",gap:7,padding:"7px 14px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
+                <span style={{fontSize:14}}>⚠️</span>
+                <span style={{fontSize:12,fontWeight:600,color:"#fda4af"}}>Please fill in all required fields</span>
               </div>
-            ))}
+            )}
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
+            {([["Product Name","name","text"],["Supplier","supplier","text"],["Buy Price ₱","bp","number"],["Sell Price ₱","sp","number"]] as [string,string,string][]).map(([l,f,t])=>{
+              const required = ["name","bp","sp"].includes(f);
+              const hasErr = invErrors[f];
+              return (
+                <div key={f}>
+                  <label className={hasErr?"lbl-err":""} style={{fontSize:11,fontWeight:700,color:hasErr?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                    {l.toUpperCase()}{required&&<span style={{color:"#fb7185",marginLeft:3}}>*</span>}
+                  </label>
+                  <input type={t} value={(nP as any)[f]}
+                    onChange={e=>{setnP({...nP,[f]:e.target.value});invClearErr(f);}}
+                    className={`inp${hasErr?" inp-err":""}`}
+                    placeholder={hasErr?`${l} is required`:""}/>
+                  {hasErr&&<div className="err-msg"><span>⚠</span>{l} is required</div>}
+                </div>
+              );
+            })}
             <div>
               <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>CATEGORY</label>
               <select value={nP.cat} onChange={e=>setnP({...nP,cat:e.target.value})} className="inp">{cats.map(c=><option key={c}>{c}</option>)}</select>
@@ -1422,7 +1514,7 @@ const Inventory = () => {
           </div>
           <div style={{display:"flex",gap:10,marginTop:20}}>
             <button onClick={add} className="btn-g">Add Product</button>
-            <button onClick={()=>setView("main")} className="btn">Cancel</button>
+            <button onClick={()=>{setView("main");setInvErrors({});}} className="btn">Cancel</button>
           </div>
         </div>
       )}
@@ -1458,10 +1550,17 @@ const Inventory = () => {
 
       {/* ── Update product ── */}
       {view==="update"&&(
-        <div className="card fu1">
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+        <div className={`card fu1${invShake?" form-shake":""}`}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:10}}>
             <h2 style={{fontSize:18,fontWeight:700,color:"#fff"}}>Update Product</h2>
-            <button onClick={()=>setView("main")} className="btn" style={{padding:"6px 12px",fontSize:12}}>← Back</button>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              {Object.values(invErrors).some(Boolean)&&(
+                <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 12px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
+                  <span style={{fontSize:12,fontWeight:600,color:"#fda4af"}}>⚠️ Fill required fields</span>
+                </div>
+              )}
+              <button onClick={()=>{setView("main");setInvErrors({});}} className="btn" style={{padding:"6px 12px",fontSize:12}}>← Back</button>
+            </div>
           </div>
           <div style={{marginBottom:16}}>
             <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>SELECT PRODUCT</label>
@@ -1471,12 +1570,20 @@ const Inventory = () => {
           </div>
           {uP&&(
             <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
-              {([["Product Name","name","text"],["Buy Price ₱","bp","number"],["Sell Price ₱","sp","number"]] as [string,string,string][]).map(([l,f,t])=>(
-                <div key={f}>
-                  <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>{l.toUpperCase()}</label>
-                  <input type={t} value={uP[f]} onChange={e=>setuP({...uP,[f]:t==="number"?+e.target.value:e.target.value})} className="inp"/>
-                </div>
-              ))}
+              {([["Product Name","uname","name","text"],["Buy Price ₱","ubp","bp","number"],["Sell Price ₱","usp","sp","number"]] as [string,string,string,string][]).map(([l,eKey,f,t])=>{
+                const hasErr = invErrors[eKey];
+                return (
+                  <div key={f}>
+                    <label className={hasErr?"lbl-err":""} style={{fontSize:11,fontWeight:700,color:hasErr?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                      {l.toUpperCase()}<span style={{color:"#fb7185",marginLeft:3}}>*</span>
+                    </label>
+                    <input type={t} value={uP[f]}
+                      onChange={e=>{setuP({...uP,[f]:t==="number"?+e.target.value:e.target.value});invClearErr(eKey);}}
+                      className={`inp${hasErr?" inp-err":""}`}/>
+                    {hasErr&&<div className="err-msg"><span>⚠</span>{l} is required</div>}
+                  </div>
+                );
+              })}
               <div>
                 <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>EXPIRY DATE</label>
                 <input type="date" value={uP.expiry||""} onChange={e=>setuP({...uP,expiry:e.target.value})} className="inp"/>
@@ -1493,7 +1600,7 @@ const Inventory = () => {
           )}
           <div style={{display:"flex",gap:10,marginTop:20}}>
             <button onClick={upd} className="btn-g">Save Changes</button>
-            <button onClick={()=>setView("main")} className="btn">Cancel</button>
+            <button onClick={()=>{setView("main");setInvErrors({});}} className="btn">Cancel</button>
           </div>
         </div>
       )}
@@ -1830,6 +1937,10 @@ const Supplier = () => {
     {id:3,name:"Bebangs Electronics",contact:"094165433121",email:"BebangsElec@gmail.com",products:"Phone Case",stocks:25,fav:true},
   ]);
   const [nS,setnS]=useState({name:"",contact:"",email:"",products:"",stocks:0,fav:false});
+  const [supErrors, setSupErrors] = useState<Record<string,boolean>>({});
+  const [supShake,  setSupShake]  = useState(false);
+  const supShakeForm = () => { setSupShake(true); setTimeout(()=>setSupShake(false),400); };
+  const supClearErr  = (f:string) => setSupErrors(e=>({...e,[f]:false}));
   const [eS,seteS]=useState<any>(null);
   const [dS,setdS]=useState<any>(null);
   const [q,setQ]=useState("");
@@ -1841,7 +1952,15 @@ const Supplier = () => {
   ];
   const save=()=>setHist(h=>[...h,sups]);
   const undo=()=>{if(hist.length){setSups(hist[hist.length-1]);setHist(h=>h.slice(0,-1));}};
-  const addS=()=>{if(!nS.name)return;save();setSups(p=>[...p,{...nS,id:Math.max(0,...p.map(s=>s.id))+1}]);setnS({name:"",contact:"",email:"",products:"",stocks:0,fav:false});setView("main");};
+  const addS=()=>{
+    const errs:Record<string,boolean>={};
+    if(!nS.name)     errs.name=true;
+    if(!nS.contact)  errs.contact=true;
+    if(!nS.products) errs.products=true;
+    if(Object.keys(errs).length){setSupErrors(errs);supShakeForm();return;}
+    setSupErrors({});
+    save();setSups(p=>[...p,{...nS,id:Math.max(0,...p.map(s=>s.id))+1}]);setnS({name:"",contact:"",email:"",products:"",stocks:0,fav:false});setView("main");
+  };
   const delS=()=>{if(dS){save();setSups(p=>p.filter(s=>s.id!==dS.id));setdS(null);setView("main");}};
   const updS=()=>{if(eS){save();setSups(p=>p.map(s=>s.id===eS.id?eS:s));setView("main");}};
   const fil=sups.filter(s=>s.name.toLowerCase().includes(q.toLowerCase()));
@@ -1938,15 +2057,36 @@ const Supplier = () => {
         </>
       )}
       {view==="add"&&(
-        <div className="card">
-          <h2 style={{fontSize:20,fontWeight:700,color:"#fff",marginBottom:24}}>Add New Supplier</h2>
-          <div style={{display:"flex",flexDirection:"column",gap:14,maxWidth:520}}>
-            {[["Supplier Name","name"],["Contact Number","contact"],["Email Address","email"],["Products Supplied","products"]].map(([l,f])=>(
-              <div key={f} style={{display:"flex",alignItems:"center",gap:16}}>
-                <label style={{width:180,fontSize:14,color:"rgba(255,255,255,0.5)",fontWeight:500}}>{l}</label>
-                <input value={(nS as any)[f]} onChange={e=>setnS({...nS,[f]:e.target.value})} className="inp" style={{flex:1}}/>
+        <div className={`card${supShake?" form-shake":""}`}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24,flexWrap:"wrap",gap:10}}>
+            <h2 style={{fontSize:20,fontWeight:700,color:"#fff"}}>Add New Supplier</h2>
+            {Object.values(supErrors).some(Boolean)&&(
+              <div style={{display:"flex",alignItems:"center",gap:7,padding:"7px 14px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
+                <span style={{fontSize:14}}>⚠️</span>
+                <span style={{fontSize:12,fontWeight:600,color:"#fda4af"}}>Please fill in all required fields</span>
               </div>
-            ))}
+            )}
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:14,maxWidth:520}}>
+            {([["Supplier Name","name",true],["Contact Number","contact",true],["Email Address","email",false],["Products Supplied","products",true]] as [string,string,boolean][]).map(([l,f,req])=>{
+              const hasErr = supErrors[f];
+              return (
+                <div key={f}>
+                  <div style={{display:"flex",alignItems:"flex-start",gap:16}}>
+                    <label style={{width:180,fontSize:14,color:hasErr?"#fda4af":"rgba(255,255,255,0.5)",fontWeight:500,flexShrink:0,paddingTop:10}}>
+                      {l}{req&&<span style={{color:"#fb7185",marginLeft:3}}>*</span>}
+                    </label>
+                    <div style={{flex:1}}>
+                      <input value={(nS as any)[f]}
+                        onChange={e=>{setnS({...nS,[f]:e.target.value});supClearErr(f);}}
+                        className={`inp${hasErr?" inp-err":""}`}
+                        placeholder={hasErr?`${l} is required`:""}/>
+                      {hasErr&&<div className="err-msg"><span>⚠</span>{l} is required</div>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
             <div style={{display:"flex",alignItems:"center",gap:16}}>
               <label style={{width:180,fontSize:14,color:"rgba(255,255,255,0.5)"}}>Favorite</label>
               <button onClick={()=>setnS({...nS,fav:!nS.fav})} style={{width:40,height:40,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",background:nS.fav?"rgba(251,191,36,0.15)":"rgba(255,255,255,0.05)",border:`1px solid ${nS.fav?"rgba(251,191,36,0.3)":"rgba(255,255,255,0.1)"}`}}>
@@ -1956,7 +2096,7 @@ const Supplier = () => {
           </div>
           <div style={{display:"flex",gap:10,marginTop:24}}>
             <button onClick={addS} className="btn-g">CONFIRM</button>
-            <button onClick={()=>setView("main")} className="btn">CLOSE</button>
+            <button onClick={()=>{setView("main");setSupErrors({});}} className="btn">CLOSE</button>
           </div>
         </div>
       )}
@@ -4100,12 +4240,32 @@ const UserPage = () => {
   const [form, setForm]           = useState<Omit<AppUser,"id">>(EMPTY_USER);
   const [logFilter, setLogFilter] = useState("All");
   const [search, setSearch]       = useState("");
+  const [userErrors, setUserErrors] = useState<Record<string,boolean>>({});
+  const [userShake,  setUserShake]  = useState(false);
+  const userShakeForm = () => { setUserShake(true); setTimeout(()=>setUserShake(false),400); };
+  const userClearErr  = (f:string) => setUserErrors(e=>({...e,[f]:false}));
 
-  const openAdd    = ()=>{setForm(EMPTY_USER);setModal("add");};
-  const openEdit   = (u:AppUser)=>{setSelected(u);setForm({name:u.name,username:u.username,email:u.email,role:u.role,status:u.status,lastLogin:u.lastLogin,twoFA:u.twoFA,failedAttempts:u.failedAttempts});setModal("edit");};
+  const openAdd    = ()=>{setForm(EMPTY_USER);setUserErrors({});setModal("add");};
+  const openEdit   = (u:AppUser)=>{setSelected(u);setForm({name:u.name,username:u.username,email:u.email,role:u.role,status:u.status,lastLogin:u.lastLogin,twoFA:u.twoFA,failedAttempts:u.failedAttempts});setUserErrors({});setModal("edit");};
   const openDelete = (u:AppUser)=>{setSelected(u);setModal("delete");};
-  const saveAdd    = ()=>{if(!form.name||!form.username||!form.email)return;setUsers(p=>[...p,{...form,id:Math.max(0,...p.map(u=>u.id))+1}]);setModal(null);};
-  const saveEdit   = ()=>{if(!selected)return;setUsers(p=>p.map(u=>u.id===selected.id?{...form,id:u.id}:u));setModal(null);};
+  const saveAdd    = ()=>{
+    const errs:Record<string,boolean>={};
+    if(!form.name)     errs.name=true;
+    if(!form.username) errs.username=true;
+    if(!form.email)    errs.email=true;
+    if(Object.keys(errs).length){setUserErrors(errs);userShakeForm();return;}
+    setUserErrors({});
+    setUsers(p=>[...p,{...form,id:Math.max(0,...p.map(u=>u.id))+1}]);setModal(null);
+  };
+  const saveEdit   = ()=>{
+    const errs:Record<string,boolean>={};
+    if(!form.name)     errs.name=true;
+    if(!form.username) errs.username=true;
+    if(!form.email)    errs.email=true;
+    if(Object.keys(errs).length){setUserErrors(errs);userShakeForm();return;}
+    setUserErrors({});
+    if(!selected)return;setUsers(p=>p.map(u=>u.id===selected.id?{...form,id:u.id}:u));setModal(null);
+  };
   const doDelete   = ()=>{if(!selected)return;setUsers(p=>p.filter(u=>u.id!==selected.id));setModal(null);};
   const toggleStatus = (u:AppUser)=>setUsers(p=>p.map(x=>x.id===u.id?{...x,status:x.status==="Active"?"Suspended":"Active"}:x));
 
@@ -4484,27 +4644,69 @@ const UserPage = () => {
 
       {/* ══ MODAL: ADD/EDIT ══ */}
       {(modal==="add"||modal==="edit")&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200}}>
-          <div style={{background:"#13131f",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:36,width:"100%",maxWidth:480}}>
-            <h3 style={{fontSize:18,fontWeight:700,color:"#fff",marginBottom:24}}>{modal==="add"?"Add New User":"Edit User"}</h3>
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:"16px"}}>
+          <div className={userShake?"form-shake":""} style={{background:"#13131f",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:32,width:"100%",maxWidth:480}}>
+
+            {/* Header */}
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+              <h3 style={{fontSize:18,fontWeight:700,color:"#fff"}}>{modal==="add"?"Add New User":"Edit User"}</h3>
+              {Object.values(userErrors).some(Boolean)&&(
+                <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 12px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
+                  <span style={{fontSize:13}}>⚠️</span>
+                  <span style={{fontSize:11,fontWeight:700,color:"#fda4af"}}>Fill required fields</span>
+                </div>
+              )}
+            </div>
+
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
-              <FLD label="FULL NAME" ch={<input value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} className="inp" placeholder="e.g. Maria Santos"/>}/>
-              <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
-                <FLD label="USERNAME" ch={<input value={form.username} onChange={e=>setForm(f=>({...f,username:e.target.value}))} className="inp" placeholder="msantos"/>}/>
-                <FLD label="EMAIL" ch={<input value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} className="inp" placeholder="maria@email.com"/>}/>
+              {/* Full Name */}
+              <div>
+                <label style={{fontSize:11,fontWeight:700,color:userErrors.name?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                  FULL NAME <span style={{color:"#fb7185"}}>*</span>
+                </label>
+                <input value={form.name}
+                  onChange={e=>{setForm(f=>({...f,name:e.target.value}));userClearErr("name");}}
+                  className={`inp${userErrors.name?" inp-err":""}`}
+                  placeholder={userErrors.name?"Full name is required":"e.g. Maria Santos"}/>
+                {userErrors.name&&<div className="err-msg"><span>⚠</span>Full name is required</div>}
               </div>
+
+              <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
+                {/* Username */}
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:userErrors.username?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                    USERNAME <span style={{color:"#fb7185"}}>*</span>
+                  </label>
+                  <input value={form.username}
+                    onChange={e=>{setForm(f=>({...f,username:e.target.value}));userClearErr("username");}}
+                    className={`inp${userErrors.username?" inp-err":""}`}
+                    placeholder={userErrors.username?"Required":"msantos"}/>
+                  {userErrors.username&&<div className="err-msg"><span>⚠</span>Username is required</div>}
+                </div>
+                {/* Email */}
+                <div>
+                  <label style={{fontSize:11,fontWeight:700,color:userErrors.email?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                    EMAIL <span style={{color:"#fb7185"}}>*</span>
+                  </label>
+                  <input value={form.email} type="email"
+                    onChange={e=>{setForm(f=>({...f,email:e.target.value}));userClearErr("email");}}
+                    className={`inp${userErrors.email?" inp-err":""}`}
+                    placeholder={userErrors.email?"Required":"maria@email.com"}/>
+                  {userErrors.email&&<div className="err-msg"><span>⚠</span>Email is required</div>}
+                </div>
+              </div>
+
               <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
                 <FLD label="ROLE" ch={
                   <select value={form.role} onChange={e=>setForm(f=>({...f,role:e.target.value as URole}))} className="inp">
                     {["Admin","Manager","Staff"].map(r=><option key={r} value={r}>{r}</option>)}
-                  </select>
-                }/>
+                  </select>}/>
                 <FLD label="STATUS" ch={
                   <select value={form.status} onChange={e=>setForm(f=>({...f,status:e.target.value as UStatus}))} className="inp">
                     {["Active","Suspended","Disabled"].map(s=><option key={s} value={s}>{s}</option>)}
-                  </select>
-                }/>
+                  </select>}/>
               </div>
+
               <div style={{display:"flex",alignItems:"center",gap:12,padding:"10px 14px",background:"rgba(255,255,255,0.03)",borderRadius:10}}>
                 <div style={{width:32,height:18,borderRadius:99,background:form.twoFA?"rgba(52,211,153,0.3)":"rgba(255,255,255,0.08)",border:`1px solid ${form.twoFA?"rgba(52,211,153,0.5)":"rgba(255,255,255,0.1)"}`,position:"relative",cursor:"pointer"}}
                   onClick={()=>setForm(f=>({...f,twoFA:!f.twoFA}))}>
@@ -4513,9 +4715,10 @@ const UserPage = () => {
                 <span style={{fontSize:12,color:"rgba(255,255,255,0.6)"}}>Enable Two-Factor Authentication</span>
               </div>
             </div>
+
             <div style={{display:"flex",gap:10,marginTop:24}}>
               <button onClick={modal==="add"?saveAdd:saveEdit} className="btn-g" style={{flex:1}}>{modal==="add"?"Add User":"Save Changes"}</button>
-              <button onClick={()=>setModal(null)} className="btn" style={{flex:1}}>Cancel</button>
+              <button onClick={()=>{setModal(null);setUserErrors({});}} className="btn" style={{flex:1}}>Cancel</button>
             </div>
           </div>
         </div>
@@ -4709,16 +4912,9 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             {/* Outer spinning ring */}
             <div style={{position:"absolute",inset:-8,borderRadius:"50%",border:"1.5px solid transparent",borderTopColor:"rgba(212,175,55,0.6)",borderRightColor:"rgba(212,175,55,0.2)",animation:"spinRing 3s linear infinite"}}/>
             <div style={{position:"absolute",inset:-14,borderRadius:"50%",border:"1px solid transparent",borderBottomColor:"rgba(212,175,55,0.3)",borderLeftColor:"rgba(212,175,55,0.1)",animation:"spinRingR 5s linear infinite"}}/>
-            {/* Logo circle */}
-            <div style={{width:"100%",height:"100%",borderRadius:"50%",background:"linear-gradient(145deg,#b8860b,#d4af37,#8b6914)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 0 40px rgba(212,175,55,0.3)"}}>
-              {/* Mini chart lines */}
-              <svg width="52" height="52" viewBox="0 0 52 52">
-                <text x="6" y="36" fill="white" fontSize="26" fontWeight="800" fontFamily="Inter">B</text>
-                <polyline points="20,38 28,28 34,32 44,14" fill="none" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <polyline points="20,38 28,30 34,34 44,16" fill="none" stroke="#fb7185" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="44" cy="14" r="2.5" fill="#38bdf8"/>
-                <circle cx="44" cy="16" r="2" fill="#fb7185"/>
-              </svg>
+            {/* Logo */}
+            <div style={{width:"100%",height:"100%",borderRadius:"50%",overflow:"hidden",boxShadow:"0 0 40px rgba(212,175,55,0.3)"}}>
+              <BaryalyticsLogo size={100}/>
             </div>
           </div>
 
@@ -4802,8 +4998,8 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             {/* Mobile: show mini logo since left panel is hidden */}
             {authMob&&(
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:20}}>
-                <div style={{width:38,height:38,borderRadius:"50%",background:"linear-gradient(145deg,#b8860b,#d4af37)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 0 20px rgba(212,175,55,0.4)"}}>
-                  <span style={{fontSize:18,fontWeight:900,color:"#000"}}>B</span>
+                <div style={{width:44,height:44,borderRadius:"50%",overflow:"hidden",boxShadow:"0 0 16px rgba(212,175,55,0.35)"}}>
+                  <BaryalyticsLogo size={44}/>
                 </div>
                 <div style={{
                   fontSize:20,fontWeight:900,letterSpacing:"0.06em",
@@ -5943,7 +6139,9 @@ export default function App() {
         <div className={`mob-drawer${mobileOpen?" open":""}`}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24}}>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <div style={{width:28,height:28,borderRadius:8,background:"linear-gradient(135deg,#b8860b,#d4af37)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>B</div>
+              <div style={{width:32,height:32,borderRadius:"50%",overflow:"hidden",flexShrink:0}}>
+                <BaryalyticsLogo size={32}/>
+              </div>
               <span style={{fontSize:14,fontWeight:800,color:"#fff",letterSpacing:"0.04em"}}>BARYALYTICS</span>
             </div>
             <button onClick={()=>setMobileOpen(false)} style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:"rgba(255,255,255,0.5)"}}>✕</button>
