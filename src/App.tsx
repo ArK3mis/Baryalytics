@@ -276,6 +276,73 @@ const AUTH_CSS = `
 
 
 /* ── RESPONSIVE HOOK ──────────────────────────────────────────────── */
+
+/* ── GLOBAL TOAST ─────────────────────────────────────────────────── */
+// Usage: useToast() returns showToast(msg, type)
+type ToastType = "success"|"error"|"info";
+const ToastCtx = React.createContext<(msg:string,type?:ToastType)=>void>(()=>{});
+const useToast  = () => React.useContext(ToastCtx);
+
+const ToastProvider = ({children}:{children?:React.ReactNode}) => {
+  const [toasts, setToasts] = React.useState<{id:number;msg:string;type:ToastType}[]>([]);
+  const show = React.useCallback((msg:string, type:ToastType="success") => {
+    const id = Date.now();
+    setToasts(t=>[...t,{id,msg,type}]);
+    setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)), 2800);
+  },[]);
+  const icons:Record<ToastType,string> = {success:"✅",error:"❌",info:"ℹ️"};
+  const colors:Record<ToastType,{bg:string;border:string;text:string}> = {
+    success:{bg:"rgba(52,211,153,0.12)",  border:"rgba(52,211,153,0.35)",  text:"#6ee7b7"},
+    error:  {bg:"rgba(251,113,133,0.12)", border:"rgba(251,113,133,0.35)", text:"#fda4af"},
+    info:   {bg:"rgba(56,189,248,0.12)",  border:"rgba(56,189,248,0.35)",  text:"#7dd3fc"},
+  };
+  return (
+    <ToastCtx.Provider value={show}>
+      {children}
+      {ReactDOM.createPortal(
+        <div style={{position:"fixed",bottom:28,left:"50%",transform:"translateX(-50%)",zIndex:99999,display:"flex",flexDirection:"column",gap:10,alignItems:"center",pointerEvents:"none"}}>
+          {toasts.map((t,i)=>{
+            const c = colors[t.type];
+            return (
+              <div key={t.id} style={{
+                display:"flex",alignItems:"center",gap:10,
+                padding:"12px 24px",
+                background:c.bg,border:`1px solid ${c.border}`,
+                borderRadius:999,backdropFilter:"blur(16px)",
+                boxShadow:"0 8px 32px rgba(0,0,0,0.4)",
+                animation:"fadeUp 0.25s ease both",
+                pointerEvents:"none",
+              }}>
+                <span style={{fontSize:16}}>{icons[t.type]}</span>
+                <span style={{fontSize:13,fontWeight:700,color:c.text,whiteSpace:"nowrap"}}>{t.msg}</span>
+              </div>
+            );
+          })}
+        </div>,
+        document.body
+      )}
+    </ToastCtx.Provider>
+  );
+};
+
+/* ── EMPTY STATE ──────────────────────────────────────────────────── */
+const EmptyState = ({q,icon="📦",title,sub}:{q:string;icon?:string;title?:string;sub?:string}) => (
+  <tr>
+    <td colSpan={99} style={{padding:"52px 24px",textAlign:"center"}}>
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10}}>
+        <div style={{fontSize:40,filter:"grayscale(0.3)",animation:"warnBounce 2s ease infinite"}}>{icon}</div>
+        <div style={{fontSize:14,fontWeight:700,color:"rgba(255,255,255,0.5)"}}>
+          {title||`No results for "${q}"`}
+        </div>
+        <div style={{fontSize:12,color:"rgba(255,255,255,0.28)"}}>
+          {sub||(q?`Try a different search term`:"Nothing here yet")}
+        </div>
+      </div>
+    </td>
+  </tr>
+);
+
+
 /* ── BARYALYTICS LOGO COMPONENT ───────────────────────────────────── */
 // Faithful to the uploaded logo: golden circle, white B, white baseline bar,
 // blue upward arrow line, red upward arrow line
@@ -1259,6 +1326,7 @@ const ExportMenu = ({label="Export"}:{label?:string}) => {
 
 /* ── INVENTORY COMPONENT ──────────────────────────────────────────── */
 const Inventory = () => {
+  const showToast = useToast();
   const TAX_RATE = 0.12;
   const today = new Date();
   const daysUntil = (d:string) => Math.ceil((new Date(d).getTime()-today.getTime())/(1000*60*60*24));
@@ -1317,10 +1385,11 @@ const Inventory = () => {
     setNewId(id);
     setTimeout(()=>setNewId(null),1200);
     setnP({name:"",cat:"Electronics",supplier:"",bp:"",sp:"",stocks:0,expiry:""});
+    showToast(`"${nP.name}" added to inventory! 🎉`);
     setView("main");
   };
   const del = () => {
-    if(dP){ save(); addLog(dP.name,"Deleted","—"); setInv(p=>p.filter(i=>i.id!==dP.id)); setdP(null); }
+    if(dP){ save(); addLog(dP.name,"Deleted","—"); setInv(p=>p.filter(i=>i.id!==dP.id)); showToast(`"${dP.name}" deleted successfully`,"info"); setdP(null); }
   };
   const upd = () => {
     if(uP){
@@ -1335,6 +1404,7 @@ const Inventory = () => {
       save();
       setInv(p=>p.map(i=>i.id===uP.id?uP:i));
       addLog(uP.name,"Updated", diff>=0?`+${diff}`:`${diff}`);
+      showToast(`"${uP.name}" updated successfully! ✏️`);
       setView("main");
     }
   };
@@ -1435,7 +1505,11 @@ const Inventory = () => {
             <table style={{width:"100%",borderCollapse:"collapse",minWidth:640}}>
               <thead><tr>{["Product","Category","Stocks","Buy Price","Sell Price","Expiry","Status"].map(h=><th key={h} className="th">{h}</th>)}</tr></thead>
               <tbody>
-                {fil.map((item,idx)=>{
+                {fil.length===0?(
+                  <EmptyState q={q} icon="📦"
+                    title={q?`No products matching "${q}"`:"No products in inventory"}
+                    sub={q?"Try a different name or category":"Add your first product using the + Add button"}/>
+                ):fil.map((item,idx)=>{
                   const s=stat(item.stocks);
                   const ec=item.expiry?expiryColor(item.expiry):"";
                   const el=item.expiry?expiryLabel(item.expiry):"";
@@ -1930,6 +2004,7 @@ const Sales = () => {
 
 /* ── SUPPLIER COMPONENT ───────────────────────────────────────────── */
 const Supplier = () => {
+  const showToast = useToast();
   const [view,setView] = useState("main");
   const [sups,setSups] = useState([
     {id:1,name:"Mitsibuchi",contact:"09165354751",email:"mitsubuchi@gmail.com",products:"Elesi",stocks:20,fav:true},
@@ -1959,10 +2034,12 @@ const Supplier = () => {
     if(!nS.products) errs.products=true;
     if(Object.keys(errs).length){setSupErrors(errs);supShakeForm();return;}
     setSupErrors({});
-    save();setSups(p=>[...p,{...nS,id:Math.max(0,...p.map(s=>s.id))+1}]);setnS({name:"",contact:"",email:"",products:"",stocks:0,fav:false});setView("main");
+    save();setSups(p=>[...p,{...nS,id:Math.max(0,...p.map(s=>s.id))+1}]);
+    showToast(`"${nS.name}" added as supplier! 🏢`);
+    setnS({name:"",contact:"",email:"",products:"",stocks:0,fav:false});setView("main");
   };
-  const delS=()=>{if(dS){save();setSups(p=>p.filter(s=>s.id!==dS.id));setdS(null);setView("main");}};
-  const updS=()=>{if(eS){save();setSups(p=>p.map(s=>s.id===eS.id?eS:s));setView("main");}};
+  const delS=()=>{if(dS){save();setSups(p=>p.filter(s=>s.id!==dS.id));showToast(`"${dS.name}" removed`,"info");setdS(null);setView("main");}};
+  const updS=()=>{if(eS){save();setSups(p=>p.map(s=>s.id===eS.id?eS:s));showToast(`"${eS.name}" updated successfully! ✏️`);setView("main");}};
   const fil=sups.filter(s=>s.name.toLowerCase().includes(q.toLowerCase()));
 
   if(view==="tx") return (
@@ -2017,7 +2094,11 @@ const Supplier = () => {
               <table style={{width:"100%",borderCollapse:"collapse"}}>
                 <thead><tr>{["Supplier Name","Contact Number","Email Address","Products Supplied","Stocks","Favorite Supplier"].map(h=><th key={h} className="th">{h}</th>)}</tr></thead>
                 <tbody>
-                  {fil.map(s=>(
+                  {fil.length===0?(
+                    <EmptyState q={q} icon="🏢"
+                      title={q?`No suppliers matching "${q}"`:"No suppliers yet"}
+                      sub={q?"Try a different supplier name":"Add your first supplier using Add Supplier"}/>
+                  ):fil.map(s=>(
                     <tr key={s.id} className="tr">
                       <td className="td" style={{color:"#38bdf8",fontWeight:500}}>{s.name}</td>
                       <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{s.contact}</td>
@@ -4232,6 +4313,7 @@ const EMPTY_USER: Omit<AppUser,"id"> = {name:"",username:"",email:"",role:"Staff
 
 /* ── USER PAGE COMPONENT ──────────────────────────────────────────── */
 const UserPage = () => {
+  const showToast = useToast();
   const [users, setUsers]         = useState<AppUser[]>(INIT_USERS);
   const [logs]                    = useState(INIT_LOGS);
   const [tab, setTab]             = useState<"users"|"roles"|"logs"|"security">("users");
@@ -4255,7 +4337,9 @@ const UserPage = () => {
     if(!form.email)    errs.email=true;
     if(Object.keys(errs).length){setUserErrors(errs);userShakeForm();return;}
     setUserErrors({});
-    setUsers(p=>[...p,{...form,id:Math.max(0,...p.map(u=>u.id))+1}]);setModal(null);
+    setUsers(p=>[...p,{...form,id:Math.max(0,...p.map(u=>u.id))+1}]);
+    showToast(`${form.name} added as ${form.role}! 👤`);
+    setModal(null);
   };
   const saveEdit   = ()=>{
     const errs:Record<string,boolean>={};
@@ -4264,9 +4348,15 @@ const UserPage = () => {
     if(!form.email)    errs.email=true;
     if(Object.keys(errs).length){setUserErrors(errs);userShakeForm();return;}
     setUserErrors({});
-    if(!selected)return;setUsers(p=>p.map(u=>u.id===selected.id?{...form,id:u.id}:u));setModal(null);
+    if(!selected)return;setUsers(p=>p.map(u=>u.id===selected.id?{...form,id:u.id}:u));
+    showToast(`${form.name}'s profile updated! ✏️`);
+    setModal(null);
   };
-  const doDelete   = ()=>{if(!selected)return;setUsers(p=>p.filter(u=>u.id!==selected.id));setModal(null);};
+  const doDelete   = ()=>{
+    if(!selected)return;
+    showToast(`${selected.name} removed`,"info");
+    setUsers(p=>p.filter(u=>u.id!==selected.id));setModal(null);
+  };
   const toggleStatus = (u:AppUser)=>setUsers(p=>p.map(x=>x.id===u.id?{...x,status:x.status==="Active"?"Suspended":"Active"}:x));
 
   const filtered = users.filter(u=>
@@ -4372,7 +4462,11 @@ const UserPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.map(u=>{
+                  {filtered.length===0?(
+                    <EmptyState q={search} icon="👤"
+                      title={search?`No users matching "${search}"`:"No users found"}
+                      sub={search?"Try searching by name, username or email":"Add your first user using the Add User button"}/>
+                  ):filtered.map(u=>{
                     const rc=ROLE_COLORS[u.role];
                     const sc=STATUS_COLORS[u.status];
                     return (
@@ -4665,10 +4759,17 @@ const UserPage = () => {
                   FULL NAME <span style={{color:"#fb7185"}}>*</span>
                 </label>
                 <input value={form.name}
-                  onChange={e=>{setForm(f=>({...f,name:e.target.value}));userClearErr("name");}}
-                  className={`inp${userErrors.name?" inp-err":""}`}
+                  onChange={e=>{
+                    const v = e.target.value;
+                    // Block digits — names only accept letters, spaces, hyphens, dots
+                    if(/\d/.test(v)){ userClearErr("name"); setUserErrors(er=>({...er,nameNum:true})); setTimeout(()=>setUserErrors(er=>({...er,nameNum:false})),2000); return; }
+                    setUserErrors(er=>({...er,nameNum:false}));
+                    setForm(f=>({...f,name:v}));userClearErr("name");
+                  }}
+                  className={`inp${(userErrors.name||userErrors.nameNum)?" inp-err":""}`}
                   placeholder={userErrors.name?"Full name is required":"e.g. Maria Santos"}/>
                 {userErrors.name&&<div className="err-msg"><span>⚠</span>Full name is required</div>}
+                {userErrors.nameNum&&<div className="err-msg"><span>🚫</span>Numbers are not allowed in names</div>}
               </div>
 
               <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
@@ -6126,6 +6227,7 @@ export default function App() {
   };
 
   return (
+    <ToastProvider>
     <>
       <style>{G}</style>
       <style>{dynamicCSS}</style>
@@ -6497,5 +6599,6 @@ export default function App() {
         </main>
       </div>
     </>
+    </ToastProvider>
   );
 }
