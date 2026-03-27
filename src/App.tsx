@@ -274,9 +274,7 @@ const AUTH_CSS = `
   }
 `;
 
-
 /* ── RESPONSIVE HOOK ──────────────────────────────────────────────── */
-
 /* ── GLOBAL TOAST ─────────────────────────────────────────────────── */
 // Usage: useToast() returns showToast(msg, type)
 type ToastType = "success"|"error"|"info";
@@ -342,7 +340,6 @@ const EmptyState = ({q,icon="📦",title,sub}:{q:string;icon?:string;title?:stri
   </tr>
 );
 
-
 /* ── BARYALYTICS LOGO COMPONENT ───────────────────────────────────── */
 // Faithful to the uploaded logo: golden circle, white B, white baseline bar,
 // blue upward arrow line, red upward arrow line
@@ -353,7 +350,6 @@ const BaryalyticsLogo = ({size=52}:{size?:number}) => {
   // Chart lines rise from bottom-left to top-right like the real logo
   return (
     <svg width={s} height={s} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      {/* Outer golden circle — matches the logo */}
       <defs>
         <radialGradient id="bLogo_bg" cx="40%" cy="35%" r="65%">
           <stop offset="0%"   stopColor="#c9950a"/>
@@ -367,28 +363,18 @@ const BaryalyticsLogo = ({size=52}:{size?:number}) => {
       </defs>
       <circle cx="50" cy="50" r="47" fill="url(#bLogo_bg)"/>
       <circle cx="50" cy="50" r="47" fill="url(#bLogo_bg2)"/>
-
-      {/* White B — large, bold, left-aligned like the real logo */}
       <text x="14" y="68" fill="white" fontSize="56" fontWeight="900"
         fontFamily="Arial Black, Arial, sans-serif" letterSpacing="-2">B</text>
-
-      {/* White horizontal baseline bar — thick, just like the logo */}
       <rect x="14" y="74" width="50" height="6" rx="3" fill="white"/>
-
-      {/* Blue upward trend line with arrowhead — matches logo */}
       <polyline
         points="24,72 34,55 44,60 64,28"
         fill="none" stroke="#38bdf8" strokeWidth="4.5"
         strokeLinecap="round" strokeLinejoin="round"/>
-      {/* Blue arrowhead */}
       <polygon points="64,28 56,30 62,36" fill="#38bdf8"/>
-
-      {/* Red upward trend line with arrowhead — slightly offset below blue */}
       <polyline
         points="24,72 34,58 44,63 64,33"
         fill="none" stroke="#ef4444" strokeWidth="3.5"
         strokeLinecap="round" strokeLinejoin="round"/>
-      {/* Red arrowhead */}
       <polygon points="64,33 57,34 62,40" fill="#ef4444"/>
     </svg>
   );
@@ -420,66 +406,53 @@ const G = `
   body{background:#0d0d14;font-family:'Inter',sans-serif;color:#e2e8f0;}
   ::-webkit-scrollbar{width:4px;height:4px;}
   ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
-
   .card{background:#13131f;border-radius:16px;border:1px solid rgba(255,255,255,0.07);padding:20px;position:relative;overflow:hidden;}
   .card-title{font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;letter-spacing:0.01em;}
   .card-x{background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;display:flex;align-items:center;padding:2px;}
   .card-x:hover{color:rgba(255,255,255,0.5);}
-
   .nav-bar{
-    background:rgba(13,13,22,0.75);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,0.09);
-    border-radius:999px;
-    box-shadow:0 8px 40px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset;
+  background:rgba(13,13,22,0.75);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:999px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset;
   }
   .nav-pill-active{background:#fff;color:#000!important;border-radius:999px;padding:6px 18px;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:0.01em;}
   .nav-pill{color:rgba(255,255,255,0.45);padding:6px 16px;font-size:13px;font-weight:500;border-radius:999px;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:all 0.18s;letter-spacing:0.01em;}
   .nav-pill:hover{color:#fff;background:rgba(255,255,255,0.07);}
-
   .chip-up{background:rgba(52,211,153,0.15);color:#34d399;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;}
   .chip-down{background:rgba(251,113,133,0.15);color:#fb7185;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;}
-
   .badge-g{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.2);color:#6ee7b7;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
   .badge-r{background:rgba(251,113,133,0.12);border:1px solid rgba(251,113,133,0.2);color:#fda4af;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
   .badge-a{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.2);color:#fde68a;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
   .badge-v{background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.2);color:#c7d2fe;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
-
   .alert-row{background:rgba(251,113,133,0.08);border:1px solid rgba(251,113,133,0.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.75);cursor:pointer;transition:background 0.15s;margin-bottom:8px;}
   .alert-row:last-child{margin-bottom:0;}
   .alert-row:hover{background:rgba(251,113,133,0.14);}
-
   .inp{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#e2e8f0;padding:10px 14px;font-size:13px;outline:none;font-family:'Inter',sans-serif;transition:border-color 0.15s;width:100%;}
   .inp:focus{border-color:rgba(52,211,153,0.4);}
   .inp::placeholder{color:rgba(255,255,255,0.2);}
   select.inp option{background:#13131f;}
-
   .btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.65);padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;white-space:nowrap;}
   .btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
   .btn-g{background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.25);border-radius:10px;color:#6ee7b7;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
   .btn-g:hover{background:rgba(52,211,153,0.25);}
   .btn-r{background:rgba(251,113,133,0.15);border:1px solid rgba(251,113,133,0.25);border-radius:10px;color:#fda4af;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
-
   .tab-wrap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:3px;display:inline-flex;gap:2px;}
   .tab-on{background:#fff;color:#000;border-radius:999px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;border:none;font-family:'Inter',sans-serif;letter-spacing:0.02em;}
   .tab-off{background:none;border:none;color:rgba(255,255,255,0.4);padding:5px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:0.02em;transition:color 0.15s;}
   .tab-off:hover{color:rgba(255,255,255,0.75);}
-
   .th{padding:12px 14px;color:rgba(255,255,255,0.35);font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);white-space:nowrap;}
   .td{padding:13px 14px;font-size:13px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);}
   .tr:hover td{background:rgba(255,255,255,0.015);}
   .tr:last-child td{border-bottom:none;}
-
   .ai-card{background:#161622;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;}
   .ai-card:hover{border-color:rgba(129,140,248,0.35);background:#1a1a2e;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
-
   .bg-tl{position:fixed;top:0;left:0;width:700px;height:700px;background:radial-gradient(ellipse at 0% 0%,rgba(29,78,216,0.11) 0%,transparent 70%);pointer-events:none;z-index:0;}
   .bg-br{position:fixed;bottom:0;right:0;width:700px;height:700px;background:radial-gradient(ellipse at 100% 100%,rgba(5,150,105,0.09) 0%,transparent 70%);pointer-events:none;z-index:0;}
-
   @keyframes tMove{0%{left:0%}20%{left:25%}25%{left:25%}45%{left:50%}50%{left:50%}70%{left:75%}75%{left:75%}95%{left:100%}100%{left:100%}}
   @keyframes pGrow{0%{width:0%}20%{width:25%}25%{width:25%}45%{width:50%}50%{width:50%}70%{width:75%}75%{width:75%}95%{width:100%}100%{width:100%}}
-
   @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
   .fu1{animation:fadeUp 0.4s ease both}
   .fu2{animation:fadeUp 0.4s 0.08s ease both}
@@ -487,22 +460,17 @@ const G = `
   .fu4{animation:fadeUp 0.4s 0.24s ease both}
   .fu5{animation:fadeUp 0.4s 0.32s ease both}
   .fu6{animation:fadeUp 0.4s 0.40s ease both}
-
   @keyframes cellPop{from{transform:scale(0.4);opacity:0}to{transform:scale(1);opacity:1}}
   .hcell{animation:cellPop 0.3s ease both;}
-
   @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   .shimmer-bar{background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.06) 50%,transparent 100%);background-size:200% 100%;animation:shimmer 2.5s infinite;}
-
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
   .pulse{animation:pulse 2s infinite;}
-
   @keyframes notifSlideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
   @keyframes notifRow{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
   @keyframes urgentPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:0.6}}
   @keyframes bellWiggle{0%,100%{transform:rotate(0deg)}15%{transform:rotate(18deg)}30%{transform:rotate(-16deg)}45%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}75%{transform:rotate(4deg)}}
   .bell-new{animation:bellWiggle 0.7s ease both;}
-
   @keyframes rowSlideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
   @keyframes expiryPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,113,133,0.4)}60%{box-shadow:0 0 0 8px rgba(251,113,133,0)}}
   @keyframes warnBounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}
@@ -512,45 +480,41 @@ const G = `
   .expiry-warn{animation:expiryPulse 2s ease infinite;}
   .warn-icon{animation:warnBounce 1.8s ease infinite;}
   .count-pop{animation:countUp 0.4s cubic-bezier(0.34,1.56,0.64,1) both;}
-
   @keyframes formShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
   .form-shake{animation:formShake 0.4s ease both;}
   .inp-err{border-color:rgba(251,113,133,0.7)!important;background:rgba(251,113,133,0.06)!important;box-shadow:0 0 0 3px rgba(251,113,133,0.12)!important;}
   .inp-err:focus{border-color:#fb7185!important;box-shadow:0 0 0 3px rgba(251,113,133,0.2)!important;}
   .lbl-err{color:#fda4af!important;}
   .err-msg{font-size:11px;color:#fda4af;margin-top:5px;display:flex;align-items:center;gap:4px;animation:fadeUp 0.2s ease both;}
-
+  .field-label{font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.07em;display:block;margin-bottom:6px;}
+  .section-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:8px;}
   .export-wrap{position:relative;display:inline-flex;}
   .export-btn{display:flex;align-items:center;gap:7px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.22);border-radius:10px;color:#a5b4fc;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;}
   .export-btn:hover{background:rgba(129,140,248,0.2);border-color:rgba(129,140,248,0.38);color:#c7d2fe;}
-
   .insight-card{
-    background:linear-gradient(135deg,rgba(129,140,248,0.1),rgba(167,139,250,0.06));
-    border:1px solid rgba(129,140,248,0.2);
-    border-radius:14px;
-    padding:16px 20px;
-    margin-bottom:10px;
-    display:flex;
-    gap:14px;
-    align-items:flex-start;
-    transition:border-color 0.15s;
+  background:linear-gradient(135deg,rgba(129,140,248,0.1),rgba(167,139,250,0.06));
+  border:1px solid rgba(129,140,248,0.2);
+  border-radius:14px;
+  padding:16px 20px;
+  margin-bottom:10px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  transition:border-color 0.15s;
   }
   .insight-card:hover{border-color:rgba(129,140,248,0.35);}
   .insight-card:last-child{margin-bottom:0;}
-
   .stat-forecast{
-    background:#13131f;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,0.07);
-    padding:20px;
-    transition:all 0.2s;
+  background:#13131f;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.07);
+  padding:20px;
+  transition:all 0.2s;
   }
   .stat-forecast:hover{border-color:rgba(129,140,248,0.25);transform:translateY(-2px);}
-
   /* ── RESPONSIVE HELPERS ── */
   .mob-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .mob-scroll::-webkit-scrollbar{height:3px;}
-
   /* ── MOBILE NAV ── */
   .mob-drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:rgba(13,13,22,0.98);backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,0.09);z-index:200;transform:translateX(-100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:24px 16px;}
   .mob-drawer.open{transform:translateX(0);}
@@ -558,68 +522,53 @@ const G = `
   .mob-drawer-overlay.open{display:block;}
   .mob-nav-btn{display:none;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);cursor:pointer;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);flex-shrink:0;}
   .mob-nav-btn svg{pointer-events:none;}
-
   @media(max-width:900px){
-    /* Show hamburger, hide center nav pills */
-    .mob-nav-btn{display:flex;}
-    .nav-pills-center{display:none!important;}
-    .nav-left-welcome{display:none!important;}
-
-    /* Shrink main padding */
-    main{padding-left:16px!important;padding-right:16px!important;}
-
-    /* Floating nav wrapper — reduce side padding */
-    .nav-float-wrap{padding:0 12px!important;}
-
-    /* All grids → responsive */
-    .grid-5col{grid-template-columns:repeat(2,1fr)!important;}
-    .grid-4col{grid-template-columns:repeat(2,1fr)!important;}
-    .grid-3col{grid-template-columns:1fr 1fr!important;}
-    .grid-2col{grid-template-columns:1fr!important;}
-    .grid-split{grid-template-columns:1fr!important;}
-    .grid-ai{grid-template-columns:1fr!important;}
-
-    /* Settings layout: sidebar stacks above content */
-    .settings-layout{flex-direction:column!important;}
-    .settings-sidebar{width:100%!important;position:static!important;}
-    .settings-sidebar > div{display:grid;grid-template-columns:repeat(4,1fr);}
-
-    /* Finance heatmap: allow horizontal scroll */
-    .heatmap-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
-
-    /* Tables: force scroll wrapper */
-    .table-scroll{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
-    .th,.td{white-space:nowrap;}
-
-    /* Cards: smaller padding */
-    .card{padding:14px!important;}
-
-    /* Stat numbers: smaller on mobile */
-    .stat-num{font-size:20px!important;}
-
-    /* Appearance hero banner */
-    .appear-hero{padding:20px 16px!important;}
+  /* Show hamburger, hide center nav pills */
+  .mob-nav-btn{display:flex;}
+  .nav-pills-center{display:none!important;}
+  .nav-left-welcome{display:none!important;}
+  /* Shrink main padding */
+  main{padding-left:16px!important;padding-right:16px!important;}
+  /* Floating nav wrapper — reduce side padding */
+  .nav-float-wrap{padding:0 12px!important;}
+  /* All grids → responsive */
+  .grid-5col{grid-template-columns:repeat(2,1fr)!important;}
+  .grid-4col{grid-template-columns:repeat(2,1fr)!important;}
+  .grid-3col{grid-template-columns:1fr 1fr!important;}
+  .grid-2col{grid-template-columns:1fr!important;}
+  .grid-split{grid-template-columns:1fr!important;}
+  .grid-ai{grid-template-columns:1fr!important;}
+  /* Settings layout: sidebar stacks above content */
+  .settings-layout{flex-direction:column!important;}
+  .settings-sidebar{width:100%!important;position:static!important;}
+  .settings-sidebar > div{display:grid;grid-template-columns:repeat(4,1fr);}
+  /* Finance heatmap: allow horizontal scroll */
+  .heatmap-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+  /* Tables: force scroll wrapper */
+  .table-scroll{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
+  .th,.td{white-space:nowrap;}
+  /* Cards: smaller padding */
+  .card{padding:14px!important;}
+  /* Stat numbers: smaller on mobile */
+  .stat-num{font-size:20px!important;}
+  /* Appearance hero banner */
+  .appear-hero{padding:20px 16px!important;}
   }
-
   @media(max-width:600px){
-    .grid-5col{grid-template-columns:1fr 1fr!important;}
-    .grid-4col{grid-template-columns:1fr 1fr!important;}
-    .grid-3col{grid-template-columns:1fr!important;}
-    .settings-sidebar > div{grid-template-columns:repeat(2,1fr);}
-
-    /* Reduce chart heights */
-    .chart-tall{height:200px!important;}
-
-    /* Nav: tighter */
-    .nav-bar{border-radius:14px!important;}
-
-    /* Export button: icon only */
-    .export-btn span.export-label{display:none;}
+  .grid-5col{grid-template-columns:1fr 1fr!important;}
+  .grid-4col{grid-template-columns:1fr 1fr!important;}
+  .grid-3col{grid-template-columns:1fr!important;}
+  .settings-sidebar > div{grid-template-columns:repeat(2,1fr);}
+  /* Reduce chart heights */
+  .chart-tall{height:200px!important;}
+  /* Nav: tighter */
+  .nav-bar{border-radius:14px!important;}
+  /* Export button: icon only */
+  .export-btn span.export-label{display:none;}
   }
-
   @media(max-width:400px){
-    .grid-5col{grid-template-columns:1fr!important;}
-    .grid-4col{grid-template-columns:1fr!important;}
+  .grid-5col{grid-template-columns:1fr!important;}
+  .grid-4col{grid-template-columns:1fr!important;}
   }
 `;
 
@@ -673,7 +622,6 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-      {/* Header */}
       <div className="fu1" style={{display:"flex",alignItems:"center",gap:16}}>
         <button onClick={onBack} className="btn" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px"}}>
           <ArrowLeft size={15}/> Back
@@ -692,8 +640,6 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
           <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
-
-      {/* KPI Cards */}
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Yesterday's Sales",value:"₱10,000",sub:"Dec 31, 2025",icon:TrendingUp,color:"#34d399",bg:"rgba(52,211,153,0.1)",change:"+5.2%",up:true},
@@ -714,10 +660,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
           </div>
         ))}
       </div>
-
-      {/* Charts Row */}
       <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.4fr","1fr"),gap:16}}>
-        {/* Past vs Predicted Line Chart */}
         <div className="card">
           <div className="card-title">
             Past Sales vs Predicted Sales
@@ -740,8 +683,6 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Weekly Bar Chart */}
         <div className="card">
           <div className="card-title">
             Next 7-Day Daily Forecast
@@ -766,10 +707,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* Comparison Table + AI Insights */}
       <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
-        {/* Comparison Table */}
         <div className="card">
           <div className="card-title">Previous vs Predicted Sales Comparison</div>
           <div style={{overflowX:"auto"}}>
@@ -804,8 +742,6 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
             </table>
           </div>
         </div>
-
-        {/* AI Insights */}
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -825,8 +761,6 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* Summary Forecasts */}
       <div className="fu5 grid-3col" style={{display:"grid",gridTemplateColumns:colsW(3),gap:16}}>
         {[
           {label:"Predicted Sales — Tomorrow",value:"₱10,800",note:"Jan 2, 2026 · Based on Dec 31 trend",color:"#818cf8",bg:"rgba(129,140,248,0.08)",border:"rgba(129,140,248,0.2)"},
@@ -872,8 +806,6 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-
-      {/* ── Header ── */}
       <div className="fu1" style={{display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
         <button onClick={onBack} className="btn" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px"}}>
           <ArrowLeft size={15}/> Back
@@ -892,8 +824,6 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
           <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
-
-      {/* ── Filters ── */}
       <div className="fu2" style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <span style={{fontSize:12,color:"rgba(255,255,255,0.4)",fontWeight:600,letterSpacing:"0.04em"}}>CATEGORY</span>
@@ -912,8 +842,6 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── KPI Summary ── */}
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Top Demand Product",  value:"Coca-Cola 1.5L", sub:"Predicted 400 units",   color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:Package},
@@ -934,11 +862,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
           </div>
         ))}
       </div>
-
-      {/* ── Charts ── */}
       <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.3fr","1fr"),gap:16}}>
-
-        {/* Bar chart — predicted demand per product */}
         <div className="card">
           <div className="card-title">
             Predicted Demand by Product
@@ -984,8 +908,6 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Line chart — demand trend over time */}
         <div className="card">
           <div className="card-title">
             Demand Trend Over Time
@@ -1022,7 +944,6 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          {/* legend */}
           <div style={{display:"flex",gap:12,flexWrap:"wrap",marginTop:10}}>
             {filtered.slice(0,4).map((p,i)=>(
               <span key={p.id} style={{display:"flex",alignItems:"center",gap:5,fontSize:11,color:"rgba(255,255,255,0.45)"}}>
@@ -1033,11 +954,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── Top Products Table + AI Recommendations ── */}
       <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.1fr","1fr"),gap:16}}>
-
-        {/* Top Demand Products Table */}
         <div className="card" style={{padding:0}}>
           <div style={{padding:"16px 20px 0"}}>
             <div className="card-title" style={{marginBottom:0}}>Top Predicted High-Demand Products</div>
@@ -1085,10 +1002,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
             </table>
           </div>
         </div>
-
-        {/* AI Recommendation Panel */}
         <div style={{display:"flex",flexDirection:"column",gap:14}}>
-          {/* Selected product mini card */}
           <div style={{background:"linear-gradient(135deg,rgba(52,211,153,0.1),rgba(16,185,129,0.05))",border:"1px solid rgba(52,211,153,0.2)",borderRadius:14,padding:"16px 20px"}}>
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
               <div style={{width:34,height:34,borderRadius:10,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
@@ -1113,8 +1027,6 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
               ))}
             </div>
           </div>
-
-          {/* AI Recommendations */}
           <div className="card" style={{flex:1}}>
             <div className="card-title">
               <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -1220,7 +1132,6 @@ const ExportMenu = ({label="Export"}:{label?:string}) => {
         }}
         onMouseDown={e=>e.stopPropagation()}
       >
-        {/* ── Header ── */}
         <div style={{padding:"18px 20px 14px",borderBottom:"1px solid rgba(255,255,255,0.07)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <div>
             <div style={{fontSize:15,fontWeight:700,color:"#fff",marginBottom:3}}>Export as</div>
@@ -1231,12 +1142,9 @@ const ExportMenu = ({label="Export"}:{label?:string}) => {
             style={{width:30,height:30,borderRadius:8,background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:"rgba(255,255,255,0.5)",fontSize:16,lineHeight:1}}
           >✕</button>
         </div>
-
-        {/* ── Groups ── */}
         <div style={{padding:"14px 16px 6px"}}>
           {EXPORT_GROUPS.map(g=>(
             <div key={g.key} style={{marginBottom:8}}>
-              {/* Group header row */}
               <button
                 onMouseDown={e=>{e.stopPropagation();setExpanded(expanded===g.key?null:g.key);}}
                 style={{
@@ -1259,8 +1167,6 @@ const ExportMenu = ({label="Export"}:{label?:string}) => {
                   <polyline points="6 9 12 15 18 9"/>
                 </svg>
               </button>
-
-              {/* Expanded sub-items */}
               {expanded===g.key&&(
                 <div style={{
                   marginTop:4, marginLeft:12, marginRight:2,
@@ -1297,8 +1203,6 @@ const ExportMenu = ({label="Export"}:{label?:string}) => {
             </div>
           ))}
         </div>
-
-        {/* ── Footer ── */}
         <div style={{padding:"10px 20px 16px",borderTop:"1px solid rgba(255,255,255,0.05)",display:"flex",alignItems:"center",gap:7,marginTop:2}}>
           <div style={{width:6,height:6,borderRadius:"50%",background:"#34d399",flexShrink:0}} className="pulse"/>
           <span style={{fontSize:10,color:"rgba(255,255,255,0.25)"}}>Data is always current &amp; live at time of export</span>
@@ -1422,8 +1326,6 @@ const Inventory = () => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:20}}>
-
-      {/* ── Expiry alert banner ── */}
       {(expired.length>0||expiring.length>0)&&(
         <div className="fu1 expiry-warn" style={{background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.25)",borderRadius:14,padding:"14px 18px"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
@@ -1445,8 +1347,6 @@ const Inventory = () => {
           </div>
         </div>
       )}
-
-      {/* ── Stat cards ── */}
       <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
         <div className="card count-pop">
           <div className="card-title">Available Stock <button className="card-x"><X size={13}/></button></div>
@@ -1472,8 +1372,6 @@ const Inventory = () => {
           </div>
         </div>
       </div>
-
-      {/* ── Toolbar ── */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12}}>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <div style={{position:"relative"}}>
@@ -1497,8 +1395,6 @@ const Inventory = () => {
           </button>
         </div>
       </div>
-
-      {/* ── Main table ── */}
       {view==="main"&&(
         <div className="card fu1" style={{padding:0}}>
           <div style={{overflowX:"auto"}}>
@@ -1539,8 +1435,6 @@ const Inventory = () => {
           </div>
         </div>
       )}
-
-      {/* ── Add product ── */}
       {view==="add"&&(
         <div className={`card fu1${invShake?" form-shake":""}`}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
@@ -1570,15 +1464,15 @@ const Inventory = () => {
               );
             })}
             <div>
-              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>CATEGORY</label>
+              <label className="field-label">CATEGORY</label>
               <select value={nP.cat} onChange={e=>setnP({...nP,cat:e.target.value})} className="inp">{cats.map(c=><option key={c}>{c}</option>)}</select>
             </div>
             <div>
-              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>EXPIRY DATE</label>
+              <label className="field-label">EXPIRY DATE</label>
               <input type="date" value={nP.expiry} onChange={e=>setnP({...nP,expiry:e.target.value})} className="inp"/>
             </div>
             <div style={{gridColumn:"1/-1"}}>
-              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:8}}>INITIAL STOCK</label>
+              <label className="field-label">INITIAL STOCK</label>
               <div style={{display:"flex",alignItems:"center",gap:8}}>
                 <button onClick={()=>setnP({...nP,stocks:Math.max(0,nP.stocks-1)})} className="btn" style={{padding:"7px 12px"}}><Minus size={14}/></button>
                 <input type="number" value={nP.stocks} onChange={e=>setnP({...nP,stocks:Math.max(0,+e.target.value||0)})} className="inp" style={{width:80,textAlign:"center"}}/>
@@ -1592,8 +1486,6 @@ const Inventory = () => {
           </div>
         </div>
       )}
-
-      {/* ── Delete product ── */}
       {view==="delete"&&(
         <div className="card fu1">
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
@@ -1602,7 +1494,7 @@ const Inventory = () => {
           </div>
           <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
             <div style={{gridColumn:"1/-1"}}>
-              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>SELECT PRODUCT</label>
+              <label className="field-label">SELECT PRODUCT</label>
               <select value={dP?.id||""} onChange={e=>setdP(inv.find(i=>i.id===+e.target.value)||null)} className="inp">
                 <option value="">Choose product…</option>
                 {inv.map(i=><option key={i.id} value={i.id}>{i.name}</option>)}
@@ -1621,8 +1513,6 @@ const Inventory = () => {
           {!dP&&<button onClick={()=>setView("main")} className="btn" style={{marginTop:16}}>Close</button>}
         </div>
       )}
-
-      {/* ── Update product ── */}
       {view==="update"&&(
         <div className={`card fu1${invShake?" form-shake":""}`}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,flexWrap:"wrap",gap:10}}>
@@ -1637,7 +1527,7 @@ const Inventory = () => {
             </div>
           </div>
           <div style={{marginBottom:16}}>
-            <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>SELECT PRODUCT</label>
+            <label className="field-label">SELECT PRODUCT</label>
             <select value={uP?.id||""} onChange={e=>setuP(inv.find(i=>i.id===+e.target.value)||null)} className="inp" style={{maxWidth:320}}>
               {inv.map(i=><option key={i.id} value={i.id}>{i.name}</option>)}
             </select>
@@ -1659,11 +1549,11 @@ const Inventory = () => {
                 );
               })}
               <div>
-                <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>EXPIRY DATE</label>
+                <label className="field-label">EXPIRY DATE</label>
                 <input type="date" value={uP.expiry||""} onChange={e=>setuP({...uP,expiry:e.target.value})} className="inp"/>
               </div>
               <div style={{gridColumn:"1/-1"}}>
-                <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:8}}>STOCK QTY</label>
+                <label className="field-label">STOCK QTY</label>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
                   <button onClick={()=>setuP({...uP,stocks:Math.max(0,uP.stocks-1)})} className="btn" style={{padding:"7px 12px"}}><Minus size={14}/></button>
                   <input type="number" value={uP.stocks} onChange={e=>setuP({...uP,stocks:Math.max(0,+e.target.value||0)})} className="inp" style={{width:80,textAlign:"center"}}/>
@@ -1678,8 +1568,6 @@ const Inventory = () => {
           </div>
         </div>
       )}
-
-      {/* ── Stock change log ── */}
       {view==="history"&&(
         <div className="card fu1">
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
@@ -1735,8 +1623,6 @@ const Inventory = () => {
           </div>
         </div>
       )}
-
-      {/* ── Expiry tracker ── */}
       {view==="expiry"&&(
         <div className="card fu1">
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
@@ -1749,8 +1635,6 @@ const Inventory = () => {
             </div>
             <button onClick={()=>setView("main")} className="btn" style={{padding:"7px 14px",fontSize:12}}>← Back</button>
           </div>
-
-          {/* Legend */}
           <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
             {[{c:"#fb7185",l:"Expired"},{c:"#f97316",l:"≤ 7 days"},{c:"#fbbf24",l:"≤ 30 days"},{c:"#34d399",l:"Safe"}].map(b=>(
               <div key={b.l} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 12px",background:`${b.c}10`,border:`1px solid ${b.c}25`,borderRadius:999,fontSize:11,color:b.c,fontWeight:600}}>
@@ -1780,7 +1664,6 @@ const Inventory = () => {
                       </span>
                     </div>
                   </div>
-                  {/* Days bar */}
                   <div style={{height:5,background:"rgba(255,255,255,0.06)",borderRadius:99,overflow:"hidden"}}>
                     <div style={{height:"100%",width:`${Math.min(100,Math.max(0,(365-days)/365*100))}%`,background:`linear-gradient(90deg,${c}80,${c})`,borderRadius:99,transition:"width 0.5s ease"}}/>
                   </div>
@@ -1867,8 +1750,6 @@ const Sales = () => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:20}}>
-
-      {/* ── Summary stat cards ── */}
       <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:14}}>
         <StatCard icon="💰" label="Total Sales"  value={fmt(totals.sales)}  sub={`${totals.qty} units sold`}           color="#34d399" bg="rgba(52,211,153,0.06)"/>
         <StatCard icon="📈" label="Gross Profit" value={fmt(totals.profit)} sub={`Margin: ${(totals.profit/totals.sales*100).toFixed(1)}%`} color="#38bdf8" bg="rgba(56,189,248,0.06)"/>
@@ -1878,11 +1759,7 @@ const Sales = () => {
         <StatCard icon="🏆" label="Net Profit"   value={fmt(totals.net)}    sub="After tax deduction"                   color="#a78bfa" bg="rgba(167,139,250,0.06)"/>
         <StatCard icon="📦" label="Total COGS"   value={fmt(totals.cost)}   sub="Cost of goods sold"                    color="#fb7185" bg="rgba(251,113,133,0.06)"/>
       </div>
-
-      {/* ── Best & slow movers ── */}
       <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14}}>
-
-        {/* Best sellers */}
         <div className="card fu2">
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
             <div style={{width:32,height:32,borderRadius:9,background:"rgba(52,211,153,0.12)",border:"1px solid rgba(52,211,153,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🏆</div>
@@ -1905,8 +1782,6 @@ const Sales = () => {
             </div>
           ))}
         </div>
-
-        {/* Slow movers */}
         <div className="card fu2">
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
             <div style={{width:32,height:32,borderRadius:9,background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.25)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🐢</div>
@@ -1930,8 +1805,6 @@ const Sales = () => {
           ))}
         </div>
       </div>
-
-      {/* ── Sales table ── */}
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12}}>
         <div className="tab-wrap">
           {["Daily","Monthly","Yearly"].map(t=>(
@@ -1976,7 +1849,6 @@ const Sales = () => {
                 </tr>
               ))}
             </tbody>
-            {/* Totals row */}
             <tfoot>
               <tr style={{borderTop:"2px solid rgba(255,255,255,0.08)"}}>
                 <td className="td" colSpan={2} style={{fontWeight:800,color:"rgba(255,255,255,0.7)",fontSize:12,letterSpacing:"0.05em"}}>TOTAL</td>
@@ -1992,8 +1864,6 @@ const Sales = () => {
           </table>
         </div>
       </div>
-
-      {/* Tax info note */}
       <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 16px",background:"rgba(251,191,36,0.05)",border:"1px solid rgba(251,191,36,0.15)",borderRadius:10}}>
         <span style={{fontSize:14}}>🧾</span>
         <span style={{fontSize:11,color:"rgba(255,255,255,0.4)"}}>Tax computed at <strong style={{color:"#fbbf24"}}>12% VAT</strong> on gross sales. Net Profit = Gross Profit − Tax. Adjust tax rate in <strong style={{color:"rgba(255,255,255,0.5)"}}>Settings → Default Values</strong>.</span>
@@ -2279,8 +2149,6 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-
-      {/* ── Header ── */}
       <div className="fu1" style={{display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
         <button onClick={onBack} className="btn" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px"}}>
           <ArrowLeft size={15}/> Back
@@ -2299,8 +2167,6 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
           <span style={{fontSize:12,color:"#fde68a",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
-
-      {/* ── Critical Alerts Banner ── */}
       {critical.length > 0 && (
         <div className="fu2" style={{background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:14,padding:"14px 20px",display:"flex",flexDirection:"column",gap:8}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:2}}>
@@ -2320,8 +2186,6 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       )}
-
-      {/* ── KPI Cards ── */}
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Critical Items",    value:String(INV_PRODUCTS.filter(p=>p.urgency==="critical").length), sub:"Need restock today",   color:"#fb7185", bg:"rgba(251,113,133,0.1)", I:AlertTriangle},
@@ -2344,11 +2208,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
           </div>
         ))}
       </div>
-
-      {/* ── Charts Row ── */}
       <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.3fr","1fr"),gap:16}}>
-
-        {/* Stock vs Predicted Demand */}
         <div className="card">
           <div className="card-title">
             Stock Level vs Predicted Demand
@@ -2386,8 +2246,6 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Products Needing Restock — horizontal bar */}
         <div className="card">
           <div className="card-title">
             Restock Gap by Product
@@ -2415,8 +2273,6 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── Urgency Filter + Full Table ── */}
       <div className="fu4">
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:12}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -2478,8 +2334,6 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── Urgent Restock Summary ── */}
       <div className="fu5">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
           <div style={{width:34,height:34,borderRadius:10,background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -2519,8 +2373,6 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
                     </div>
                   ))}
                 </div>
-
-                {/* Mini stock bar */}
                 <div style={{marginBottom:8}}>
                   <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"rgba(255,255,255,0.3)",marginBottom:4}}>
                     <span>Stock Level</span>
@@ -2579,8 +2431,6 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-
-      {/* ── Header ── */}
       <div className="fu1" style={{display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
         <button onClick={onBack} className="btn" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px"}}>
           <ArrowLeft size={15}/> Back
@@ -2599,8 +2449,6 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           <span style={{fontSize:12,color:"#7dd3fc",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
-
-      {/* ── KPI Cards ── */}
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Predicted Revenue",  value:`₱${nextMonth.revenue.toLocaleString()}`,  sub:"January 2026",    color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:TrendingUp,  change:`+${revenueGrowth}%`, up:true},
@@ -2623,11 +2471,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           </div>
         ))}
       </div>
-
-      {/* ── Charts Row ── */}
       <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.3fr","1fr"),gap:16}}>
-
-        {/* Profit Trend Line Chart */}
         <div className="card">
           <div className="card-title">
             Profit Trend — Historical vs Predicted
@@ -2659,8 +2503,6 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Revenue vs Expenses Bar Chart */}
         <div className="card">
           <div className="card-title">
             Revenue vs Expenses
@@ -2712,11 +2554,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── Last Month vs Next Month Comparison + AI Insights ── */}
       <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
-
-        {/* Comparison Table */}
         <div className="card">
           <div className="card-title">Last Month vs Predicted Next Month</div>
           <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:12,marginBottom:20}}>
@@ -2739,8 +2577,6 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
               );
             })}
           </div>
-
-          {/* Month-by-month table */}
           <table style={{width:"100%",borderCollapse:"collapse"}}>
             <thead>
               <tr>
@@ -2770,8 +2606,6 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
             </tbody>
           </table>
         </div>
-
-        {/* AI Insights */}
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -2779,8 +2613,6 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
               AI Profit Insights
             </div>
           </div>
-
-          {/* Big featured insight */}
           <div style={{
             background:"linear-gradient(135deg,rgba(56,189,248,0.12),rgba(129,140,248,0.06))",
             border:"1px solid rgba(56,189,248,0.25)",borderRadius:14,padding:"18px 20px",marginBottom:16,
@@ -2818,8 +2650,6 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── 3-Month Forecast Summary ── */}
       <div className="fu5 grid-3col" style={{display:"grid",gridTemplateColumns:colsW(3),gap:16}}>
         {PROFIT_HISTORY.slice(6).map((m,i)=>{
           const prev = PROFIT_HISTORY[5+i];
@@ -2933,8 +2763,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-
-      {/* ── Header ── */}
       <div className="fu1" style={{display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
         <button onClick={onBack} className="btn" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px"}}>
           <ArrowLeft size={15}/> Back
@@ -2953,8 +2781,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
           <span style={{fontSize:12,color:"#fda4af",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
-
-      {/* ── KPI Cards ── */}
       <div className="fu2 grid-5col" style={{display:"grid",gridTemplateColumns:colsW(5),gap:14}}>
         {EXP_CATEGORIES.map(c => {
           const prev = (lastMonth as any)[c.key];
@@ -2980,11 +2806,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
           );
         })}
       </div>
-
-      {/* ── Total + vs last month ── */}
       <div className="fu2 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","2fr"),gap:16}}>
-
-        {/* Total next month */}
         <div style={{background:"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.04))",border:"1px solid rgba(251,113,133,0.22)",borderRadius:16,padding:"22px 24px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
           <div>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.35)",letterSpacing:"0.07em",textTransform:"uppercase",marginBottom:6}}>Total Estimated Expenses</div>
@@ -3013,8 +2835,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
             </div>
           </div>
         </div>
-
-        {/* Last vs next breakdown */}
         <div className="card">
           <div className="card-title">December 2025 vs January 2026 — Category Breakdown</div>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -3048,11 +2868,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── Charts ── */}
       <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","1.6fr"),gap:16}}>
-
-        {/* Pie chart — expense distribution */}
         <div className="card">
           <div className="card-title">
             Expense Distribution — January 2026
@@ -3089,7 +2905,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          {/* Legend */}
           <div style={{display:"flex",flexDirection:"column",gap:7}}>
             {pieExpData.map((e,i) => {
               const pct = ((e.value/nextTotal)*100).toFixed(1);
@@ -3104,8 +2919,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
             })}
           </div>
         </div>
-
-        {/* Stacked bar chart — monthly expenses */}
         <div className="card">
           <div className="card-title">
             Predicted Monthly Expenses by Category
@@ -3160,8 +2973,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── AI Insights ── */}
       <div className="fu4">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
           <div style={{width:34,height:34,borderRadius:10,background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -3172,8 +2983,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
             <p style={{fontSize:12,color:"rgba(255,255,255,0.3)",marginTop:1}}>Category-level predictions and cost-saving recommendations</p>
           </div>
         </div>
-
-        {/* Featured insight */}
         <div style={{background:"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.03))",border:"1px solid rgba(251,113,133,0.25)",borderRadius:14,padding:"18px 22px",marginBottom:16,display:"flex",gap:16,alignItems:"flex-start"}}>
           <div style={{width:52,height:52,borderRadius:12,background:"rgba(251,113,133,0.15)",border:"1px solid rgba(251,113,133,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
             <Receipt size={24} color="#fb7185"/>
@@ -3213,8 +3022,6 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
           ))}
         </div>
       </div>
-
-      {/* ── 3-month forecast table ── */}
       <div className="fu5">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
           <div style={{width:34,height:34,borderRadius:10,background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -3300,8 +3107,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-
-      {/* ── Header ── */}
       <div className="fu1" style={{display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
         <button onClick={onBack} className="btn" style={{display:"flex",alignItems:"center",gap:8,padding:"8px 14px"}}>
           <ArrowLeft size={15}/> Back
@@ -3324,8 +3129,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           <span style={{fontSize:12,color:"#c4b5fd",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
-
-      {/* ── Filter ── */}
       <div className="fu2" style={{display:"flex",alignItems:"center",gap:12}}>
         <span style={{fontSize:12,color:"rgba(255,255,255,0.4)",fontWeight:600,letterSpacing:"0.05em"}}>VIEW BEHAVIOR BY</span>
         <div className="tab-wrap">
@@ -3337,8 +3140,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           Showing: <span style={{color:"#a78bfa",fontWeight:600,textTransform:"capitalize"}}>{filter}</span> patterns
         </div>
       </div>
-
-      {/* ── KPI Cards ── */}
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Peak Shopping Hour",  value: peaks[0].label.split("–")[0].trim(), sub:`${filter} peak window`, color:"#a78bfa", bg:"rgba(167,139,250,0.1)", I:Users},
@@ -3359,10 +3160,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           </div>
         ))}
       </div>
-
-      {/* ── Heatmap (full width) ── */}
       <div className="fu3 card" style={{padding:"20px 20px 16px"}}>
-        {/* Card header */}
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:18,flexWrap:"wrap",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <div style={{width:32,height:32,borderRadius:9,background:"rgba(167,139,250,0.12)",border:"1px solid rgba(167,139,250,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -3373,15 +3171,12 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
               <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:1}}>Activity intensity by day &amp; hour · hover a cell for details</div>
             </div>
           </div>
-          {/* Gradient legend */}
           <div style={{display:"flex",alignItems:"center",gap:8}}>
             <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Low</span>
             <div style={{width:120,height:10,borderRadius:99,background:"linear-gradient(90deg,rgba(129,140,248,0.15),rgba(167,139,250,0.5),rgba(251,113,133,0.65),rgba(251,113,133,0.97))",border:"1px solid rgba(255,255,255,0.06)"}}/>
             <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>High</span>
           </div>
         </div>
-
-        {/* Hour axis labels — all 24, evenly spaced */}
         <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch" as any}}>
         <div style={{minWidth:600}}>
         <div style={{display:"grid",gridTemplateColumns:"40px repeat(24,1fr)",gap:3,marginBottom:4}}>
@@ -3390,8 +3185,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
             <div key={i} style={{fontSize:9,color:i%2===0?"rgba(255,255,255,0.3)":"transparent",textAlign:"center",userSelect:"none"}}>{h}</div>
           ))}
         </div>
-
-        {/* Heatmap rows — cells stretch to fill full width via grid */}
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           {DAYS.map((day,di)=>(
             <div key={day} style={{display:"grid",gridTemplateColumns:"40px repeat(24,1fr)",gap:3,alignItems:"center"}}>
@@ -3415,8 +3208,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
             </div>
           ))}
         </div>
-
-        {/* Hourly sparkline summary — average activity per hour across all days */}
         <div style={{marginTop:14,paddingTop:14,borderTop:"1px solid rgba(255,255,255,0.05)"}}>
           <div style={{fontSize:11,color:"rgba(255,255,255,0.3)",marginBottom:8,fontWeight:600,letterSpacing:"0.05em"}}>HOURLY AVERAGE ACROSS ALL DAYS</div>
           <div style={{display:"grid",gridTemplateColumns:"40px repeat(24,1fr)",gap:3,alignItems:"flex-end"}}>
@@ -3441,8 +3232,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
         </div>
         </div>{/* end minWidth */}
         </div>{/* end heatmap scroll */}
-
-        {/* Peak callout strips */}
         <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10,marginTop:14}}>
           {peaks.map((p,i)=>{
             const colors=["#fb7185","#fbbf24","#a78bfa"];
@@ -3463,11 +3252,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           })}
         </div>
       </div>
-
-      {/* ── Peak breakdown + Bought Together (below heatmap) ── */}
       <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1.2fr","1fr"),gap:16}}>
-
-        {/* Day-of-week activity summary */}
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -3497,8 +3282,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
             })}
           </div>
         </div>
-
-        {/* Products Bought Together */}
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -3529,11 +3312,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── Bar Chart + Loyalty Table ── */}
       <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","1.1fr"),gap:16}}>
-
-        {/* Most Purchased Bar Chart */}
         <div className="card">
           <div className="card-title">
             Most Frequently Purchased Products
@@ -3554,7 +3333,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
                     <div style={{height:7,background:"rgba(255,255,255,0.05)",borderRadius:99,overflow:"hidden",position:"relative"}}>
                       <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${p.color},${p.color}88)`,
                         borderRadius:99,boxShadow:`0 0 8px ${p.color}44`,transition:"width 0.5s ease"}}/>
-                      {/* shimmer overlay */}
                       <div className="shimmer-bar" style={{position:"absolute",inset:0,borderRadius:99}}/>
                     </div>
                   </div>
@@ -3563,8 +3341,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
             })}
           </div>
         </div>
-
-        {/* Customer Loyalty Ranking */}
         <div className="card" style={{padding:0}}>
           <div style={{padding:"16px 20px 12px"}}>
             <div className="card-title" style={{marginBottom:0}}>
@@ -3616,8 +3392,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
       </div>
-
-      {/* ── AI Insights ── */}
       <div className="fu5">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
           <div style={{width:34,height:34,borderRadius:10,
@@ -3659,8 +3433,6 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           ))}
         </div>
       </div>
-
-      {/* ── Bought Together Detail ── */}
       <div className="fu6">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
           <div style={{width:34,height:34,borderRadius:10,
@@ -3783,14 +3555,11 @@ const Finance = () => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-
-      {/* ══ 1. PAGE HEADER ══ */}
       <div className="fu1" style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:14}}>
         <div>
           <h1 style={{fontSize:24,fontWeight:700,color:"#fff",letterSpacing:"-0.01em"}}>Financial Dashboard</h1>
           <p style={{fontSize:13,color:"rgba(255,255,255,0.35)",marginTop:3}}>Monitor profits, expenses, and cash flow — January 2026</p>
         </div>
-        {/* Export */}
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
           <ExportMenu label="Export Report"/>
           <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:10,padding:"6px 14px"}}>
@@ -3799,8 +3568,6 @@ const Finance = () => {
           </div>
         </div>
       </div>
-
-      {/* ══ 2. PROFIT OVERVIEW CARDS ══ */}
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Daily Profit",   value:`₱${(FIN_CURR_PROFIT/30).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}`, sub:"Avg today",  color:"#34d399",  bg:"rgba(52,211,153,0.1)",  I:TrendingUp,  chg:"+5.2%",  up:true},
@@ -3821,8 +3588,6 @@ const Finance = () => {
           </div>
         ))}
       </div>
-
-      {/* ══ 3. PROFIT TREND LINE CHART ══ */}
       <div className="fu3 card">
         <div className="card-title" style={{marginBottom:14}}>
           Profit Trend
@@ -3858,11 +3623,7 @@ const Finance = () => {
           </ResponsiveContainer>
         </div>
       </div>
-
-      {/* ══ 4. EXPENSE TRACKING ══ */}
       <div className="fu3 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","1.5fr"),gap:16}}>
-
-        {/* Pie */}
         <div className="card">
           <div className="card-title">Expense Distribution</div>
           <div style={{height:190}}>
@@ -3898,8 +3659,6 @@ const Finance = () => {
             </div>
           </div>
         </div>
-
-        {/* Monthly expense bar */}
         <div className="card">
           <div className="card-title">Monthly Expenses by Category</div>
           <div style={{height:280}}>
@@ -3934,11 +3693,7 @@ const Finance = () => {
           </div>
         </div>
       </div>
-
-      {/* ══ 5. NET INCOME + COMPARISON + MARGIN ══ */}
       <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsW(3),gap:16}}>
-
-        {/* Net Income card */}
         <div style={{background:isProfit?"linear-gradient(135deg,rgba(52,211,153,0.1),rgba(52,211,153,0.03))":"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.03))",border:`1px solid ${isProfit?"rgba(52,211,153,0.25)":"rgba(251,113,133,0.25)"}`,borderRadius:16,padding:"22px 24px"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
             <div style={{width:36,height:36,borderRadius:10,background:isProfit?"rgba(52,211,153,0.15)":"rgba(251,113,133,0.15)",border:`1px solid ${isProfit?"rgba(52,211,153,0.3)":"rgba(251,113,133,0.3)"}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -3966,8 +3721,6 @@ const Finance = () => {
             </div>
           </div>
         </div>
-
-        {/* Financial Comparison */}
         <div className="card">
           <div className="card-title" style={{marginBottom:14}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -4013,8 +3766,6 @@ const Finance = () => {
             </p>
           </div>
         </div>
-
-        {/* Profit Margin */}
         <div className="card">
           <div className="card-title" style={{marginBottom:14}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -4055,8 +3806,6 @@ const Finance = () => {
           </div>
         </div>
       </div>
-
-      {/* ══ 6. CASH FLOW ══ */}
       <div className="fu4 grid-split" style={{display:"grid",gridTemplateColumns:colsSplitW("1fr","2fr"),gap:16}}>
         <div className="card">
           <div className="card-title">
@@ -4116,8 +3865,6 @@ const Finance = () => {
           </div>
         </div>
       </div>
-
-      {/* ══ 7. BUDGET TRACKER ══ */}
       <div className="fu5 grid-split" style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
         <div className="card">
           <div className="card-title">
@@ -4136,7 +3883,6 @@ const Finance = () => {
             </div>
           )}
           <div style={{marginBottom:16}}>
-            {/* Radial-style progress (fake with divs) */}
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:10}}>
               <div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginBottom:4}}>Budget Used</div>
@@ -4175,8 +3921,6 @@ const Finance = () => {
             ))}
           </div>
         </div>
-
-        {/* YTD Summary */}
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -4217,8 +3961,6 @@ const Finance = () => {
           </div>
         </div>
       </div>
-
-      {/* ══ 8. FINANCIAL REPORTS ══ */}
       <div className="fu5 card">
         <div className="card-title" style={{marginBottom:16}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -4390,8 +4132,6 @@ const UserPage = () => {
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:24}}>
-
-      {/* ── Header ── */}
       <div className="fu1" style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:14}}>
         <div>
           <h1 style={{fontSize:24,fontWeight:700,color:"#fff",letterSpacing:"-0.01em"}}>User Management</h1>
@@ -4401,8 +4141,6 @@ const UserPage = () => {
           <Plus size={15}/> Add User
         </button>
       </div>
-
-      {/* ── Stat Cards ── */}
       <div className="fu2 grid-5col" style={{display:"grid",gridTemplateColumns:colsW(5),gap:14}}>
         {[
           {label:"Total Users",    value:stats.total,    color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:Users},
@@ -4423,8 +4161,6 @@ const UserPage = () => {
           </div>
         ))}
       </div>
-
-      {/* ── Tabs ── */}
       <div className="fu2" style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
         <div className="tab-wrap">
           {([["users","User List"],["roles","Roles & Permissions"],["logs","Activity Logs"],["security","Security"]] as const).map(([k,l])=>(
@@ -4438,11 +4174,8 @@ const UserPage = () => {
           </div>
         )}
       </div>
-
-      {/* ══ TAB: USER LIST ══ */}
       {tab==="users"&&(
         <div className="fu3" style={{display:"flex",flexDirection:"column",gap:16}}>
-          {/* search */}
           <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
             <div style={{position:"relative",flex:1,minWidth:220}}>
               <Search size={14} style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",color:"rgba(255,255,255,0.3)"}}/>
@@ -4510,8 +4243,6 @@ const UserPage = () => {
               </table>
             </div>
           </div>
-
-          {/* Role distribution pie */}
           <div className="card" style={{display:"grid",gridTemplateColumns:"auto 1fr",gap:24,alignItems:"center",padding:"20px 24px"}}>
             <div style={{width:140,height:140}}>
               <ResponsiveContainer width="100%" height="100%">
@@ -4548,11 +4279,8 @@ const UserPage = () => {
           </div>
         </div>
       )}
-
-      {/* ══ TAB: ROLES & PERMISSIONS ══ */}
       {tab==="roles"&&(
         <div className="fu3" style={{display:"flex",flexDirection:"column",gap:16}}>
-          {/* Role definition cards */}
           <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:14}}>
             {(Object.entries(ROLE_COLORS) as [URole, typeof ROLE_COLORS[URole]][]).map(([role,rc])=>(
               <div key={role} style={{background:rc.bg,border:`1px solid ${rc.border}`,borderRadius:14,padding:"18px 20px"}}>
@@ -4578,8 +4306,6 @@ const UserPage = () => {
               </div>
             ))}
           </div>
-
-          {/* Permissions table */}
           <div className="card" style={{padding:0}}>
             <div style={{padding:"16px 20px 0"}}>
               <div className="card-title" style={{marginBottom:0}}>Feature Permission Matrix</div>
@@ -4618,8 +4344,6 @@ const UserPage = () => {
           </div>
         </div>
       )}
-
-      {/* ══ TAB: ACTIVITY LOGS ══ */}
       {tab==="logs"&&(
         <div className="fu3" style={{display:"flex",flexDirection:"column",gap:16}}>
           <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
@@ -4661,12 +4385,8 @@ const UserPage = () => {
           </div>
         </div>
       )}
-
-      {/* ══ TAB: SECURITY ══ */}
       {tab==="security"&&(
         <div className="fu3" style={{display:"flex",flexDirection:"column",gap:16}}>
-
-          {/* Suspicious alerts */}
           {suspicious.length>0&&(
             <div style={{background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.22)",borderRadius:14,padding:"16px 20px"}}>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
@@ -4688,8 +4408,6 @@ const UserPage = () => {
               </div>
             </div>
           )}
-
-          {/* Security feature grid */}
           <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:14}}>
             {[
               {icon:"🔐",title:"Password Encryption",   status:"Active",   color:"#34d399", desc:"All passwords are hashed using bcrypt with salt rounds. No plaintext passwords stored."},
@@ -4709,8 +4427,6 @@ const UserPage = () => {
               </div>
             ))}
           </div>
-
-          {/* 2FA status per user */}
           <div className="card">
             <div className="card-title">Two-Factor Authentication Status</div>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -4735,13 +4451,9 @@ const UserPage = () => {
           </div>
         </div>
       )}
-
-      {/* ══ MODAL: ADD/EDIT ══ */}
       {(modal==="add"||modal==="edit")&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200,padding:"16px"}}>
           <div className={userShake?"form-shake":""} style={{background:"#13131f",border:"1px solid rgba(255,255,255,0.1)",borderRadius:20,padding:32,width:"100%",maxWidth:480}}>
-
-            {/* Header */}
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
               <h3 style={{fontSize:18,fontWeight:700,color:"#fff"}}>{modal==="add"?"Add New User":"Edit User"}</h3>
               {Object.values(userErrors).some(Boolean)&&(
@@ -4753,7 +4465,6 @@ const UserPage = () => {
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
-              {/* Full Name */}
               <div>
                 <label style={{fontSize:11,fontWeight:700,color:userErrors.name?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
                   FULL NAME <span style={{color:"#fb7185"}}>*</span>
@@ -4773,7 +4484,6 @@ const UserPage = () => {
               </div>
 
               <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
-                {/* Username */}
                 <div>
                   <label style={{fontSize:11,fontWeight:700,color:userErrors.username?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
                     USERNAME <span style={{color:"#fb7185"}}>*</span>
@@ -4784,7 +4494,6 @@ const UserPage = () => {
                     placeholder={userErrors.username?"Required":"msantos"}/>
                   {userErrors.username&&<div className="err-msg"><span>⚠</span>Username is required</div>}
                 </div>
-                {/* Email */}
                 <div>
                   <label style={{fontSize:11,fontWeight:700,color:userErrors.email?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
                     EMAIL <span style={{color:"#fb7185"}}>*</span>
@@ -4824,8 +4533,6 @@ const UserPage = () => {
           </div>
         </div>
       )}
-
-      {/* ══ MODAL: DELETE ══ */}
       {modal==="delete"&&selected&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200}}>
           <div style={{background:"#13131f",border:"1px solid rgba(251,113,133,0.25)",borderRadius:20,padding:36,maxWidth:380,width:"90%",textAlign:"center"}}>
@@ -4955,65 +4662,24 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
       overflow:authMob?"auto":"hidden",fontFamily:"'Inter',sans-serif",
     }}>
       <style>{G_AUTH}</style>
-
-      {/* ── Animated background grid ── */}
       <div style={{position:"fixed",inset:0,backgroundImage:"linear-gradient(rgba(212,175,55,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.03) 1px,transparent 1px)",backgroundSize:"60px 60px",animation:"gridPulse 4s ease infinite",pointerEvents:"none"}}/>
-
-      {/* ── Floating orbs ── */}
       {orbs.map((o,i)=>(
         <div key={i} style={{position:"fixed",top:o.top,left:o.left,width:o.w,height:o.h,borderRadius:"50%",background:o.c,filter:"blur(60px)",animation:`floatOrb ${o.dur}s ease-in-out infinite`,animationDelay:`${i*1.3}s`,pointerEvents:"none"}}/>
       ))}
-
-      {/* ── Scan line ── */}
       <div style={{position:"fixed",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,rgba(212,175,55,0.15),transparent)",animation:"scanLine 8s linear infinite",pointerEvents:"none"}}/>
-
-      {/* ══ LEFT PANEL — hidden on mobile ══ */}
       {!authMob&&<div style={{
         flex:1, position:"relative", overflow:"hidden",
         display:"flex",alignItems:"center",justifyContent:"center",
         transition:"flex 0.5s cubic-bezier(0.4,0,0.2,1)",
       }}>
-        {/* City skyline gradient background */}
         <div style={{position:"absolute",inset:0,background:"linear-gradient(160deg,#0a0a1a 0%,#0d1a2e 40%,#0a1520 70%,#080d18 100%)"}}/>
-        {/* Subtle building silhouettes via gradient layers */}
         <div style={{position:"absolute",bottom:0,left:0,right:0,height:"45%",background:"linear-gradient(180deg,transparent 0%,rgba(10,15,30,0.95) 100%)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:0,left:0,right:0,height:"30%",background:"linear-gradient(180deg,transparent 0%,#050510 100%)"}}/>
-        {/* City silhouette SVG */}
-        <svg style={{position:"absolute",bottom:0,left:0,right:0,width:"100%",opacity:0.18}} viewBox="0 0 800 200" preserveAspectRatio="none">
-          <rect x="0" y="80" width="40" height="120" fill="#d4af37"/>
-          <rect x="10" y="60" width="20" height="20" fill="#d4af37"/>
-          <rect x="50" y="110" width="30" height="90" fill="#d4af37"/>
-          <rect x="90" y="50" width="50" height="150" fill="#d4af37"/>
-          <rect x="100" y="30" width="10" height="25" fill="#d4af37"/>
-          <rect x="100" y="20" width="10" height="12" fill="#d4af37"/>
-          <rect x="150" y="90" width="35" height="110" fill="#d4af37"/>
-          <rect x="195" y="40" width="55" height="160" fill="#d4af37"/>
-          <rect x="218" y="20" width="10" height="24" fill="#d4af37"/>
-          <rect x="260" y="70" width="40" height="130" fill="#d4af37"/>
-          <rect x="310" y="100" width="30" height="100" fill="#d4af37"/>
-          <rect x="350" y="55" width="60" height="145" fill="#d4af37"/>
-          <rect x="370" y="30" width="20" height="28" fill="#d4af37"/>
-          <rect x="420" y="85" width="35" height="115" fill="#d4af37"/>
-          <rect x="465" y="45" width="50" height="155" fill="#d4af37"/>
-          <rect x="487" y="22" width="8" height="26" fill="#d4af37"/>
-          <rect x="525" y="75" width="40" height="125" fill="#d4af37"/>
-          <rect x="575" y="95" width="30" height="105" fill="#d4af37"/>
-          <rect x="615" y="50" width="55" height="150" fill="#d4af37"/>
-          <rect x="635" y="28" width="12" height="24" fill="#d4af37"/>
-          <rect x="680" y="80" width="38" height="120" fill="#d4af37"/>
-          <rect x="728" y="60" width="45" height="140" fill="#d4af37"/>
-          <rect x="748" y="35" width="8" height="28" fill="#d4af37"/>
-          <rect x="0" y="140" width="800" height="60" fill="#d4af37" opacity="0.5"/>
-        </svg>
-
-        {/* Content */}
+        <svg style={{position:"absolute",bottom:0,left:0,right:0,width:"100%",opacity:0.18}} viewBox="0 0 800 200" preserveAspectRatio="none"><path d="M0 80h40v120H0zM10 60h20v20H10zM50 110h30v90H50zM90 50h50v150H90zM100 20h10v25h-10zM150 90h35v110H150zM195 40h55v160H195zM218 20h10v24h-10zM260 70h40v130H260zM310 100h30v100H310zM350 55h60v145H350zM370 30h20v28H370zM420 85h35v115H420zM465 45h50v155H465zM487 22h8v26h-8zM525 75h40v125H525zM575 95h30v105H575zM615 50h55v150H615zM635 28h12v24H635zM680 80h38v120H680zM728 60h45v140H728zM748 35h8v28H748z" fill="#d4af37"/><rect x="0" y="140" width="800" height="60" fill="#d4af37" opacity="0.5"/></svg>
         <div style={{position:"relative",zIndex:2,textAlign:"center",padding:"0 48px",animation:"authSlideL 0.7s ease both"}}>
-          {/* Logo */}
           <div style={{position:"relative",width:100,height:100,margin:"0 auto 28px",animation:"logoGlow 3s ease infinite"}}>
-            {/* Outer spinning ring */}
             <div style={{position:"absolute",inset:-8,borderRadius:"50%",border:"1.5px solid transparent",borderTopColor:"rgba(212,175,55,0.6)",borderRightColor:"rgba(212,175,55,0.2)",animation:"spinRing 3s linear infinite"}}/>
             <div style={{position:"absolute",inset:-14,borderRadius:"50%",border:"1px solid transparent",borderBottomColor:"rgba(212,175,55,0.3)",borderLeftColor:"rgba(212,175,55,0.1)",animation:"spinRingR 5s linear infinite"}}/>
-            {/* Logo */}
             <div style={{width:"100%",height:"100%",borderRadius:"50%",overflow:"hidden",boxShadow:"0 0 40px rgba(212,175,55,0.3)"}}>
               <BaryalyticsLogo size={100}/>
             </div>
@@ -5063,16 +4729,12 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               >← Login</button>
             </>
           )}
-
-          {/* Decorative corner accents */}
           <div style={{position:"absolute",top:20,left:20,width:30,height:30,borderTop:"2px solid rgba(212,175,55,0.3)",borderLeft:"2px solid rgba(212,175,55,0.3)",borderRadius:"3px 0 0 0"}}/>
           <div style={{position:"absolute",top:20,right:20,width:30,height:30,borderTop:"2px solid rgba(212,175,55,0.3)",borderRight:"2px solid rgba(212,175,55,0.3)",borderRadius:"0 3px 0 0"}}/>
           <div style={{position:"absolute",bottom:20,left:20,width:30,height:30,borderBottom:"2px solid rgba(212,175,55,0.3)",borderLeft:"2px solid rgba(212,175,55,0.3)",borderRadius:"0 0 0 3px"}}/>
           <div style={{position:"absolute",bottom:20,right:20,width:30,height:30,borderBottom:"2px solid rgba(212,175,55,0.3)",borderRight:"2px solid rgba(212,175,55,0.3)",borderRadius:"0 0 3px 0"}}/>
         </div>
       </div>}
-
-      {/* ══ RIGHT PANEL — Form ══ */}
       <div style={{
         width:authMob?"100%":"48%",
         minWidth:authMob?"unset":"420px",
@@ -5083,9 +4745,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
         display:"flex",alignItems:"center",justifyContent:"center",
         overflow:"hidden",
       }}>
-        {/* Glass shimmer top edge */}
         <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:"linear-gradient(90deg,transparent,rgba(212,175,55,0.3),transparent)"}}/>
-        {/* Subtle inner glow */}
         <div style={{position:"absolute",top:0,right:0,width:300,height:300,background:"radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 70%)",pointerEvents:"none"}}/>
 
         <div style={{
@@ -5094,9 +4754,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
           transition:"opacity 0.22s ease,transform 0.22s ease",
           animation:"authSlideR 0.7s ease both",
         }}>
-          {/* Form header */}
           <div style={{marginBottom:authMob?24:36,textAlign:"center"}}>
-            {/* Mobile: show mini logo since left panel is hidden */}
             {authMob&&(
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:20}}>
                 <div style={{width:44,height:44,borderRadius:"50%",overflow:"hidden",boxShadow:"0 0 16px rgba(212,175,55,0.35)"}}>
@@ -5116,13 +4774,9 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             <div style={{fontSize:13,color:"rgba(255,255,255,0.3)"}}>
               {isLogin?"Welcome back — enter your credentials":"Create your Baryalytics account"}
             </div>
-            {/* Underline accent */}
             <div style={{width:48,height:3,background:"linear-gradient(90deg,#b8860b,#d4af37)",borderRadius:99,margin:"14px auto 0",boxShadow:"0 0 10px rgba(212,175,55,0.4)"}}/>
           </div>
-
-          {/* Fields */}
           <div style={{display:"flex",flexDirection:"column",gap:18,animation:`shake ${shake?"0.4s ease":"0s"}`}}>
-            {/* Name */}
             <div>
               <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>NAME</label>
               <div style={{position:"relative"}}>
@@ -5130,8 +4784,6 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                 <div style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",color:"rgba(255,255,255,0.2)",pointerEvents:"none",fontSize:16}}>👤</div>
               </div>
             </div>
-
-            {/* Email — signup only */}
             {!isLogin&&(
               <div>
                 <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>EMAIL</label>
@@ -5141,8 +4793,6 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                 </div>
               </div>
             )}
-
-            {/* Password */}
             <div>
               <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>PASSWORD</label>
               <div style={{position:"relative"}}>
@@ -5152,8 +4802,6 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                 </button>
               </div>
             </div>
-
-            {/* Remember + Forgot */}
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <label style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",userSelect:"none"}}>
                 <div onClick={()=>setRemember(v=>!v)} style={{width:18,height:18,borderRadius:5,border:`1.5px solid ${remember?"rgba(212,175,55,0.7)":"rgba(255,255,255,0.2)"}`,background:remember?"rgba(212,175,55,0.15)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",transition:"all 0.15s"}}>
@@ -5163,8 +4811,6 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               </label>
               <button style={{background:"none",border:"none",color:"rgba(212,175,55,0.7)",fontSize:12,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Forgot Password?</button>
             </div>
-
-            {/* Submit button */}
             <button onClick={submit} style={{
               width:"100%",padding:"15px",
               background:loading
@@ -5188,15 +4834,11 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                 : isLogin ? "Login →" : "Create Account →"
               }
             </button>
-
-            {/* Divider */}
             <div style={{display:"flex",alignItems:"center",gap:14}}>
               <div style={{flex:1,height:1,background:"rgba(255,255,255,0.06)"}}/>
               <span style={{fontSize:11,color:"rgba(255,255,255,0.25)"}}>or continue with</span>
               <div style={{flex:1,height:1,background:"rgba(255,255,255,0.06)"}}/>
             </div>
-
-            {/* Social buttons */}
             <div style={{display:"flex",gap:12,justifyContent:"center"}}>
               {[
                 {icon:"G",bg:"linear-gradient(135deg,#4285f4,#34a853,#fbbc05,#ea4335)",label:"Google"},
@@ -5209,8 +4851,6 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               ))}
             </div>
           </div>
-
-          {/* Switch mode link */}
           <div style={{textAlign:"center",marginTop:28}}>
             <span style={{fontSize:13,color:"rgba(255,255,255,0.3)"}}>
               {isLogin?"Don't have an account? ":"Already have an account? "}
@@ -5219,8 +4859,6 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               {isLogin?"Sign up":"Login"}
             </button>
           </div>
-
-          {/* Version tag */}
           <div style={{textAlign:"center",marginTop:24,fontSize:10,color:"rgba(255,255,255,0.12)",letterSpacing:"0.1em"}}>BARYALYTICS v2.0 · 2026</div>
         </div>
       </div>
@@ -5278,10 +4916,7 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
 
   return ReactDOM.createPortal(
     <div style={{position:"fixed",inset:0,zIndex:9990,display:"flex",justifyContent:"flex-end"}} onMouseDown={onClose}>
-      {/* Backdrop */}
       <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.35)",backdropFilter:"blur(2px)"}}/>
-
-      {/* Panel */}
       <div
         style={{
           position:"relative",zIndex:1,
@@ -5294,7 +4929,6 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
         }}
         onMouseDown={e=>e.stopPropagation()}
       >
-        {/* ── Header ── */}
         <div style={{padding:"20px 20px 0",borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
@@ -5314,7 +4948,6 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
               <button onClick={onClose} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.08)",cursor:"pointer",color:"rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>✕</button>
             </div>
           </div>
-          {/* Filter tabs */}
           <div style={{display:"flex",gap:4,paddingBottom:1}}>
             {(["all","unread","urgent"] as const).map(f=>(
               <button key={f} onClick={()=>setFilter(f)} style={{
@@ -5328,8 +4961,6 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
             ))}
           </div>
         </div>
-
-        {/* ── Notification list ── */}
         <div style={{flex:1,overflowY:"auto",padding:"8px 0"}}>
           {shown.length===0&&(
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"60px 24px",textAlign:"center"}}>
@@ -5354,11 +4985,9 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
                 onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.background=n.read?"transparent":"rgba(255,255,255,0.018)"}
                 onClick={()=>markOne(n.id)}
               >
-                {/* Unread indicator */}
                 {!n.read&&<div style={{position:"absolute",left:6,top:"50%",transform:"translateY(-50%)",width:4,height:4,borderRadius:"50%",background:"#818cf8",boxShadow:"0 0 6px #818cf8"}}/>}
 
                 <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                  {/* Icon */}
                   <div style={{
                     width:38,height:38,borderRadius:11,flexShrink:0,
                     background:m.bg,border:`1px solid ${m.color}28`,
@@ -5370,8 +4999,6 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
                       <div style={{position:"absolute",top:-3,right:-3,width:10,height:10,borderRadius:"50%",background:"#fb7185",border:"2px solid #0f0f1e",animation:"urgentPulse 1.5s ease infinite"}}/>
                     )}
                   </div>
-
-                  {/* Content */}
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:3}}>
                       <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -5392,8 +5019,6 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
             );
           })}
         </div>
-
-        {/* ── Footer ── */}
         <div style={{padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,0.06)",display:"flex",gap:8}}>
           <button style={{flex:1,padding:"9px",background:"rgba(129,140,248,0.1)",border:"1px solid rgba(129,140,248,0.2)",borderRadius:10,color:"#818cf8",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}}
             onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(129,140,248,0.2)";}}
@@ -5411,6 +5036,158 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
 };
 
 /* ── SETTINGS PAGE ────────────────────────────────────────────────── */
+/* ── FAQ ITEM (accordion) ─────────────────────────────────────────── */
+const FaqItem = ({q,a,idx}:{q:string;a:string;idx:number}) => {
+  const [open,setOpen] = React.useState(false);
+  return (
+    <div style={{borderBottom:"1px solid rgba(255,255,255,0.05)",paddingBottom:open?0:0}}>
+      <button onClick={()=>setOpen(v=>!v)} style={{
+        width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",
+        gap:14,padding:"14px 0",background:"none",border:"none",cursor:"pointer",
+        fontFamily:"'Inter',sans-serif",textAlign:"left",
+      }}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:22,height:22,borderRadius:6,background:"rgba(251,191,36,0.12)",border:"1px solid rgba(251,191,36,0.22)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:"#fbbf24",flexShrink:0}}>{idx+1}</div>
+          <span style={{fontSize:13,fontWeight:600,color:open?"#fff":"rgba(255,255,255,0.7)"}}>{q}</span>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={open?"#fbbf24":"rgba(255,255,255,0.3)"} strokeWidth="2.5" strokeLinecap="round"
+          style={{transform:open?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.2s",flexShrink:0}}>
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      {open&&(
+        <div style={{padding:"0 0 14px 32px",fontSize:12,color:"rgba(255,255,255,0.5)",lineHeight:1.7,animation:"fadeUp 0.18s ease both"}}>
+          {a}
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ── FEEDBACK SECTION ─────────────────────────────────────────────── */
+const FeedbackSection = ({showSaved}:{showSaved:(m:string)=>void}) => {
+  const [fbType,  setFbType]  = React.useState("General");
+  const [fbRating,setFbRating]= React.useState(0);
+  const [fbHover, setFbHover] = React.useState(0);
+  const [fbMsg,   setFbMsg]   = React.useState("");
+  const [fbEmail, setFbEmail] = React.useState("");
+  const [fbErr,   setFbErr]   = React.useState(false);
+
+  const submit = () => {
+    if(!fbMsg.trim()){setFbErr(true);return;}
+    setFbErr(false);
+    showSaved("Thank you! Your feedback has been submitted 🙏");
+    setFbMsg(""); setFbRating(0); setFbEmail("");
+  };
+
+  const stars = [1,2,3,4,5];
+  const types = ["General","Bug Report","Feature Request","Compliment","Other"];
+
+  return (
+    <div className="fu1" style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div className="card" style={{background:"linear-gradient(135deg,rgba(167,139,250,0.08),rgba(232,121,249,0.05))",border:"1px solid rgba(167,139,250,0.2)"}}>
+        <div style={{display:"flex",alignItems:"center",gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:"rgba(167,139,250,0.15)",border:"1px solid rgba(167,139,250,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>💬</div>
+          <div>
+            <div style={{fontSize:18,fontWeight:800,color:"#fff",marginBottom:3}}>Send Feedback</div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>Help us improve Baryalytics — every message is read by the team</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div style={{marginBottom:20}}>
+          <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:10}}>FEEDBACK TYPE</label>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            {types.map(t=>(
+              <button key={t} onClick={()=>setFbType(t)} style={{
+                padding:"6px 14px",borderRadius:999,border:`1.5px solid ${fbType===t?"rgba(167,139,250,0.5)":"rgba(255,255,255,0.08)"}`,
+                background:fbType===t?"rgba(167,139,250,0.12)":"rgba(255,255,255,0.03)",
+                color:fbType===t?"#c4b5fd":"rgba(255,255,255,0.5)",
+                fontSize:12,fontWeight:fbType===t?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s",
+              }}>{t}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{marginBottom:20}}>
+          <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:10}}>OVERALL EXPERIENCE</label>
+          <div style={{display:"flex",gap:8,alignItems:"center"}}>
+            {stars.map(s=>(
+              <button key={s}
+                onMouseEnter={()=>setFbHover(s)}
+                onMouseLeave={()=>setFbHover(0)}
+                onClick={()=>setFbRating(s)}
+                style={{background:"none",border:"none",cursor:"pointer",fontSize:28,lineHeight:1,transition:"transform 0.12s",transform:(fbHover||fbRating)>=s?"scale(1.2)":"scale(1)"}}>
+                <span style={{filter:(fbHover||fbRating)>=s?"drop-shadow(0 0 6px #fbbf24)":"none"}}>
+                  {(fbHover||fbRating)>=s?"⭐":"☆"}
+                </span>
+              </button>
+            ))}
+            {fbRating>0&&(
+              <span style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginLeft:8}}>
+                {["","Poor","Fair","Good","Great","Excellent!"][fbRating]}
+              </span>
+            )}
+          </div>
+        </div>
+        <div style={{marginBottom:16}}>
+          <label style={{fontSize:11,fontWeight:700,color:fbErr?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:8}}>
+            YOUR MESSAGE <span style={{color:"#fb7185"}}>*</span>
+          </label>
+          <textarea
+            value={fbMsg}
+            onChange={e=>{setFbMsg(e.target.value);setFbErr(false);}}
+            placeholder={fbErr?"Please write your message before submitting…":"Tell us what you think, what's broken, or what you'd love to see next…"}
+            rows={5}
+            className={`inp${fbErr?" inp-err":""}`}
+            style={{resize:"vertical",lineHeight:1.6}}
+          />
+          {fbErr&&<div className="err-msg"><span>⚠</span>Message is required</div>}
+          <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:6,textAlign:"right"}}>{fbMsg.length}/500 characters</div>
+        </div>
+        <div style={{marginBottom:20}}>
+          <label className="field-label">EMAIL (optional — for follow-up)</label>
+          <input type="email" value={fbEmail} onChange={e=>setFbEmail(e.target.value)}
+            placeholder="your@email.com" className="inp" style={{maxWidth:320}}/>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
+          <button onClick={submit} className="btn-g" style={{padding:"12px 32px",fontSize:13,fontWeight:700,borderRadius:12}}>
+            Send Feedback 💬
+          </button>
+          <button onClick={()=>{setFbMsg("");setFbRating(0);setFbEmail("");setFbType("General");setFbErr(false);}}
+            className="btn" style={{fontSize:12}}>Clear</button>
+          <span style={{fontSize:11,color:"rgba(255,255,255,0.25)"}}>Your feedback is private and sent directly to the Baryalytics team.</span>
+        </div>
+      </div>
+      <div className="card">
+        <div style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.6)",marginBottom:14,display:"flex",alignItems:"center",gap:8}}>
+          <span>📬</span> Recent Community Feedback
+        </div>
+        {[
+          {user:"Maria S.",type:"Feature Request",msg:"Would love a dark/light toggle on the dashboard itself without going into Settings.",stars:5,time:"2 days ago",c:"#a78bfa"},
+          {user:"Carlo M.",type:"Bug Report",    msg:"The heatmap on mobile requires a bit of horizontal scroll — works fine but could be smoother.",stars:4,time:"5 days ago",c:"#fb7185"},
+          {user:"Ana R.",  type:"Compliment",    msg:"The AI forecasting section is incredibly useful for planning our weekly orders. Keep it up!",stars:5,time:"1 week ago",c:"#34d399"},
+        ].map((fb,i)=>(
+          <div key={i} style={{padding:"12px 14px",background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:12,marginBottom:i<2?10:0}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6,flexWrap:"wrap",gap:6}}>
+              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                <div style={{width:28,height:28,borderRadius:"50%",background:`${fb.c}18`,border:`1px solid ${fb.c}28`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:fb.c}}>{fb.user[0]}</div>
+                <span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.7)"}}>{fb.user}</span>
+                <span style={{fontSize:10,color:fb.c,background:`${fb.c}12`,border:`1px solid ${fb.c}22`,borderRadius:999,padding:"2px 8px",fontWeight:600}}>{fb.type}</span>
+              </div>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <span style={{fontSize:11,color:"#fbbf24"}}>{"⭐".repeat(fb.stars)}</span>
+                <span style={{fontSize:10,color:"rgba(255,255,255,0.25)"}}>{fb.time}</span>
+              </div>
+            </div>
+            <p style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.6,margin:0}}>{fb.msg}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, setIsDark}:{authName:string; onNameChange:(n:string)=>void; appColor:string; setAppColor:(c:string)=>void; isDark:boolean; setIsDark:(v:boolean)=>void}) => {
   const [activeSection, setActiveSection] = useState("profile");
   const [saved, setSaved] = useState<string|null>(null);
@@ -5470,6 +5247,8 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
     {id:"backup",     icon:"💾", label:"Backup",         sub:"Data protection"},
     {id:"appearance", icon:"🎨", label:"Appearance",     sub:"Theme & layout"},
     {id:"defaults",   icon:"📋", label:"Defaults",       sub:"Tax & margins"},
+    {id:"help",       icon:"🛟", label:"Help & Support", sub:"FAQs & guides"},
+    {id:"feedback",   icon:"💬", label:"Feedback",       sub:"Send us your thoughts"},
   ];
 
   const PALETTE = [
@@ -5495,7 +5274,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
   const Field = ({label,ch,children}:{label:string;ch?:React.ReactNode;children?:React.ReactNode}) => (
     <div>
-      <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:7}}>{label}</label>
+      <label className="field-label">{label}</label>
       {ch||children}
     </div>
   );
@@ -5637,7 +5416,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
     security: (
       <Card title="Security Settings" icon="🔐" color="#fb7185">
-        {/* Suspicious activity banner */}
         <div style={{padding:"12px 16px",background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:12,marginBottom:20,display:"flex",alignItems:"center",gap:10}}>
           <span style={{fontSize:18}}>⚠️</span>
           <div>
@@ -5706,7 +5484,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
     appearance: (
       <div className="fu1">
-        {/* ── Hero banner with animated rays ── */}
         <div style={{
           position:"relative", borderRadius:20, overflow:"hidden",
           marginBottom:20, padding:"36px 32px", minHeight:200,
@@ -5714,7 +5491,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             ? "linear-gradient(135deg,#0a0a18 0%,#0d0d20 50%,#0a0a18 100%)"
             : "linear-gradient(135deg,#e8eaf6 0%,#f0f4ff 50%,#edf1fb 100%)",
         }}>
-          {/* Animated ray beams */}
           {[
             {deg:"-30deg", c:appColor,    op:0.35, dur:6,  delay:0},
             {deg:"20deg",  c:"#818cf8",   op:0.25, dur:9,  delay:1.5},
@@ -5735,18 +5511,12 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
               pointerEvents:"none",
             }}/>
           ))}
-
-          {/* Wide glow orbs behind text */}
           <div style={{position:"absolute",top:"-20%",left:"10%",width:320,height:320,borderRadius:"50%",background:`radial-gradient(circle,${appColor}28 0%,transparent 70%)`,filter:"blur(40px)",pointerEvents:"none"}}/>
           <div style={{position:"absolute",bottom:"-30%",right:"5%",width:280,height:280,borderRadius:"50%",background:"radial-gradient(circle,rgba(129,140,248,0.2) 0%,transparent 70%)",filter:"blur(50px)",pointerEvents:"none"}}/>
-
-          {/* Noise texture overlay */}
           <div style={{position:"absolute",inset:0,opacity:isDark?0.03:0.015,
             backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
             backgroundRepeat:"repeat",backgroundSize:"120px",pointerEvents:"none",
           }}/>
-
-          {/* Content */}
           <div style={{position:"relative",zIndex:2}}>
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}>
               <div style={{width:40,height:40,borderRadius:12,background:`${appColor}20`,border:`1.5px solid ${appColor}40`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,backdropFilter:"blur(8px)"}}>🎨</div>
@@ -5755,7 +5525,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                 <div style={{fontSize:12,color:isDark?"rgba(255,255,255,0.4)":"rgba(0,0,30,0.45)",marginTop:1}}>Customize how Baryalytics looks and feels</div>
               </div>
             </div>
-            {/* Live accent color pill */}
             <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"7px 16px",background:isDark?"rgba(0,0,0,0.3)":"rgba(255,255,255,0.6)",border:`1px solid ${appColor}40`,borderRadius:999,backdropFilter:"blur(10px)",marginTop:8}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:appColor,boxShadow:`0 0 10px ${appColor}`}} className="pulse"/>
               <span style={{fontSize:12,color:isDark?"rgba(255,255,255,0.7)":"rgba(0,0,30,0.7)",fontWeight:600}}>
@@ -5763,16 +5532,12 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
               </span>
             </div>
           </div>
-
-          {/* Ray keyframes in this component */}
           <style>{`
             @keyframes rayMove0{0%,100%{opacity:0.35;transform:rotate(-30deg) scaleY(1)}50%{opacity:0.5;transform:rotate(-28deg) scaleY(1.08)}}
             @keyframes rayMove1{0%,100%{opacity:0.2;transform:rotate(20deg) scaleY(1)}50%{opacity:0.32;transform:rotate(22deg) scaleY(1.05)}}
             @keyframes rayMove2{0%,100%{opacity:0.15;transform:rotate(60deg) scaleY(1)}50%{opacity:0.28;transform:rotate(58deg) scaleY(1.1)}}
           `}</style>
         </div>
-
-        {/* ── Mode selector ── */}
         <div className="card" style={{marginBottom:16}}>
           <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",marginBottom:16}}>COLOR MODE</div>
           <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
@@ -5789,7 +5554,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                   : "rgba(255,255,255,0.03)",
                 fontFamily:"'Inter',sans-serif", textAlign:"left", transition:"all 0.25s",
               }}>
-                {/* Preview mini-screen */}
                 <div style={{
                   width:"100%", height:68, borderRadius:10, marginBottom:14, overflow:"hidden",
                   border:`1px solid ${isDark===m.id?`${m.accent}30`:"rgba(255,255,255,0.08)"}`,
@@ -5798,13 +5562,11 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                     : "linear-gradient(135deg,#f0f2f8,#ffffff)",
                   position:"relative",
                 }}>
-                  {/* Mini nav bar */}
                   <div style={{height:14,margin:"6px 6px 0",borderRadius:999,background:m.id?"rgba(255,255,255,0.06)":"rgba(0,0,30,0.06)",display:"flex",alignItems:"center",padding:"0 6px",gap:3}}>
                     {[appColor,"rgba(255,255,255,0.1)","rgba(255,255,255,0.1)","rgba(255,255,255,0.1)"].map((c,i)=>(
                       <div key={i} style={{height:5,width:i===0?22:14,borderRadius:99,background:i===0?appColor:m.id?"rgba(255,255,255,0.12)":"rgba(0,0,30,0.1)"}}/>
                     ))}
                   </div>
-                  {/* Mini cards */}
                   <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:4,padding:"5px 6px"}}>
                     {[0,1,2].map(i=>(
                       <div key={i} style={{height:18,borderRadius:4,background:m.id?"rgba(255,255,255,0.04)":"rgba(0,0,30,0.05)",border:`1px solid ${m.id?"rgba(255,255,255,0.06)":"rgba(0,0,30,0.07)"}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -5812,7 +5574,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                       </div>
                     ))}
                   </div>
-                  {/* Glow in preview */}
                   {isDark===m.id&&<div style={{position:"absolute",top:0,right:0,width:40,height:40,background:`radial-gradient(circle,${m.accent}30,transparent 70%)`,pointerEvents:"none"}}/>}
                 </div>
 
@@ -5824,7 +5585,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                     </div>
                     <div style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>{m.sub}</div>
                   </div>
-                  {/* Selection ring */}
                   <div style={{width:20,height:20,borderRadius:"50%",border:`2px solid ${isDark===m.id?m.accent:"rgba(255,255,255,0.15)"}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.2s"}}>
                     {isDark===m.id&&<div style={{width:10,height:10,borderRadius:"50%",background:m.accent,boxShadow:`0 0 8px ${m.accent}`}}/>}
                   </div>
@@ -5833,12 +5593,8 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             ))}
           </div>
         </div>
-
-        {/* ── Color palette ── */}
         <div className="card" style={{marginBottom:16}}>
           <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",marginBottom:16}}>ACCENT COLOR</div>
-
-          {/* Color swatches with glow and label */}
           <div style={{display:"grid",gridTemplateColumns:"repeat(8,1fr)",gap:10,marginBottom:16}}>
             {[
               {c:"#34d399",name:"Emerald"},
@@ -5864,7 +5620,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                     transform:sel?"scale(1.12)":"scale(1)",
                     position:"relative",overflow:"hidden",
                   }}>
-                    {/* Gloss shine */}
                     <div style={{position:"absolute",top:0,left:0,right:0,height:"50%",background:"rgba(255,255,255,0.2)",borderRadius:"12px 12px 60% 60%"}}/>
                     {sel&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,color:"rgba(0,0,0,0.6)",fontWeight:900}}>✓</div>}
                   </div>
@@ -5873,8 +5628,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
               );
             })}
           </div>
-
-          {/* Custom hex input */}
           <div style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",background:isDark?"rgba(255,255,255,0.025)":"rgba(0,0,30,0.03)",border:`1px solid ${isDark?"rgba(255,255,255,0.06)":"rgba(0,0,30,0.07)"}`,borderRadius:12}}>
             <div style={{width:32,height:32,borderRadius:9,background:appColor,flexShrink:0,boxShadow:`0 0 12px ${appColor}60`,border:"2px solid rgba(255,255,255,0.2)"}}/>
             <div style={{flex:1}}>
@@ -5887,13 +5640,10 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                 placeholder="#34d399"
               />
             </div>
-            {/* Gradient preview strip */}
             <div style={{flex:1,height:28,borderRadius:8,background:`linear-gradient(90deg,${appColor}20,${appColor},${appColor}20)`,border:`1px solid ${appColor}40`,position:"relative",overflow:"hidden"}}>
               <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.15) 50%,transparent 100%)",animation:"shimmerGold 2s linear infinite"}}/>
             </div>
           </div>
-
-          {/* Live accent preview swatches */}
           <div style={{marginTop:14,display:"flex",gap:8,flexWrap:"wrap"}}>
             {[
               {label:"Button",   bg:`${appColor}18`, border:`${appColor}40`, text:appColor},
@@ -5907,8 +5657,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             ))}
           </div>
         </div>
-
-        {/* ── Layout style ── */}
         <div className="card" style={{marginBottom:16}}>
           <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",marginBottom:14}}>DASHBOARD LAYOUT</div>
           <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10}}>
@@ -5924,7 +5672,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
                     ? [8,8,8].map((_,i)=><div key={i} style={{height:4,borderRadius:2,background:layout===l?`${appColor}50`:"rgba(255,255,255,0.1)"}}/>)
                     : l==="Expanded"
                     ? [14].map((_,i)=><div key={i} style={{height:14,borderRadius:4,background:layout===l?`${appColor}40`:"rgba(255,255,255,0.08)"}}/>)
-                    : [8,6].map((_,i)=><div key={i} style={{height:i===0?8:5,borderRadius:2,background:layout===l?`${appColor}50`:"rgba(255,255,255,0.1)"}}/>) 
+                    : [8,6].map((_,i)=><div key={i} style={{height:i===0?8:5,borderRadius:2,background:layout===l?`${appColor}50`:"rgba(255,255,255,0.1)"}}/>)
                   }
                 </div>
                 <div style={{fontSize:12,fontWeight:700,color:layout===l?appColor:"rgba(255,255,255,0.5)"}}>{l}</div>
@@ -5972,17 +5720,88 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         <SaveBtn label="Save Default Values" onClick={()=>showSaved("Default values saved!")}/>
       </Card>
     ),
+
+    help: (
+      <div className="fu1" style={{display:"flex",flexDirection:"column",gap:16}}>
+        <div className="card" style={{background:"linear-gradient(135deg,rgba(56,189,248,0.08),rgba(129,140,248,0.06))",border:"1px solid rgba(56,189,248,0.2)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:14}}>
+            <div style={{width:48,height:48,borderRadius:14,background:"rgba(56,189,248,0.15)",border:"1px solid rgba(56,189,248,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>🛟</div>
+            <div>
+              <div style={{fontSize:18,fontWeight:800,color:"#fff",marginBottom:3}}>Help & Support</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>Find answers, contact support, or browse our guides</div>
+            </div>
+            <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:6,padding:"6px 14px",background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",borderRadius:999}}>
+              <div style={{width:6,height:6,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
+              <span style={{fontSize:11,fontWeight:700,color:"#34d399"}}>Support Online</span>
+            </div>
+          </div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:12}}>
+          {[
+            {icon:"📧",label:"Email Support",val:"support@baryalytics.ph",sub:"Reply within 24 hours",c:"#38bdf8",bg:"rgba(56,189,248,0.08)"},
+            {icon:"💬",label:"Live Chat",val:"Open Chat",sub:"Mon–Fri · 8AM–6PM PHT",c:"#34d399",bg:"rgba(52,211,153,0.08)",action:true},
+            {icon:"📞",label:"Phone",val:"+63 2 8888 0000",sub:"Business hours only",c:"#a78bfa",bg:"rgba(167,139,250,0.08)"},
+          ].map(ct=>(
+            <div key={ct.label} style={{padding:"16px",background:ct.bg,border:`1px solid ${ct.c}22`,borderRadius:14,display:"flex",flexDirection:"column",gap:8}}>
+              <span style={{fontSize:22}}>{ct.icon}</span>
+              <div style={{fontSize:11,fontWeight:700,color:`${ct.c}bb`,letterSpacing:"0.06em"}}>{ct.label.toUpperCase()}</div>
+              <div style={{fontSize:13,fontWeight:700,color:ct.action?"#34d399":"rgba(255,255,255,0.8)",cursor:ct.action?"pointer":"default",textDecoration:ct.action?"underline":"none"}}>{ct.val}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>{ct.sub}</div>
+            </div>
+          ))}
+        </div>
+        <Card title="Frequently Asked Questions" icon="❓" color="#fbbf24">
+          {[
+            {q:"How do I add a new product to inventory?", a:"Go to Inventory → click '+ Add' → fill in the product name, buy price, sell price, and stock quantity → click 'Add Product'. The item will appear in the table immediately."},
+            {q:"How is profit calculated in the Sales page?", a:"Gross Profit = (Selling Price − Buy Price) × Quantity. Tax (12% VAT) is deducted from gross profit to get Net Profit. You can adjust the tax rate in Settings → Default Values."},
+            {q:"What does 'Low Stock' mean?", a:"A product is flagged as Low Stock when its quantity falls to 20 units or below. This threshold is configurable in Settings → Default Values → Low Stock Alert Threshold."},
+            {q:"How do I change the accent color of the dashboard?", a:"Go to Settings → Appearance → pick a color from the palette or type a custom hex code. Changes apply instantly across the entire dashboard."},
+            {q:"Can I export my financial reports?", a:"Yes! On the Finance page, click the 'Export Report' button in the header, or use the individual export buttons on each report card. Supports PDF, Excel, CSV, and more."},
+            {q:"How do I reset a user's password?", a:"Go to User → find the user → click Edit → enter a new password in the Change Password field. For security settings, visit Settings → Security."},
+            {q:"What is the stock change log?", a:"Every add, update, or delete in Inventory is automatically recorded with the product name, action type, quantity change, user who made the change, and a timestamp. View it in Inventory → 📋 Log."},
+            {q:"How do I back up my data?", a:"Go to Settings → Backup → click 'Create Manual Backup'. You can download the backup file or schedule automatic backups. Always back up before major changes."},
+          ].map((faq,i)=>(
+            <div key={String(i)}><FaqItem q={faq.q} a={faq.a} idx={i}/></div>
+          ))}
+        </Card>
+        <Card title="Quick Start Guides" icon="📖" color="#818cf8">
+          <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:10}}>
+            {[
+              {icon:"📦",title:"Managing Inventory",    sub:"Add, update, delete products · expiry tracking · stock log",         c:"#38bdf8"},
+              {icon:"💰",title:"Reading Sales Reports", sub:"Understand profit, tax, best sellers · switch daily/monthly/yearly",  c:"#34d399"},
+              {icon:"🏢",title:"Supplier Management",   sub:"Add suppliers · track deliveries · manage transactions",              c:"#a78bfa"},
+              {icon:"📊",title:"Finance Dashboard",     sub:"Profit overview · cash flow · budget tracker · financial reports",    c:"#fbbf24"},
+              {icon:"👤",title:"User Roles & Access",   sub:"Admin, Manager, Staff roles · permissions matrix · 2FA setup",        c:"#fb7185"},
+              {icon:"🤖",title:"AI Forecasting",        sub:"Sales prediction · demand forecast · customer behavior insights",     c:"#818cf8"},
+            ].map(g=>(
+              <button key={g.title} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",background:`${g.c}08`,border:`1px solid ${g.c}20`,borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",transition:"all 0.15s"}}
+                onMouseEnter={e=>(e.currentTarget as HTMLButtonElement).style.background=`${g.c}14`}
+                onMouseLeave={e=>(e.currentTarget as HTMLButtonElement).style.background=`${g.c}08`}
+              >
+                <div style={{width:36,height:36,borderRadius:10,background:`${g.c}15`,border:`1px solid ${g.c}28`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{g.icon}</div>
+                <div>
+                  <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.85)",marginBottom:3}}>{g.title}</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",lineHeight:1.5}}>{g.sub}</div>
+                </div>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeLinecap="round" style={{marginLeft:"auto",flexShrink:0}}><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            ))}
+          </div>
+        </Card>
+      </div>
+    ),
+
+    feedback: (
+      <FeedbackSection showSaved={showSaved}/>
+    ),
   };
 
   return (
     <div className="fu1">
-      {/* Page header */}
       <div style={{marginBottom:24}}>
         <h1 style={{fontSize:22,fontWeight:800,color:"#fff",marginBottom:4}}>Settings</h1>
         <p style={{fontSize:13,color:"rgba(255,255,255,0.3)"}}>Manage your profile, system preferences, and business configuration.</p>
       </div>
-
-      {/* Toast */}
       {saved&&ReactDOM.createPortal(
         <div style={{position:"fixed",bottom:28,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.35)",borderRadius:999,padding:"11px 24px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 8px 32px rgba(0,0,0,0.5)",animation:"fadeUp 0.2s ease both",backdropFilter:"blur(12px)"}}>
           <span style={{fontSize:15}}>✅</span>
@@ -5992,7 +5811,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
       )}
 
       <div style={{display:"flex",gap:20,alignItems:"flex-start",flexDirection:window.innerWidth<=900?"column":"row"}}>
-        {/* Sidebar */}
         <div style={{width:window.innerWidth<=900?"100%":"220px",flexShrink:0}}>
           <div style={{background:"#13131f",border:"1px solid rgba(255,255,255,0.07)",borderRadius:16,overflow:"hidden",position:"sticky",top:88}}>
             {sections.map((s,i)=>(
@@ -6013,8 +5831,6 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             ))}
           </div>
         </div>
-
-        {/* Content area */}
         <div style={{flex:1,minWidth:0}}>
           {content[activeSection]}
         </div>
@@ -6071,14 +5887,11 @@ export default function App() {
       --inp-bg:     ${lm ? "rgba(0,0,40,0.04)" : "rgba(255,255,255,0.05)"};
       --inp-border: ${lm ? "rgba(0,0,40,0.12)" : "rgba(255,255,255,0.08)"};
     }
-
     /* ── Base ── */
     body { background: var(--bg-main) !important; color: var(--text) !important; transition: background 0.35s, color 0.35s; }
     * { transition: background-color 0.35s, border-color 0.35s, color 0.35s; }
-
     /* ── Page wrapper ── */
     #root > * > div[style*="min-height"] { background: var(--bg-main) !important; }
-
     /* ── Cards ── */
     .card { background: var(--bg-card) !important; border-color: var(--border) !important;
       ${lm ? "box-shadow: 0 2px 12px rgba(0,0,40,0.07);" : ""} }
@@ -6089,7 +5902,6 @@ export default function App() {
     .insight-card { background: ${lm?"rgba(129,140,248,0.06)":"linear-gradient(135deg,rgba(129,140,248,0.1),rgba(167,139,250,0.06))"} !important; }
     .stat-forecast { border-color: rgba(${acR},${acG},${acB},0.2) !important;
       background: ${lm?"rgba(255,255,255,0.9)":"rgba(129,140,248,0.04)"} !important; }
-
     /* ── Nav bar ── */
     .nav-bar {
       background: ${lm?"rgba(238,240,247,0.92)":"rgba(13,13,22,0.82)"} !important;
@@ -6099,13 +5911,11 @@ export default function App() {
     .nav-pill:hover { color: ${appColor} !important; background: rgba(${acR},${acG},${acB},0.1) !important; }
     .nav-pill-active { background: ${appColor} !important; color: ${lm?"#fff":"#000"} !important;
       box-shadow: 0 0 16px rgba(${acR},${acG},${acB},0.35) !important; }
-
     /* ── Inputs ── */
     .inp { background: var(--inp-bg) !important; border-color: var(--inp-border) !important; color: var(--text) !important; }
     .inp:focus { border-color: ${appColor}80 !important; box-shadow: 0 0 0 3px rgba(${acR},${acG},${acB},0.1) !important; }
     .inp::placeholder { color: var(--text4) !important; }
     select.inp option { background: var(--bg-card) !important; color: var(--text) !important; }
-
     /* ── Buttons ── */
     .btn { background: ${lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.06)"} !important;
       border-color: ${lm?"rgba(0,0,40,0.12)":"rgba(255,255,255,0.1)"} !important;
@@ -6114,20 +5924,17 @@ export default function App() {
     .btn-g { background: rgba(${acR},${acG},${acB},0.15) !important; border-color: rgba(${acR},${acG},${acB},0.3) !important; color: ${appColor} !important; }
     .btn-g:hover { background: rgba(${acR},${acG},${acB},0.25) !important; }
     .btn-r { ${lm?"background:rgba(251,113,133,0.12)!important;border-color:rgba(251,113,133,0.25)!important;color:#e11d48!important;":""} }
-
     /* ── Tabs ── */
     .tab-wrap { background: ${lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)"} !important;
       border-color: ${lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"} !important; }
     .tab-on { background: ${appColor} !important; color: ${lm?"#fff":"#000"} !important; }
     .tab-off { color: var(--text3) !important; }
     .tab-off:hover { color: var(--text) !important; }
-
     /* ── Tables ── */
     .th { color: var(--text3) !important; border-color: var(--border) !important;
       background: ${lm?"rgba(0,0,40,0.025)":"transparent"} !important; }
     .td { border-color: var(--border2) !important; color: var(--text) !important; }
     .tr:hover td { background: var(--hover-row) !important; }
-
     /* ── Badges & chips ── */
     .badge-g { color: ${appColor} !important; background: rgba(${acR},${acG},${acB},0.12) !important; border-color: rgba(${acR},${acG},${acB},0.25) !important; }
     .badge-r { ${lm?"color:#be123c!important;background:rgba(251,113,133,0.1)!important;border-color:rgba(251,113,133,0.22)!important;":""} }
@@ -6135,24 +5942,18 @@ export default function App() {
     .badge-v { ${lm?"color:#6d28d9!important;background:rgba(129,140,248,0.1)!important;border-color:rgba(129,140,248,0.22)!important;":""} }
     .chip-up { background: rgba(${acR},${acG},${acB},0.15) !important; color: ${appColor} !important; }
     .chip-down { ${lm?"color:#be123c!important;background:rgba(251,113,133,0.12)!important;":""} }
-
     /* ── Alert rows ── */
     .alert-row { ${lm?"background:rgba(251,113,133,0.06)!important;border-color:rgba(251,113,133,0.18)!important;color:#3a3a5c!important;":""} }
-
     /* ── Background glows ── */
     .bg-tl { background: radial-gradient(ellipse at 0% 0%, rgba(${acR},${acG},${acB},${lm?0.08:0.13}) 0%, transparent 70%) !important; }
     .bg-br { background: radial-gradient(ellipse at 100% 100%, rgba(${acR},${acG},${acB},${lm?0.05:0.09}) 0%, transparent 70%) !important; }
-
     /* ── Export button ── */
     .export-btn { ${lm?"background:rgba(129,140,248,0.1)!important;color:#4f46e5!important;border-color:rgba(129,140,248,0.3)!important;":""} }
-
     /* ── Shimmer ── */
     .shimmer-bar { background: linear-gradient(90deg, transparent 0%, ${lm?"rgba(0,0,40,0.04)":"rgba(255,255,255,0.06)"} 50%, transparent 100%) !important; }
-
     ${lm ? `
     /* ── Light mode: base wrapper ── */
     [data-lm="1"] { background: #eef0f7 !important; color: #1a1a2e !important; }
-
     /* ── Fix ALL inline dark backgrounds ── */
     [data-lm="1"] [style*="background: #0d0d14"],
     [data-lm="1"] [style*="background:#0d0d14"]   { background: #eef0f7 !important; }
@@ -6168,7 +5969,6 @@ export default function App() {
     [data-lm="1"] [style*="background:#1a1a2e"]   { background: #edf0fa !important; }
     [data-lm="1"] [style*="background: rgb(13, 13, 20)"]  { background: #eef0f7 !important; }
     [data-lm="1"] [style*="background: rgb(19, 19, 31)"]  { background: #ffffff !important; }
-
     /* ── Fix inline white/light text → dark text ── */
     [data-lm="1"] [style*="color: #fff"]          { color: #1a1a2e !important; }
     [data-lm="1"] [style*="color: #e2e8f0"]       { color: #1a1a2e !important; }
@@ -6183,13 +5983,11 @@ export default function App() {
     [data-lm="1"] [style*="color: rgba(255, 255, 255, 0.3)"] { color: rgba(0,0,40,0.38) !important; }
     [data-lm="1"] [style*="color: rgba(255, 255, 255, 0.2)"] { color: rgba(0,0,40,0.3) !important; }
     [data-lm="1"] [style*="color: rgba(255, 255, 255, 0.1)"] { color: rgba(0,0,40,0.22) !important; }
-
     /* ── Fix inline dark borders → light borders ── */
     [data-lm="1"] [style*="border: 1px solid rgba(255, 255, 255"]   { border-color: rgba(0,0,40,0.1) !important; }
     [data-lm="1"] [style*="borderBottom: 1px solid rgba(255, 255, 255"] { border-color: rgba(0,0,40,0.07) !important; }
     [data-lm="1"] [style*="borderTop: 1px solid rgba(255, 255, 255"]    { border-color: rgba(0,0,40,0.07) !important; }
     [data-lm="1"] [style*="border-bottom: 1px solid rgba(255, 255, 255"] { border-color: rgba(0,0,40,0.07) !important; }
-
     /* ── Fix semi-transparent white backgrounds ── */
     [data-lm="1"] [style*="background: rgba(255, 255, 255, 0.03)"] { background: rgba(0,0,40,0.025) !important; }
     [data-lm="1"] [style*="background: rgba(255, 255, 255, 0.04)"] { background: rgba(0,0,40,0.03) !important; }
@@ -6198,7 +5996,6 @@ export default function App() {
     [data-lm="1"] [style*="background: rgba(255, 255, 255, 0.07)"] { background: rgba(0,0,40,0.055) !important; }
     [data-lm="1"] [style*="background: rgba(255, 255, 255, 0.08)"] { background: rgba(0,0,40,0.06) !important; }
     [data-lm="1"] [style*="background: rgba(255, 255, 255, 0.1)"]  { background: rgba(0,0,40,0.07) !important; }
-
     /* ── Nav, notifications, modals ── */
     [data-lm="1"] .notif-panel-inner  { background: #f4f6fc !important; }
     [data-lm="1"] [style*="background: #080812"] { background: #eef0f7 !important; }
@@ -6207,10 +6004,8 @@ export default function App() {
     [data-lm="1"] [style*="background: rgba(15, 15, 28"]  { background: rgba(240,242,250,0.98) !important; }
     [data-lm="1"] [style*="background: rgba(20, 20, 42"]  { background: rgba(244,246,252,0.98) !important; }
     [data-lm="1"] [style*="background: rgba(0, 0, 0"]     { background: rgba(0,0,40,0.04) !important; }
-
     /* ── Scrollbar ── */
     [data-lm="1"] ::-webkit-scrollbar-thumb { background: rgba(0,0,40,0.15) !important; }
-
     /* ── Specific section dividers ── */
     [data-lm="1"] [style*="background: rgba(255, 255, 255, 0.14)"],
     [data-lm="1"] [style*="background: rgba(255, 255, 255, 0.12)"],
@@ -6233,11 +6028,7 @@ export default function App() {
       <style>{dynamicCSS}</style>
       <div data-lm={lm?"1":undefined} style={{minHeight:"100vh",background:lm?"#eef0f7":"#0d0d14",transition:"background 0.35s"}}>
         <div className="bg-tl"/><div className="bg-br"/>
-
-        {/* NAV — floating pill wrapper */}
-        {/* Mobile drawer overlay */}
         <div className={`mob-drawer-overlay${mobileOpen?" open":""}`} onClick={()=>setMobileOpen(false)}/>
-        {/* Mobile slide-in drawer */}
         <div className={`mob-drawer${mobileOpen?" open":""}`}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24}}>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -6282,14 +6073,11 @@ export default function App() {
             padding:"0 8px 0 12px",height:52,width:"100%",maxWidth:1180,
             pointerEvents:"all",
           }}>
-            {/* Hamburger — mobile only, JS-controlled */}
             {isMob&&(
               <button onClick={()=>setMobileOpen(true)} style={{width:34,height:34,borderRadius:10,background:lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.06)",border:`1px solid ${lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.1)"}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:lm?"rgba(0,0,40,0.6)":"rgba(255,255,255,0.7)",flexShrink:0}}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
               </button>
             )}
-
-            {/* Left — brand + welcome — desktop only */}
             {!isMob&&(
               <div style={{display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
                 <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -6300,16 +6088,12 @@ export default function App() {
                 <span style={{fontSize:12,color:lm?"rgba(0,0,40,0.4)":"rgba(255,255,255,0.3)"}}>Hi, <span style={{color:lm?"rgba(0,0,40,0.65)":"rgba(255,255,255,0.55)",fontWeight:600}}>{authName.split(" ")[0]}</span></span>
               </div>
             )}
-
-            {/* Mobile center: current page label */}
             {isMob&&(
               <div style={{display:"flex",alignItems:"center",gap:7,position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
                 {(()=>{const I=icons[page];return <I size={14} color={appColor}/>;})()}
                 <span style={{fontSize:13,fontWeight:700,color:lm?"#1a1a2e":"#fff",letterSpacing:"0.05em"}}>{page.toUpperCase()}</span>
               </div>
             )}
-
-            {/* Center — nav pills — desktop only */}
             {!isMob&&(
               <div style={{display:"flex",alignItems:"center",gap:2,position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
                 {nav.map(item=>(
@@ -6317,10 +6101,7 @@ export default function App() {
                 ))}
               </div>
             )}
-
-            {/* Right — actions */}
             <div style={{display:"flex",alignItems:"center",gap:isMob?6:8,flexShrink:0}}>
-              {/* Bell */}
               <button onClick={()=>setShowNotif(v=>!v)} style={{position:"relative",background:showNotif?"rgba(129,140,248,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showNotif?"rgba(129,140,248,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,borderRadius:999,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showNotif?"#818cf8":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",transition:"all 0.18s"}}>
                 <Bell size={15} className={showNotif?"":"bell-new"}/>
                 <span style={{position:"absolute",top:-3,right:-3,background:"#ef4444",color:"#fff",fontSize:8,fontWeight:700,minWidth:14,height:14,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:99,border:`2px solid ${lm?"#eef0f7":"#0d0d14"}`,padding:"0 2px",animation:"urgentPulse 2s ease infinite"}}>
@@ -6328,8 +6109,6 @@ export default function App() {
                 </span>
               </button>
               {showNotif&&<NotifPanel onClose={()=>setShowNotif(false)}/>}
-
-              {/* User dropdown */}
               <div style={{position:"relative"}}>
                 <button
                   onClick={()=>setShowUserMenu(v=>!v)}
@@ -6393,16 +6172,11 @@ export default function App() {
             </div>
           </nav>
         </div>
-
-        {/* Extra top spacer so content never slides under the floating bar */}
         <div style={{height:88}}/>
 
         <main style={{position:"relative",zIndex:10,maxWidth:1440,margin:"0 auto",padding:`0 ${isMob?"16px":"24px"} 48px`}}>
-
-          {/* ── DASHBOARD ── */}
           {page==="Dashboard"&&(
             <>
-              {/* STAT CARDS */}
               <div className="grid-5col" style={{display:"grid",gridTemplateColumns:cols(5),gap:16,marginBottom:20}}>
                 <div className="card">
                   <div className="card-title">Daily Sales <button className="card-x"><X size={13}/></button></div>
@@ -6442,8 +6216,6 @@ export default function App() {
                   </div>
                 </div>
               </div>
-
-              {/* CHARTS */}
               <div style={{display:"grid",gridTemplateColumns:cols(3),gap:16,marginBottom:20}}>
                 <div className="card" style={{display:"flex",flexDirection:"column",minHeight:290}}>
                   <div className="card-title">Sales Overview <button className="card-x"><X size={13}/></button></div>
@@ -6520,8 +6292,6 @@ export default function App() {
                   <div style={{marginTop:10,fontSize:10,color:"rgba(255,255,255,0.2)",textAlign:"right"}}>Updated: March 6, 2026, 05:27 AM</div>
                 </div>
               </div>
-
-              {/* BOTTOM ROW */}
               <div style={{display:"grid",gridTemplateColumns:cols(3),gap:16,marginBottom:28}}>
                 <div className="card">
                   <div className="card-title">Top Products <button className="card-x"><X size={13}/></button></div>
@@ -6564,8 +6334,6 @@ export default function App() {
                   </div>
                 </div>
               </div>
-
-              {/* AI FORECASTING HUB or sub-page */}
               {aiPage === "predict"
                 ? <PredictSales onBack={()=>setAiPage(null)}/>
                 : aiPage === "demand"
