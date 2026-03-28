@@ -4873,6 +4873,254 @@ interface Notif {
   id:number; cat:NotifCat; title:string; body:string; time:string; read:boolean; urgent?:boolean;
 }
 
+/* ── HELP & SUPPORT PANEL ─────────────────────────────────────────── */
+const FAQS = [
+  {q:"How do I add a new product?", a:"Go to Inventory → click '+ Add' → fill in Product Name, Buy Price, Sell Price, and Stock → click 'Add Product'."},
+  {q:"How is profit calculated in Sales?", a:"Gross Profit = (Sell Price − Buy Price) × Qty. Tax (12% VAT) is deducted to get Net Profit. Adjust the tax rate in Settings → Default Values."},
+  {q:"What does Low Stock mean?", a:"A product is flagged Low Stock when quantity falls to 20 units or below. Change this threshold in Settings → Default Values."},
+  {q:"How do I export a report?", a:"Click the 'Export' button on any page header or table. Choose your format: PDF, Excel, CSV, JSON, and more."},
+  {q:"How do I change the dashboard color?", a:"Go to Settings (click your name → Settings) → Appearance → pick a color or type a custom hex code. Changes apply instantly."},
+  {q:"How do I reset a user's access?", a:"Go to User page → find the user → click Edit → change role or status. For password reset, use Settings → Security."},
+  {q:"What is the Stock Change Log?", a:"Every add, update, or delete in Inventory is recorded automatically with product name, action, quantity, who did it, and when. View it via Inventory → 📋 Log."},
+  {q:"How do I back up my data?", a:"Go to Settings → Backup → click 'Create Manual Backup'. Download the file or restore from a previous backup."},
+];
+
+const HelpPanel = ({onClose, lm}:{onClose:()=>void; lm:boolean}) => {
+  const showToast = useToast();
+  const [tab, setTab]         = React.useState<"help"|"feedback">("help");
+  const [openFaq, setOpenFaq] = React.useState<number|null>(null);
+  const [fbType,  setFbType]  = React.useState("General");
+  const [fbStars, setFbStars] = React.useState(0);
+  const [fbHover, setFbHover] = React.useState(0);
+  const [fbMsg,   setFbMsg]   = React.useState("");
+  const [fbEmail, setFbEmail] = React.useState("");
+  const [fbErr,   setFbErr]   = React.useState(false);
+
+  const submitFeedback = () => {
+    if(!fbMsg.trim()){setFbErr(true);return;}
+    setFbErr(false);
+    showToast("Thank you! Your feedback has been submitted 🙏");
+    setFbMsg(""); setFbStars(0); setFbEmail(""); setFbType("General");
+  };
+
+  const bg    = lm ? "rgba(240,242,248,0.98)" : "#0f0f1e";
+  const border= lm ? "rgba(0,0,40,0.1)"       : "rgba(255,255,255,0.08)";
+  const text  = lm ? "#1a1a2e"                : "#e2e8f0";
+  const muted = lm ? "rgba(0,0,40,0.45)"      : "rgba(255,255,255,0.4)";
+  const rowBg = lm ? "rgba(0,0,40,0.025)"     : "rgba(255,255,255,0.025)";
+
+  return ReactDOM.createPortal(
+    <div style={{position:"fixed",inset:0,zIndex:9990}} onMouseDown={onClose}>
+      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.35)",backdropFilter:"blur(2px)"}}/>
+      <div
+        onMouseDown={e=>e.stopPropagation()}
+        style={{
+          position:"absolute",top:0,right:0,bottom:0,width:420,maxWidth:"96vw",
+          background:bg,borderLeft:`1px solid ${border}`,
+          display:"flex",flexDirection:"column",
+          boxShadow:"-20px 0 60px rgba(0,0,0,0.4)",
+          animation:"notifSlideIn 0.25s cubic-bezier(0.4,0,0.2,1) both",
+        }}
+      >
+        {/* Header */}
+        <div style={{padding:"20px 20px 0",borderBottom:`1px solid ${border}`}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:34,height:34,borderRadius:10,background:"rgba(56,189,248,0.12)",border:"1px solid rgba(56,189,248,0.22)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🛟</div>
+              <div>
+                <div style={{fontSize:15,fontWeight:700,color:text}}>Help & Feedback</div>
+                <div style={{fontSize:11,color:muted}}>FAQs, guides & send us your thoughts</div>
+              </div>
+            </div>
+            <button onClick={onClose} style={{width:28,height:28,borderRadius:8,background:rowBg,border:`1px solid ${border}`,cursor:"pointer",color:muted,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>✕</button>
+          </div>
+          {/* Tabs */}
+          <div style={{display:"flex",gap:4,paddingBottom:1}}>
+            {(["help","feedback"] as const).map(t=>(
+              <button key={t} onClick={()=>setTab(t)} style={{
+                padding:"7px 18px",borderRadius:"8px 8px 0 0",border:"none",cursor:"pointer",
+                fontFamily:"'Inter',sans-serif",fontSize:12,fontWeight:700,letterSpacing:"0.04em",
+                textTransform:"capitalize",transition:"all 0.15s",
+                background:tab===t?"rgba(56,189,248,0.12)":"transparent",
+                color:tab===t?"#38bdf8":muted,
+                borderBottom:tab===t?"2px solid #38bdf8":"2px solid transparent",
+              }}>{t==="help"?"🛟 Help & Support":"💬 Feedback"}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div style={{flex:1,overflowY:"auto",padding:"16px 20px"}}>
+
+          {/* ── HELP TAB ── */}
+          {tab==="help"&&(
+            <div style={{display:"flex",flexDirection:"column",gap:14}}>
+              {/* Quick contact */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+                {[
+                  {icon:"📧",label:"Email",val:"support@baryalytics.ph",c:"#38bdf8"},
+                  {icon:"💬",label:"Live Chat",val:"Start chat →",c:"#34d399",action:true},
+                ].map(ct=>(
+                  <div key={ct.label} style={{padding:"12px 14px",background:`${ct.c}08`,border:`1px solid ${ct.c}20`,borderRadius:12}}>
+                    <div style={{fontSize:18,marginBottom:6}}>{ct.icon}</div>
+                    <div style={{fontSize:10,fontWeight:700,color:`${ct.c}aa`,letterSpacing:"0.06em",marginBottom:3}}>{ct.label.toUpperCase()}</div>
+                    <div style={{fontSize:12,fontWeight:700,color:ct.action?"#34d399":text,cursor:ct.action?"pointer":"default"}}>{ct.val}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Status */}
+              <div style={{display:"flex",alignItems:"center",gap:8,padding:"9px 14px",background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:10}}>
+                <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399",flexShrink:0}} className="pulse"/>
+                <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Support is online</span>
+                <span style={{fontSize:11,color:muted,marginLeft:"auto"}}>Mon–Fri · 8AM–6PM PHT</span>
+              </div>
+
+              {/* Quick guide cards */}
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:10}}>QUICK GUIDES</div>
+                <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                  {[
+                    {icon:"📦",title:"Managing Inventory",       c:"#38bdf8"},
+                    {icon:"💰",title:"Reading Sales Reports",     c:"#34d399"},
+                    {icon:"📊",title:"Finance Dashboard",         c:"#fbbf24"},
+                    {icon:"🤖",title:"AI Forecasting Features",   c:"#818cf8"},
+                    {icon:"👤",title:"User Roles & Permissions",  c:"#fb7185"},
+                    {icon:"🔐",title:"Security & 2FA Setup",      c:"#a78bfa"},
+                  ].map(g=>(
+                    <button key={g.title} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:`${g.c}07`,border:`1px solid ${g.c}18`,borderRadius:10,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",transition:"background 0.15s"}}
+                      onMouseEnter={e=>(e.currentTarget as HTMLButtonElement).style.background=`${g.c}13`}
+                      onMouseLeave={e=>(e.currentTarget as HTMLButtonElement).style.background=`${g.c}07`}
+                    >
+                      <span style={{fontSize:16}}>{g.icon}</span>
+                      <span style={{fontSize:12,fontWeight:600,color:text,flex:1}}>{g.title}</span>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={muted} strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* FAQs accordion */}
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:10}}>FREQUENTLY ASKED</div>
+                <div style={{background:rowBg,border:`1px solid ${border}`,borderRadius:12,overflow:"hidden"}}>
+                  {FAQS.map((faq,i)=>(
+                    <div key={i} style={{borderBottom:i<FAQS.length-1?`1px solid ${border}`:"none"}}>
+                      <button onClick={()=>setOpenFaq(openFaq===i?null:i)} style={{
+                        width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",
+                        gap:10,padding:"12px 14px",background:"none",border:"none",
+                        cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
+                      }}>
+                        <span style={{fontSize:12,fontWeight:600,color:openFaq===i?"#38bdf8":text}}>{faq.q}</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={openFaq===i?"#38bdf8":muted} strokeWidth="2.5" strokeLinecap="round"
+                          style={{transform:openFaq===i?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.18s",flexShrink:0}}>
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                      </button>
+                      {openFaq===i&&(
+                        <div style={{padding:"0 14px 12px",fontSize:11,color:muted,lineHeight:1.7,animation:"fadeUp 0.15s ease both"}}>{faq.a}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── FEEDBACK TAB ── */}
+          {tab==="feedback"&&(
+            <div style={{display:"flex",flexDirection:"column",gap:16}}>
+              {/* Type selector */}
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:8}}>FEEDBACK TYPE</div>
+                <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                  {["General","Bug Report","Feature Request","Compliment"].map(t=>(
+                    <button key={t} onClick={()=>setFbType(t)} style={{
+                      padding:"5px 12px",borderRadius:999,
+                      border:`1.5px solid ${fbType===t?"rgba(167,139,250,0.5)":"rgba(255,255,255,0.08)"}`,
+                      background:fbType===t?"rgba(167,139,250,0.12)":"rgba(255,255,255,0.03)",
+                      color:fbType===t?"#c4b5fd":muted,
+                      fontSize:11,fontWeight:fbType===t?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s",
+                    }}>{t}</button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stars */}
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:8}}>YOUR EXPERIENCE</div>
+                <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                  {[1,2,3,4,5].map(s=>(
+                    <button key={s}
+                      onMouseEnter={()=>setFbHover(s)} onMouseLeave={()=>setFbHover(0)}
+                      onClick={()=>setFbStars(s)}
+                      style={{background:"none",border:"none",cursor:"pointer",fontSize:24,transition:"transform 0.1s",
+                        transform:(fbHover||fbStars)>=s?"scale(1.2)":"scale(1)"}}>
+                      <span style={{filter:(fbHover||fbStars)>=s?"drop-shadow(0 0 5px #fbbf24)":"none"}}>
+                        {(fbHover||fbStars)>=s?"⭐":"☆"}
+                      </span>
+                    </button>
+                  ))}
+                  {fbStars>0&&<span style={{fontSize:11,color:muted,marginLeft:4}}>{["","Poor","Fair","Good","Great","Excellent!"][fbStars]}</span>}
+                </div>
+              </div>
+
+              {/* Message */}
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:fbErr?"#fda4af":muted,letterSpacing:"0.07em",marginBottom:8}}>
+                  MESSAGE <span style={{color:"#fb7185"}}>*</span>
+                </div>
+                <textarea value={fbMsg}
+                  onChange={e=>{setFbMsg(e.target.value);setFbErr(false);}}
+                  placeholder={fbErr?"Please write a message…":"Tell us what you think, what's broken, or what you'd love to see…"}
+                  rows={4}
+                  className={`inp${fbErr?" inp-err":""}`}
+                  style={{resize:"vertical",lineHeight:1.6,fontSize:12}}
+                />
+                {fbErr&&<div className="err-msg"><span>⚠</span>Message is required</div>}
+                <div style={{fontSize:10,color:muted,marginTop:4,textAlign:"right"}}>{fbMsg.length}/500</div>
+              </div>
+
+              {/* Optional email */}
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:8}}>EMAIL <span style={{color:muted,fontWeight:400}}>(optional)</span></div>
+                <input type="email" value={fbEmail} onChange={e=>setFbEmail(e.target.value)}
+                  placeholder="For follow-up replies" className="inp" style={{fontSize:12}}/>
+              </div>
+
+              <button onClick={submitFeedback} className="btn-g" style={{padding:"12px",fontSize:13,fontWeight:700,borderRadius:12}}>
+                Send Feedback 💬
+              </button>
+
+              {/* Community feedback preview */}
+              <div>
+                <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:10}}>RECENT FEEDBACK</div>
+                {[
+                  {user:"Maria S.", type:"Feature Request", msg:"Would love a dark/light toggle directly on the dashboard.", stars:5, time:"2d ago", c:"#a78bfa"},
+                  {user:"Carlo M.", type:"Bug Report",      msg:"Heatmap on mobile needs a smoother horizontal scroll.",   stars:4, time:"5d ago", c:"#fb7185"},
+                  {user:"Ana R.",   type:"Compliment",      msg:"AI forecasting is incredibly useful for weekly planning!", stars:5, time:"1w ago", c:"#34d399"},
+                ].map((fb,i)=>(
+                  <div key={i} style={{padding:"10px 12px",background:rowBg,border:`1px solid ${border}`,borderRadius:10,marginBottom:8}}>
+                    <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:5,flexWrap:"wrap"}}>
+                      <div style={{width:22,height:22,borderRadius:"50%",background:`${fb.c}18`,border:`1px solid ${fb.c}28`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:fb.c}}>{fb.user[0]}</div>
+                      <span style={{fontSize:11,fontWeight:700,color:text}}>{fb.user}</span>
+                      <span style={{fontSize:9,color:fb.c,background:`${fb.c}12`,border:`1px solid ${fb.c}20`,borderRadius:999,padding:"1px 7px",fontWeight:600}}>{fb.type}</span>
+                      <span style={{fontSize:9,color:muted,marginLeft:"auto"}}>{fb.time}</span>
+                    </div>
+                    <p style={{fontSize:11,color:muted,lineHeight:1.6,margin:0}}>{fb.msg}</p>
+                    <div style={{fontSize:10,color:"#fbbf24",marginTop:4}}>{"⭐".repeat(fb.stars)}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
+
 const NOTIF_META: Record<NotifCat,{icon:string; color:string; bg:string; label:string}> = {
   delivery: {icon:"🚚", color:"#38bdf8", bg:"rgba(56,189,248,0.12)",  label:"Delivery"},
   stock:    {icon:"📦", color:"#fbbf24", bg:"rgba(251,191,36,0.12)",  label:"Stock"},
@@ -5620,6 +5868,7 @@ export default function App() {
   const [aiPage, setAiPage]          = useState<string|null>(null);
   const [showNotif, setShowNotif]    = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showHelp, setShowHelp]      = useState(false);
   const [mobileOpen, setMobileOpen]  = useState(false);
   const [isDark, setIsDark]          = useState(true);
 
@@ -5875,7 +6124,13 @@ export default function App() {
               </div>
             )}
             <div style={{display:"flex",alignItems:"center",gap:isMob?6:8,flexShrink:0}}>
-              <button onClick={()=>setShowNotif(v=>!v)} style={{position:"relative",background:showNotif?"rgba(129,140,248,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showNotif?"rgba(129,140,248,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,borderRadius:999,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showNotif?"#818cf8":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",transition:"all 0.18s"}}>
+              {/* ? Help button */}
+              <button onClick={()=>{setShowHelp(v=>!v);setShowNotif(false);}} style={{width:34,height:34,borderRadius:999,background:showHelp?"rgba(56,189,248,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showHelp?"rgba(56,189,248,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showHelp?"#38bdf8":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",fontSize:15,fontWeight:800,fontFamily:"'Inter',sans-serif",transition:"all 0.18s",flexShrink:0}}>
+                ?
+              </button>
+              {showHelp&&<HelpPanel onClose={()=>setShowHelp(false)} lm={lm}/>}
+              {/* Bell */}
+              <button onClick={()=>{setShowNotif(v=>!v);setShowHelp(false);}} style={{position:"relative",background:showNotif?"rgba(129,140,248,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showNotif?"rgba(129,140,248,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,borderRadius:999,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showNotif?"#818cf8":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",transition:"all 0.18s"}}>
                 <Bell size={15} className={showNotif?"":"bell-new"}/>
                 <span style={{position:"absolute",top:-3,right:-3,background:"#ef4444",color:"#fff",fontSize:8,fontWeight:700,minWidth:14,height:14,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:99,border:`2px solid ${lm?"#eef0f7":"#0d0d14"}`,padding:"0 2px",animation:"urgentPulse 2s ease infinite"}}>
                   {INIT_NOTIFS.filter(n=>!n.read).length}
