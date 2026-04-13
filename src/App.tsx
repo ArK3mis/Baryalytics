@@ -394,7 +394,8 @@ const useW = () => {
 // Components outside App use these; App uses the reactive isMob versions
 const colsW = (desktop:number): string => {
   const w = window.innerWidth;
-  if(w <= 600) return desktop >= 3 ? "1fr 1fr" : "1fr";
+  if(w <= 400) return desktop >= 2 ? "1fr 1fr" : "1fr";
+  if(w <= 600) return desktop >= 4 ? "1fr 1fr" : desktop === 3 ? "1fr" : "1fr";
   if(w <= 900) return desktop >= 4 ? "1fr 1fr" : desktop === 3 ? "1fr 1fr" : "1fr";
   return `repeat(${desktop},1fr)`;
 };
@@ -515,60 +516,108 @@ const G = `
   /* ── RESPONSIVE HELPERS ── */
   .mob-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .mob-scroll::-webkit-scrollbar{height:3px;}
+
   /* ── MOBILE NAV ── */
-  .mob-drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:rgba(13,13,22,0.98);backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,0.09);z-index:200;transform:translateX(-100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:24px 16px;}
+  .mob-drawer{position:fixed;top:0;left:0;bottom:0;width:280px;background:rgba(10,10,20,0.99);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,0.09);z-index:200;transform:translateX(-100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:20px 16px;}
   .mob-drawer.open{transform:translateX(0);}
-  .mob-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;display:none;}
+  .mob-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:199;display:none;}
   .mob-drawer-overlay.open{display:block;}
-  .mob-nav-btn{display:none;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);cursor:pointer;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);flex-shrink:0;}
-  .mob-nav-btn svg{pointer-events:none;}
+
+  /* ── TABLET (≤900px) ── */
   @media(max-width:900px){
-  /* Show hamburger, hide center nav pills */
-  .mob-nav-btn{display:flex;}
-  .nav-pills-center{display:none!important;}
-  .nav-left-welcome{display:none!important;}
-  /* Shrink main padding */
-  main{padding-left:16px!important;padding-right:16px!important;}
-  /* Floating nav wrapper — reduce side padding */
-  .nav-float-wrap{padding:0 12px!important;}
-  /* All grids → responsive */
-  .grid-5col{grid-template-columns:repeat(2,1fr)!important;}
-  .grid-4col{grid-template-columns:repeat(2,1fr)!important;}
-  .grid-3col{grid-template-columns:1fr 1fr!important;}
-  .grid-2col{grid-template-columns:1fr!important;}
-  .grid-split{grid-template-columns:1fr!important;}
-  .grid-ai{grid-template-columns:1fr!important;}
-  /* Settings layout: sidebar stacks above content */
-  .settings-layout{flex-direction:column!important;}
-  .settings-sidebar{width:100%!important;position:static!important;}
-  .settings-sidebar > div{display:grid;grid-template-columns:repeat(4,1fr);}
-  /* Finance heatmap: allow horizontal scroll */
-  .heatmap-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
-  /* Tables: force scroll wrapper */
-  .table-scroll{overflow-x:auto!important;-webkit-overflow-scrolling:touch;}
-  .th,.td{white-space:nowrap;}
-  /* Cards: smaller padding */
-  .card{padding:14px!important;}
-  /* Stat numbers: smaller on mobile */
-  .stat-num{font-size:20px!important;}
-  /* Appearance hero banner */
-  .appear-hero{padding:20px 16px!important;}
+    main{padding-left:16px!important;padding-right:16px!important;}
+    .nav-float-wrap{padding:0 10px!important;}
+    .nav-bar{border-radius:16px!important;}
+    .grid-5col{grid-template-columns:repeat(2,1fr)!important;}
+    .grid-4col{grid-template-columns:repeat(2,1fr)!important;}
+    .grid-3col{grid-template-columns:1fr 1fr!important;}
+    .grid-2col{grid-template-columns:1fr!important;}
+    .grid-split{grid-template-columns:1fr!important;}
+    .grid-ai{grid-template-columns:1fr!important;}
+    .settings-layout{flex-direction:column!important;}
+    .settings-sidebar{width:100%!important;position:static!important;}
+    .settings-sidebar > div{display:grid;grid-template-columns:repeat(4,1fr);}
+    .th,.td{white-space:nowrap;}
+    .card{padding:14px!important;}
+    .stat-forecast{padding:14px!important;}
   }
+
+  /* ── MOBILE (≤600px) ── */
   @media(max-width:600px){
-  .grid-5col{grid-template-columns:1fr 1fr!important;}
-  .grid-4col{grid-template-columns:1fr 1fr!important;}
-  .grid-3col{grid-template-columns:1fr!important;}
-  .settings-sidebar > div{grid-template-columns:repeat(2,1fr);}
-  /* Reduce chart heights */
-  .chart-tall{height:200px!important;}
-  /* Nav: tighter */
-  .nav-bar{border-radius:14px!important;}
-  /* Export button: icon only */
-  .export-btn span.export-label{display:none;}
+    /* Nav */
+    .nav-bar{border-radius:14px!important;height:48px!important;}
+    .nav-float-wrap{padding:0 8px!important;}
+
+    /* Spacer */
+    .nav-spacer{height:68px!important;}
+
+    /* Main padding */
+    main{padding-left:12px!important;padding-right:12px!important;padding-bottom:32px!important;}
+
+    /* Cards */
+    .card{padding:12px!important;border-radius:12px!important;}
+    .card-title{font-size:11px!important;margin-bottom:10px!important;}
+    .stat-forecast{padding:12px!important;border-radius:12px!important;}
+
+    /* Grids */
+    .grid-5col{grid-template-columns:1fr 1fr!important;}
+    .grid-4col{grid-template-columns:1fr 1fr!important;}
+    .grid-3col{grid-template-columns:1fr!important;}
+    .grid-2col{grid-template-columns:1fr!important;}
+    .grid-split{grid-template-columns:1fr!important;}
+    .grid-ai{grid-template-columns:1fr!important;}
+
+    /* Settings sidebar */
+    .settings-sidebar > div{grid-template-columns:repeat(2,1fr)!important;}
+
+    /* Typography */
+    .stat-num{font-size:18px!important;}
+
+    /* Tables — always scroll */
+    table{min-width:480px;}
+    .th{padding:9px 8px!important;font-size:10px!important;}
+    .td{padding:9px 8px!important;font-size:12px!important;}
+
+    /* Toolbar: stack on mobile */
+    .mob-toolbar{flex-direction:column!important;align-items:stretch!important;}
+    .mob-toolbar > *{width:100%!important;}
+    .mob-toolbar .btn,.mob-toolbar .btn-g,.mob-toolbar .btn-r{
+      justify-content:center!important;text-align:center!important;
+    }
+    .mob-btn-row{flex-wrap:wrap!important;gap:6px!important;}
+    .mob-btn-row .btn,.mob-btn-row .btn-g,.mob-btn-row .btn-r{
+      flex:1 1 auto!important;min-width:80px!important;
+      font-size:11px!important;padding:8px 6px!important;text-align:center!important;
+    }
+
+    /* Inputs */
+    .inp{font-size:13px!important;padding:10px 12px!important;}
+
+    /* Tab wrap */
+    .tab-wrap{width:100%!important;}
+    .tab-on,.tab-off{flex:1!important;text-align:center!important;font-size:10px!important;padding:5px 4px!important;}
+
+    /* Export button */
+    .export-btn{font-size:11px!important;padding:7px 10px!important;gap:4px!important;}
+
+    /* Badges + chips */
+    .badge-g,.badge-r,.badge-a,.badge-v{font-size:10px!important;padding:2px 7px!important;}
+    .chip-up,.chip-down{font-size:10px!important;padding:2px 6px!important;}
+
+    /* AI cards */
+    .ai-card{padding:14px!important;}
+
+    /* Insight card */
+    .insight-card{padding:12px 14px!important;}
   }
+
+  /* ── SMALL PHONE (≤400px) ── */
   @media(max-width:400px){
-  .grid-5col{grid-template-columns:1fr!important;}
-  .grid-4col{grid-template-columns:1fr!important;}
+    .grid-5col{grid-template-columns:1fr!important;}
+    .grid-4col{grid-template-columns:1fr!important;}
+    .nav-bar{border-radius:12px!important;}
+    main{padding-left:10px!important;padding-right:10px!important;}
+    .card{padding:10px!important;}
   }
 `;
 
@@ -1376,11 +1425,11 @@ const Inventory = () => {
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <div style={{position:"relative"}}>
             <Search size={14} style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",color:"rgba(255,255,255,0.3)"}}/>
-            <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search products…" className="inp" style={{paddingLeft:36,width:240}}/>
+            <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search products…" className="inp" style={{paddingLeft:36,width:"min(240px,100%)"}}/>
           </div>
           <button onClick={()=>setQ("")} className="btn" style={{padding:"9px 12px"}}><Undo2 size={14}/></button>
         </div>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+        <div className="mob-btn-row" style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           {[["add","+ Add"],["delete","Delete"],["update","Update"],["history","📋 Log"],["expiry","🗓 Expiry"]].map(([v,l])=>(
             <button key={v} onClick={()=>{if(v==="update"&&inv.length)setuP(inv[0]);setView(v);}}
               className="btn"
@@ -1946,11 +1995,11 @@ const Supplier = () => {
         <div style={{display:"flex",gap:10}}>
           <div style={{position:"relative"}}>
             <Search size={14} style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",color:"rgba(255,255,255,0.3)"}}/>
-            <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search suppliers..." className="inp" style={{paddingLeft:36,width:240}}/>
+            <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search suppliers..." className="inp" style={{paddingLeft:36,width:"min(240px,100%)"}}/>
           </div>
           <button onClick={()=>setQ("")} className="btn" style={{padding:"9px 12px"}}><Undo2 size={14}/></button>
         </div>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+        <div className="mob-btn-row" style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           {[["add","Add Supplier"],["delete","Delete Supplier"],["update","Edit Supplier"]].map(([v,l])=>(
             <button key={v} onClick={()=>{if(v==="update"&&sups.length)seteS(sups[0]);setView(v);}} className="btn">{l}</button>
           ))}
@@ -5876,9 +5925,11 @@ export default function App() {
   const W = useW();
   const isMob  = W <= 900;
   const isSm   = W <= 600;
+  const isXs   = W <= 400;
   // Responsive grid helper
   const cols = (desktop:number): string => {
-    if(isSm)  return desktop >= 3 ? "1fr 1fr" : "1fr";
+    if(isXs)  return desktop >= 2 ? "1fr 1fr" : "1fr";
+    if(isSm)  return desktop >= 4 ? "1fr 1fr" : desktop === 3 ? "1fr" : "1fr";
     if(isMob) return desktop >= 4 ? "1fr 1fr" : desktop === 3 ? "1fr 1fr" : "1fr";
     return `repeat(${desktop},1fr)`;
   };
@@ -6089,7 +6140,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="nav-float-wrap" style={{position:"fixed",top:16,left:0,right:0,zIndex:50,display:"flex",justifyContent:"center",padding:"0 24px",pointerEvents:"none"}}>
+        <div className="nav-float-wrap" style={{position:"fixed",top:isSm?10:16,left:0,right:0,zIndex:50,display:"flex",justifyContent:"center",padding:`0 ${isSm?"8px":"24px"}`,pointerEvents:"none"}}>
           <nav className="nav-bar" style={{
             display:"flex",alignItems:"center",justifyContent:"space-between",
             padding:"0 8px 0 12px",height:52,width:"100%",maxWidth:1180,
@@ -6200,51 +6251,51 @@ export default function App() {
             </div>
           </nav>
         </div>
-        <div style={{height:88}}/>
+        <div className="nav-spacer" style={{height:88}}/>
 
-        <main style={{position:"relative",zIndex:10,maxWidth:1440,margin:"0 auto",padding:`0 ${isMob?"16px":"24px"} 48px`}}>
+        <main style={{position:"relative",zIndex:10,maxWidth:1440,margin:"0 auto",padding:`0 ${isXs?"10px":isSm?"12px":isMob?"16px":"24px"} 48px`}}>
           {page==="Dashboard"&&(
             <>
-              <div className="grid-5col" style={{display:"grid",gridTemplateColumns:cols(5),gap:16,marginBottom:20}}>
+              <div className="grid-5col" style={{display:"grid",gridTemplateColumns:cols(5),gap:isSm?10:16,marginBottom:20}}>
                 <div className="card">
                   <div className="card-title">Daily Sales <button className="card-x"><X size={13}/></button></div>
-                  <div className="stat-num" style={{fontSize:26,fontWeight:700,color:"#fff",marginTop:2}}>₱167,001</div>
-                  <div style={{marginTop:8}}><span className="chip-up"><TrendingUp size={10}/> 15%</span></div>
+                  <div className="stat-num" style={{fontSize:isSm?20:26,fontWeight:700,color:"#fff",marginTop:2}}>₱167,001</div>
+                  <div style={{marginTop:6}}><span className="chip-up"><TrendingUp size={10}/> 15%</span></div>
                 </div>
                 <div className="card">
                   <div className="card-title">Monthly Sales <button className="card-x"><X size={13}/></button></div>
-                  <div className="stat-num" style={{fontSize:26,fontWeight:700,color:"#fff",marginTop:2}}>₱12.5 M</div>
-                  <div style={{marginTop:8}}><span className="chip-up"><TrendingUp size={10}/> 10%</span></div>
+                  <div className="stat-num" style={{fontSize:isSm?20:26,fontWeight:700,color:"#fff",marginTop:2}}>₱12.5 M</div>
+                  <div style={{marginTop:6}}><span className="chip-up"><TrendingUp size={10}/> 10%</span></div>
                 </div>
                 <div className="card">
                   <div className="card-title">Sales Target <button className="card-x"><X size={13}/></button></div>
-                  <div style={{display:"flex",alignItems:"baseline",gap:8,marginTop:2}}>
-                    <span style={{fontSize:30,fontWeight:700,color:"#fff"}}>5,000</span>
-                    <span style={{fontSize:15,color:"rgba(255,255,255,0.35)"}}>/ 25,000</span>
+                  <div style={{display:"flex",alignItems:"baseline",gap:isSm?4:8,marginTop:2}}>
+                    <span style={{fontSize:isSm?20:30,fontWeight:700,color:"#fff"}}>5,000</span>
+                    <span style={{fontSize:isSm?11:15,color:"rgba(255,255,255,0.35)"}}>/ 25,000</span>
                   </div>
-                  <div style={{marginTop:10,height:4,background:"rgba(255,255,255,0.07)",borderRadius:99,overflow:"hidden"}}>
+                  <div style={{marginTop:8,height:4,background:"rgba(255,255,255,0.07)",borderRadius:99,overflow:"hidden"}}>
                     <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#10b981)",borderRadius:99}}/>
                   </div>
                 </div>
                 <div className="card">
                   <div className="card-title">Available Stock <button className="card-x"><X size={13}/></button></div>
                   <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:2}}>
-                    <span style={{fontSize:28,fontWeight:700,color:"#34d399"}}>32,091</span>
-                    <span style={{fontSize:15,color:"rgba(52,211,153,0.6)"}}>Items</span>
+                    <span style={{fontSize:isSm?20:28,fontWeight:700,color:"#34d399"}}>32,091</span>
+                    <span style={{fontSize:isSm?11:15,color:"rgba(52,211,153,0.6)"}}>Items</span>
                   </div>
                 </div>
                 <div className="card">
                   <div className="card-title">Low Stock Alerts <button className="card-x"><X size={13}/></button></div>
                   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
                     <div style={{display:"flex",alignItems:"baseline",gap:6}}>
-                      <span style={{fontSize:28,fontWeight:700,color:"#fb7185"}}>67</span>
-                      <span style={{fontSize:15,color:"rgba(251,113,133,0.6)"}}>products</span>
+                      <span style={{fontSize:isSm?20:28,fontWeight:700,color:"#fb7185"}}>67</span>
+                      <span style={{fontSize:isSm?11:15,color:"rgba(251,113,133,0.6)"}}>products</span>
                     </div>
-                    <AlertTriangle size={24} color="#fb7185"/>
+                    <AlertTriangle size={isSm?18:24} color="#fb7185"/>
                   </div>
                 </div>
               </div>
-              <div style={{display:"grid",gridTemplateColumns:cols(3),gap:16,marginBottom:20}}>
+              <div style={{display:"grid",gridTemplateColumns:cols(3),gap:isSm?10:16,marginBottom:20}}>
                 <div className="card" style={{display:"flex",flexDirection:"column",minHeight:290}}>
                   <div className="card-title">Sales Overview <button className="card-x"><X size={13}/></button></div>
                   <div className="tab-wrap" style={{marginBottom:16}}>
