@@ -340,6 +340,18 @@ const EmptyState = ({q,icon="📦",title,sub}:{q:string;icon?:string;title?:stri
   </tr>
 );
 
+/* ── SHARED EMAIL VALIDATOR ───────────────────────────────────────── */
+const isValidEmail = (v:string): string => {
+  if(!v) return "Email address is required.";
+  if(!v.includes("@")) return "Please include an '@' sign in your email address.";
+  const [local, domain] = v.split("@");
+  if(!local) return "Please enter the part before the '@' sign.";
+  if(!domain||!domain.includes(".")) return "Please enter a complete email (e.g. yourname@gmail.com).";
+  const tld = domain.split(".").pop()?.toLowerCase()||"";
+  if(tld.length<2) return "The email domain appears incomplete (e.g. .com, .ph).";
+  return ""; // empty = valid
+};
+
 /* ── BARYALYTICS LOGO COMPONENT ───────────────────────────────────── */
 // Faithful to the uploaded logo: golden circle, white B, white baseline bar,
 // blue upward arrow line, red upward arrow line
@@ -4125,10 +4137,7 @@ const UserPage = () => {
     const errs:Record<string,boolean>={};
     if(!form.name)     errs.name=true;
     if(!form.username) errs.username=true;
-    if(!form.email)    errs.email=true;
-    if(Object.keys(errs).length){setUserErrors(errs);userShakeForm();return;}
-    setUserErrors({});
-    setUsers(p=>[...p,{...form,id:Math.max(0,...p.map(u=>u.id))+1}]);
+    if(!form.email||isValidEmail(form.email)!=="")    errs.email=true;
     showToast(`${form.name} added as ${form.role}! 👤`);
     setModal(null);
   };
@@ -4136,7 +4145,7 @@ const UserPage = () => {
     const errs:Record<string,boolean>={};
     if(!form.name)     errs.name=true;
     if(!form.username) errs.username=true;
-    if(!form.email)    errs.email=true;
+    if(!form.email||isValidEmail(form.email)!=="")    errs.email=true;
     if(Object.keys(errs).length){setUserErrors(errs);userShakeForm();return;}
     setUserErrors({});
     if(!selected)return;setUsers(p=>p.map(u=>u.id===selected.id?{...form,id:u.id}:u));
@@ -4547,11 +4556,12 @@ const UserPage = () => {
                   <label style={{fontSize:11,fontWeight:700,color:userErrors.email?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
                     EMAIL <span style={{color:"#fb7185"}}>*</span>
                   </label>
-                  <input value={form.email} type="email"
+                  <input value={form.email} type="text"
                     onChange={e=>{setForm(f=>({...f,email:e.target.value}));userClearErr("email");}}
+                    onBlur={()=>{if(form.email&&isValidEmail(form.email))setUserErrors(e=>({...e,email:true}));}}
                     className={`inp${userErrors.email?" inp-err":""}`}
-                    placeholder={userErrors.email?"Required":"maria@email.com"}/>
-                  {userErrors.email&&<div className="err-msg"><span>⚠</span>Email is required</div>}
+                    placeholder={userErrors.email?"Enter a valid email address":"yourname@gmail.com"}/>
+                  {userErrors.email&&<div className="err-msg"><span>⚠</span>{!form.email?"Email address is required.":(isValidEmail(form.email)||"Please enter a valid email address.")}</div>}
                 </div>
               </div>
 
@@ -4659,13 +4669,33 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
   const [shake, setShake]       = useState(false);
   const [fadeMode, setFadeMode] = useState(false);
 
+  // Per-field error messages
+  const [errors, setErrors] = useState<Record<string,string>>({});
+  const clearErr = (f:string) => setErrors(e=>({...e,[f]:""}));
+
   const switchMode = (m:"login"|"signup") => {
     setFadeMode(true);
+    setErrors({});
     setTimeout(()=>{setMode(m);setFadeMode(false);},220);
   };
 
   const submit = () => {
-    if(!name||(mode==="signup"&&!email)||!pass){setShake(true);setTimeout(()=>setShake(false),500);return;}
+    const errs: Record<string,string> = {};
+    if(!name.trim())                     errs.name  = "Please enter your name to continue.";
+    if(mode==="signup"){
+      const emailErr = isValidEmail(email);
+      if(!email)         errs.email = "Email address is required.";
+      else if(emailErr)  errs.email = emailErr;
+    }
+    if(!pass)                            errs.pass  = "Please enter your password.";
+    if(pass && pass.length < 4)          errs.pass  = "Password must be at least 4 characters.";
+    if(Object.keys(errs).some(k=>errs[k])){
+      setErrors(errs);
+      setShake(true);
+      setTimeout(()=>setShake(false),500);
+      return;
+    }
+    setErrors({});
     setLoading(true);
     setTimeout(()=>{setLoading(false);onAuth(name);},1200);
   };
@@ -4693,6 +4723,8 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
     @keyframes logoGlow{0%,100%{filter:drop-shadow(0 0 12px rgba(212,175,55,0.4))}50%{filter:drop-shadow(0 0 28px rgba(212,175,55,0.8))}}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
     @keyframes gridPulse{0%,100%{opacity:0.3}50%{opacity:0.6}}
+    @keyframes errFlash{0%{box-shadow:0 0 0 0 rgba(251,113,133,0.7)}40%{box-shadow:0 0 0 6px rgba(251,113,133,0.15)}100%{box-shadow:0 0 0 3px rgba(251,113,133,0.1)}}
+    @keyframes errSlide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
     .auth-inp{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#e2e8f0;padding:14px 46px 14px 16px;font-size:14px;outline:none;font-family:'Inter',sans-serif;transition:all 0.2s;box-sizing:border-box;}
     .auth-inp:focus{border-color:rgba(212,175,55,0.5);background:rgba(212,175,55,0.04);box-shadow:0 0 0 3px rgba(212,175,55,0.08);}
     .auth-inp::placeholder{color:rgba(255,255,255,0.2);}
@@ -4825,31 +4857,81 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             </div>
             <div style={{width:48,height:3,background:"linear-gradient(90deg,#b8860b,#d4af37)",borderRadius:99,margin:"14px auto 0",boxShadow:"0 0 10px rgba(212,175,55,0.4)"}}/>
           </div>
-          <div style={{display:"flex",flexDirection:"column",gap:18,animation:`shake ${shake?"0.4s ease":"0s"}`}}>
+          {/* ── Form fields ── */}
+          <div style={{display:"flex",flexDirection:"column",gap:16,animation:`shake ${shake?"0.4s ease":"0s"}`}}>
+
+            {/* Name */}
             <div>
-              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>NAME</label>
+              <label style={{fontSize:11,fontWeight:700,color:errors.name?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>NAME</label>
               <div style={{position:"relative"}}>
-                <input value={name} onChange={e=>setName(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()} className="auth-inp" placeholder="Enter your name"/>
-                <div style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",color:"rgba(255,255,255,0.2)",pointerEvents:"none",fontSize:16}}>👤</div>
+                <input
+                  value={name}
+                  onChange={e=>{setName(e.target.value);clearErr("name");}}
+                  onKeyDown={e=>e.key==="Enter"&&submit()}
+                  className="auth-inp"
+                  placeholder={errors.name?"Your name is required":"Enter your name"}
+                  style={errors.name?{borderColor:"rgba(251,113,133,0.7)",background:"rgba(251,113,133,0.06)",animation:"errFlash 0.4s ease both"}:undefined}
+                />
+                <div style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",color:errors.name?"rgba(251,113,133,0.5)":"rgba(255,255,255,0.2)",pointerEvents:"none",fontSize:16}}>{errors.name?"⚠️":"👤"}</div>
               </div>
+              {errors.name&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#fda4af",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.name}</div>}
             </div>
+
+            {/* Email — signup only */}
             {!isLogin&&(
               <div>
-                <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>EMAIL</label>
+                <label style={{fontSize:11,fontWeight:700,color:errors.email?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>EMAIL ADDRESS</label>
                 <div style={{position:"relative"}}>
-                  <input value={email} onChange={e=>setEmail(e.target.value)} className="auth-inp" placeholder="Enter your email" type="email"/>
-                  <div style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",color:"rgba(255,255,255,0.2)",pointerEvents:"none",fontSize:16}}>✉️</div>
+                  <input
+                    value={email}
+                    onChange={e=>{
+                      setEmail(e.target.value);
+                      clearErr("email");
+                      // Only show error after user has typed a reasonable amount
+                      if(e.target.value.length>6 && e.target.value.includes("@")){
+                        const err = isValidEmail(e.target.value);
+                        if(err) setErrors(prev=>({...prev,email:err}));
+                      }
+                    }}
+                    onBlur={()=>{
+                      if(email){
+                        const err = isValidEmail(email);
+                        if(err) setErrors(prev=>({...prev,email:err}));
+                      }
+                    }}
+                    className="auth-inp"
+                    placeholder={errors.email?"Enter a valid email address":"Enter your email (e.g. you@gmail.com)"}
+                    type="text"
+                    style={errors.email?{borderColor:"rgba(251,113,133,0.7)",background:"rgba(251,113,133,0.06)",animation:"errFlash 0.4s ease both"}:
+                           email&&isValidEmail(email)===""?{borderColor:"rgba(52,211,153,0.5)",background:"rgba(52,211,153,0.03)"}:undefined}
+                  />
+                  <div style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",color:errors.email?"rgba(251,113,133,0.5)":email&&isValidEmail(email)===""?"#34d399":"rgba(255,255,255,0.2)",pointerEvents:"none",fontSize:16}}>
+                    {errors.email?"❌":email&&isValidEmail(email)===""?"✅":"✉️"}
+                  </div>
                 </div>
+                {errors.email&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#fda4af",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.email}</div>}
+                {!errors.email&&email&&isValidEmail(email)===""&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#6ee7b7",animation:"errSlide 0.2s ease both"}}><span>✓</span>Looks good!</div>}
               </div>
             )}
+
+            {/* Password */}
             <div>
-              <label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>PASSWORD</label>
+              <label style={{fontSize:11,fontWeight:700,color:errors.pass?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>PASSWORD</label>
               <div style={{position:"relative"}}>
-                <input value={pass} onChange={e=>setPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()} className="auth-inp" placeholder="Enter your password" type={showPass?"text":"password"}/>
-                <button onClick={()=>setShowPass(v=>!v)} style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:"rgba(255,255,255,0.3)",fontSize:16,padding:0}}>
+                <input
+                  value={pass}
+                  onChange={e=>{setPass(e.target.value);clearErr("pass");}}
+                  onKeyDown={e=>e.key==="Enter"&&submit()}
+                  className="auth-inp"
+                  placeholder={errors.pass?"Password is required":"Enter your password"}
+                  type={showPass?"text":"password"}
+                  style={errors.pass?{borderColor:"rgba(251,113,133,0.7)",background:"rgba(251,113,133,0.06)",animation:"errFlash 0.4s ease both"}:undefined}
+                />
+                <button onClick={()=>setShowPass(v=>!v)} style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:errors.pass?"rgba(251,113,133,0.5)":"rgba(255,255,255,0.3)",fontSize:16,padding:0}}>
                   {showPass?"🙈":"🔒"}
                 </button>
               </div>
+              {errors.pass&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#fda4af",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.pass}</div>}
             </div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <label style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",userSelect:"none"}}>
