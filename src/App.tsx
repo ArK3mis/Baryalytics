@@ -5025,158 +5025,221 @@ interface Notif {
 /* ── HELP & SUPPORT PANEL ─────────────────────────────────────────── */
 /* ── BARY MASCOT SVG ─────────────────────────────────────────────── */
 const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;waving?:boolean;gazeX?:number;gazeY?:number}) => {
-  // Pupil offset based on gaze direction (max ±4px)
-  const px = Math.max(-4, Math.min(4, gazeX * 4));
-  const py = Math.max(-3, Math.min(3, gazeY * 3));
+  const px = Math.max(-3, Math.min(3, gazeX * 3));
+  const py = Math.max(-2, Math.min(2, gazeY * 2));
   return (
-  <svg width={size} height={size*1.25} viewBox="0 0 220 275" xmlns="http://www.w3.org/2000/svg" style={{overflow:"visible"}}>
+  <svg width={size} height={size*1.3} viewBox="0 0 240 312" xmlns="http://www.w3.org/2000/svg" style={{overflow:"visible"}}>
     <defs>
-      <radialGradient id="domeGrad" cx="38%" cy="28%" r="65%">
-        <stop offset="0%" stopColor="#4ade80"/>
-        <stop offset="45%" stopColor="#16a34a"/>
-        <stop offset="100%" stopColor="#052e16"/>
+      {/* Dome gradient - dark green top, lighter front */}
+      <radialGradient id="domeOuter" cx="45%" cy="35%" r="62%">
+        <stop offset="0%" stopColor="#3d8c45"/>
+        <stop offset="50%" stopColor="#1a5c24"/>
+        <stop offset="100%" stopColor="#0a2e10"/>
       </radialGradient>
-      <radialGradient id="faceGrad" cx="42%" cy="35%" r="58%">
-        <stop offset="0%" stopColor="#86efac"/>
-        <stop offset="100%" stopColor="#22c55e"/>
+      {/* Inner dome face area - lighter green */}
+      <radialGradient id="domeInner" cx="45%" cy="40%" r="58%">
+        <stop offset="0%" stopColor="#7cc97e"/>
+        <stop offset="55%" stopColor="#4aaa52"/>
+        <stop offset="100%" stopColor="#2d7a35"/>
       </radialGradient>
-      <radialGradient id="bodyGrad" cx="35%" cy="25%" r="70%">
-        <stop offset="0%" stopColor="#22c55e"/>
-        <stop offset="100%" stopColor="#14532d"/>
+      {/* Face skin */}
+      <radialGradient id="faceColor" cx="45%" cy="38%" r="55%">
+        <stop offset="0%" stopColor="#8fd490"/>
+        <stop offset="70%" stopColor="#5cb860"/>
+        <stop offset="100%" stopColor="#3a8c40"/>
       </radialGradient>
-      <radialGradient id="goldGrad" cx="35%" cy="30%" r="65%">
+      {/* Body/suit */}
+      <radialGradient id="suitGrad" cx="30%" cy="20%" r="70%">
+        <stop offset="0%" stopColor="#2d7a35"/>
+        <stop offset="60%" stopColor="#1a5c24"/>
+        <stop offset="100%" stopColor="#0d3614"/>
+      </radialGradient>
+      {/* Gold */}
+      <linearGradient id="goldTrim" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stopColor="#fde68a"/>
-        <stop offset="60%" stopColor="#d4af37"/>
+        <stop offset="40%" stopColor="#d4af37"/>
         <stop offset="100%" stopColor="#92400e"/>
+      </linearGradient>
+      {/* Shoe sole grid */}
+      <radialGradient id="soleGrad" cx="50%" cy="50%" r="60%">
+        <stop offset="0%" stopColor="#d4a853"/>
+        <stop offset="100%" stopColor="#a07828"/>
       </radialGradient>
-      <radialGradient id="gloveGrad" cx="30%" cy="25%" r="65%">
-        <stop offset="0%" stopColor="#ffffff"/>
-        <stop offset="100%" stopColor="#d1fae5"/>
+      {/* Glove */}
+      <radialGradient id="gloveGrad" cx="35%" cy="30%" r="65%">
+        <stop offset="0%" stopColor="#f0fff4"/>
+        <stop offset="100%" stopColor="#c6f6d5"/>
       </radialGradient>
-      <filter id="bShadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#052e16" floodOpacity="0.4"/>
+      <filter id="dropShadow">
+        <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#051a08" floodOpacity="0.35"/>
       </filter>
-      <filter id="goldGlow">
-        <feGaussianBlur stdDeviation="2" result="blur"/>
+      <filter id="softGlow">
+        <feGaussianBlur stdDeviation="2.5" result="blur"/>
         <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
     </defs>
 
-    {/* Flying shadow on ground */}
-    <ellipse cx="110" cy="272" rx="50" ry="5" fill="rgba(0,0,0,0.18)" style={{animation:"shadowPulse 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite"}}/>
+    {/* ═══ GROUND SHADOW ═══ */}
+    <ellipse cx="120" cy="308" rx="58" ry="6" fill="rgba(0,0,0,0.18)" style={{animation:"shadowPulse 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite"}}/>
 
-    {/* ── DOME HEAD ── */}
-    {/* Outer gold rim */}
-    <ellipse cx="110" cy="100" rx="95" ry="97" fill="url(#goldGrad)" filter="url(#bShadow)"/>
-    {/* Main dome */}
-    <ellipse cx="108" cy="98" rx="90" ry="92" fill="url(#domeGrad)"/>
-    {/* Inner face circle - lighter */}
-    <ellipse cx="108" cy="100" rx="74" ry="76" fill="url(#faceGrad)"/>
-    {/* Dome highlight */}
-    <ellipse cx="85" cy="68" rx="26" ry="18" fill="rgba(255,255,255,0.18)"/>
-    {/* Gold rim band */}
-    <path d="M18 128 Q110 140 202 128" stroke="#d4af37" strokeWidth="5" fill="none" opacity="0.8"/>
-    <path d="M22 132 Q110 143 198 132" stroke="#fde68a" strokeWidth="2" fill="none" opacity="0.5"/>
+    {/* ═══ COIN/HELMET DOME HEAD ═══ */}
+    {/* The head is a flat-top coin shape — wide ellipse, not a sphere */}
 
-    {/* ── FACE ── */}
-    {/* Eyebrows */}
-    <path d="M76 88 Q90 82 103 88" stroke="#052e16" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
-    <path d="M117 88 Q130 82 144 88" stroke="#052e16" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    {/* Outer dome shadow/depth */}
+    <ellipse cx="122" cy="108" rx="88" ry="78" fill="#061a09"/>
+    {/* Main dome - dark green */}
+    <ellipse cx="120" cy="105" rx="88" ry="78" fill="url(#domeOuter)" filter="url(#dropShadow)"/>
+    {/* Flat top highlight */}
+    <ellipse cx="112" cy="44" rx="62" ry="18" fill="rgba(255,255,255,0.09)"/>
+
+    {/* Gold rim band — the coin edge band at the bottom of the helmet */}
+    <path d="M32 148 Q120 165 208 148 Q208 155 120 172 Q32 155 32 148Z" fill="url(#goldTrim)"/>
+    {/* Gold rim top edge shimmer */}
+    <path d="M36 148 Q120 162 204 148" stroke="#fde68a" strokeWidth="2.5" fill="none" opacity="0.7"/>
+
+    {/* Inner dome circle — the face viewport */}
+    <ellipse cx="120" cy="108" rx="72" ry="65" fill="url(#domeInner)"/>
+    {/* Face skin area */}
+    <ellipse cx="120" cy="115" rx="58" ry="52" fill="url(#faceColor)"/>
+    {/* Dome inner rim line */}
+    <ellipse cx="120" cy="108" rx="72" ry="65" fill="none" stroke="#1a5c24" strokeWidth="3" opacity="0.5"/>
+
+    {/* Dome specular highlight (top-left shine like the reference) */}
+    <ellipse cx="90" cy="65" rx="28" ry="18" fill="rgba(255,255,255,0.14)" transform="rotate(-15,90,65)"/>
+    <ellipse cx="82" cy="60" rx="12" ry="7" fill="rgba(255,255,255,0.09)" transform="rotate(-15,82,60)"/>
+
+    {/* ═══ FACE (inside the dome) ═══ */}
+    {/* Eyebrows — thin arched */}
+    <path d="M95 102 Q103 96 111 102" stroke="#1a3d1e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    <path d="M129 102 Q137 96 145 102" stroke="#1a3d1e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+
     {/* Eye whites */}
-    <ellipse cx="88" cy="102" rx="16" ry="17" fill="white"/>
-    <ellipse cx="132" cy="102" rx="16" ry="17" fill="white"/>
-    {/* Pupils - follow gaze */}
-    <ellipse cx={88+px} cy={102+py} rx="10" ry="11" fill="#052e16"/>
-    <ellipse cx={132+px} cy={102+py} rx="10" ry="11" fill="#052e16"/>
-    {/* Iris highlight */}
-    <circle cx={90+px} cy={98+py} r="4.5" fill="white"/>
-    <circle cx={134+px} cy={98+py} r="4.5" fill="white"/>
-    <circle cx={84+px} cy={107+py} r="2" fill="rgba(255,255,255,0.5)"/>
-    <circle cx={128+px} cy={107+py} r="2" fill="rgba(255,255,255,0.5)"/>
+    <ellipse cx="103" cy="114" rx="13" ry="14" fill="white"/>
+    <ellipse cx="137" cy="114" rx="13" ry="14" fill="white"/>
+    {/* Iris - dark green */}
+    <ellipse cx={103+px} cy={114+py} rx="9" ry="10" fill="#1a5c24"/>
+    <ellipse cx={137+px} cy={114+py} rx="9" ry="10" fill="#1a5c24"/>
+    {/* Pupil */}
+    <ellipse cx={103+px} cy={115+py} rx="5" ry="6" fill="#0a1f0c"/>
+    <ellipse cx={137+px} cy={115+py} rx="5" ry="6" fill="#0a1f0c"/>
+    {/* Eye shine highlights */}
+    <circle cx={107+px} cy={110+py} r="3.5" fill="white"/>
+    <circle cx={141+px} cy={110+py} r="3.5" fill="white"/>
+    <circle cx={99+px} cy={119+py} r="1.5" fill="rgba(255,255,255,0.55)"/>
+    <circle cx={133+px} cy={119+py} r="1.5" fill="rgba(255,255,255,0.55)"/>
+
     {/* Rosy cheeks */}
-    <ellipse cx="64" cy="115" rx="13" ry="8" fill="#f87171" opacity="0.3"/>
-    <ellipse cx="156" cy="115" rx="13" ry="8" fill="#f87171" opacity="0.3"/>
-    {/* Smile */}
-    <path d="M90 124 Q110 138 130 124" stroke="#052e16" strokeWidth="4" fill="none" strokeLinecap="round"/>
-    {/* Teeth */}
-    <path d="M94 127 Q110 138 126 127" fill="white" opacity="0.85"/>
+    <ellipse cx="83" cy="122" rx="11" ry="7" fill="#f87171" opacity="0.28"/>
+    <ellipse cx="157" cy="122" rx="11" ry="7" fill="#f87171" opacity="0.28"/>
 
-    {/* ── BODY / SUIT ── */}
-    {/* Main body shape */}
-    <path d="M50 188 Q46 248 110 256 Q174 248 170 188 Q162 168 150 160 L150 172 Q132 182 110 184 Q88 182 70 172 L70 160 Q58 168 50 188Z" fill="url(#bodyGrad)" filter="url(#bShadow)"/>
-    {/* Jacket shadow side */}
-    <path d="M50 188 Q46 248 110 256 L110 184 Q88 182 70 172 L70 160 Q58 168 50 188Z" fill="rgba(0,0,0,0.12)"/>
+    {/* Smile — gentle curve */}
+    <path d="M105 132 Q120 143 135 132" stroke="#1a3d1e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
 
-    {/* Chest shirt/waistcoat (cream) */}
-    <ellipse cx="110" cy="178" rx="16" ry="20" fill="#f0fdf4" opacity="0.95"/>
+    {/* ═══ BODY / SUIT ═══ */}
+    {/* Main body — rounded rectangle chibi torso */}
+    <rect x="68" y="166" width="104" height="90" rx="18" fill="url(#suitGrad)" filter="url(#dropShadow)"/>
+    {/* Body side shading */}
+    <rect x="68" y="166" width="28" height="90" rx="18" fill="rgba(0,0,0,0.12)"/>
+    <rect x="144" y="166" width="28" height="90" rx="18" fill="rgba(0,0,0,0.08)"/>
 
-    {/* Gold lapel trim lines */}
-    <path d="M88 162 Q96 180 110 185" stroke="#d4af37" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-    <path d="M132 162 Q124 180 110 185" stroke="#d4af37" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-    {/* Lapel shadow areas */}
-    <path d="M70 172 L84 162 Q94 178 110 184 L110 172 Q88 178 70 172Z" fill="rgba(0,0,0,0.1)"/>
-    <path d="M150 172 L136 162 Q126 178 110 184 L110 172 Q132 178 150 172Z" fill="rgba(0,0,0,0.08)"/>
+    {/* Jacket center seam */}
+    <line x1="120" y1="172" x2="120" y2="254" stroke="#0d3614" strokeWidth="1.5" opacity="0.5"/>
+
+    {/* Cream undershirt / collar area */}
+    <path d="M100 168 Q120 178 140 168 L140 185 Q120 195 100 185Z" fill="#f0fdf4" opacity="0.92"/>
+
+    {/* Gold lapel trim - left */}
+    <path d="M100 168 L86 180 L80 200 L90 196 Q104 184 100 168Z" fill="#1a5c24" stroke="#d4af37" strokeWidth="2"/>
+    <path d="M100 168 L88 182 L82 198" stroke="#fde68a" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.8"/>
+    {/* Gold lapel trim - right */}
+    <path d="M140 168 L154 180 L160 200 L150 196 Q136 184 140 168Z" fill="#1a5c24" stroke="#d4af37" strokeWidth="2"/>
+    <path d="M140 168 L152 182 L158 198" stroke="#fde68a" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.8"/>
+
+    {/* Black bow tie */}
+    <path d="M108 170 Q114 166 120 170 Q114 174 108 170Z" fill="#1a1a1a"/>
+    <path d="M132 170 Q126 166 120 170 Q126 174 132 170Z" fill="#111111"/>
+    <ellipse cx="120" cy="170" rx="5" ry="4" fill="#2d2d2d"/>
+
+    {/* Gold ₱ on chest */}
+    <text x="120" y="216" textAnchor="middle" fontSize="22" fontWeight="900" fill="#d4af37" fontFamily="Georgia,serif" filter="url(#softGlow)">₱</text>
 
     {/* Jacket buttons */}
-    <circle cx="110" cy="196" r="3" fill="#d4af37"/>
-    <circle cx="110" cy="208" r="3" fill="#d4af37"/>
-    <circle cx="110" cy="220" r="3" fill="#d4af37"/>
+    <circle cx="120" cy="228" r="3.5" fill="#d4af37"/>
+    <circle cx="120" cy="240" r="3.5" fill="#d4af37"/>
 
-    {/* Bow tie */}
-    <path d="M97 160 Q103 156 110 160 Q103 164 97 160Z" fill="#111827"/>
-    <path d="M123 160 Q117 156 110 160 Q117 164 123 160Z" fill="#1f2937"/>
-    <circle cx="110" cy="160" r="4.5" fill="url(#goldGrad)"/>
-
-    {/* ₱ symbol on chest */}
-    <text x="110" y="184" textAnchor="middle" fontSize="17" fontWeight="900" fill="#d4af37" fontFamily="Georgia,serif" filter="url(#goldGlow)">₱</text>
-
-    {/* ── ARMS ── */}
+    {/* ═══ ARMS (A-pose — spread wide) ═══ */}
     {/* Left arm */}
-    <path d="M50 188 Q32 196 18 212" stroke="#166534" strokeWidth="24" fill="none" strokeLinecap="round"/>
-    <path d="M50 188 Q32 196 18 212" stroke="rgba(0,0,0,0.12)" strokeWidth="24" fill="none" strokeLinecap="round" strokeDasharray="0"/>
-    {/* Left glove */}
-    <circle cx="11" cy="216" r="15" fill="url(#gloveGrad)"/>
-    <ellipse cx="4" cy="208" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(-25,4,208)"/>
-    <path d="M3 205 Q7 198 13 200" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
+    <path d="M68 185 Q42 195 16 196" stroke="#1a5c24" strokeWidth="28" fill="none" strokeLinecap="round"/>
+    <path d="M68 185 Q42 195 16 196" stroke="#0d3614" strokeWidth="28" fill="none" strokeLinecap="round" opacity="0.3" strokeDasharray="0"/>
+    {/* Left gold cuff */}
+    <ellipse cx="16" cy="196" rx="15" ry="10" fill="#d4af37" transform="rotate(-5,16,196)"/>
+    <ellipse cx="16" cy="196" rx="13" ry="8" fill="#1a5c24" transform="rotate(-5,16,196)"/>
+    {/* Left glove — flat Mickey style */}
+    <ellipse cx="7" cy="200" rx="16" ry="13" fill="url(#gloveGrad)" transform="rotate(-10,7,200)"/>
+    <ellipse cx="-1" cy="193" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(-25,-1,193)"/>
+    <path d="M-3 190 Q2 183 8 186" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
 
-    {/* Right arm - waving when active */}
-    <g style={{transformOrigin:"170px 180px", animation:waving?"mascotWave 0.8s ease-in-out infinite":"none"}}>
-      <path d="M170 188 Q188 196 202 212" stroke="#166534" strokeWidth="24" fill="none" strokeLinecap="round"/>
+    {/* Right arm — waving when active */}
+    <g style={{transformOrigin:"172px 185px", animation:waving?"mascotWave 0.8s ease-in-out infinite":"none"}}>
+      <path d="M172 185 Q198 195 224 196" stroke="#1a5c24" strokeWidth="28" fill="none" strokeLinecap="round"/>
+      <path d="M172 185 Q198 195 224 196" stroke="#0d3614" strokeWidth="28" fill="none" strokeLinecap="round" opacity="0.3"/>
+      {/* Right gold cuff */}
+      <ellipse cx="224" cy="196" rx="15" ry="10" fill="#d4af37" transform="rotate(5,224,196)"/>
+      <ellipse cx="224" cy="196" rx="13" ry="8" fill="#1a5c24" transform="rotate(5,224,196)"/>
       {/* Right glove */}
-      <circle cx="209" cy="216" r="15" fill="url(#gloveGrad)"/>
-      <ellipse cx="216" cy="208" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(25,216,208)"/>
-      {/* Fingers */}
-      <path d="M207 206 Q212 199 217 202" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
-      <path d="M211 203 Q216 196 220 200" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.5"/>
+      <ellipse cx="233" cy="200" rx="16" ry="13" fill="url(#gloveGrad)" transform="rotate(10,233,200)"/>
+      <ellipse cx="241" cy="193" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(25,241,193)"/>
+      <path d="M243 190 Q238 183 232 186" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
     </g>
 
-    {/* ── LEGS ── */}
-    <rect x="85" y="252" width="22" height="30" rx="10" fill="#14532d"/>
-    <rect x="113" y="252" width="22" height="30" rx="10" fill="#14532d"/>
+    {/* ═══ LEGS ═══ */}
+    <rect x="82" y="252" width="28" height="38" rx="10" fill="#1a5c24"/>
+    <rect x="82" y="252" width="28" height="38" rx="10" fill="rgba(0,0,0,0.12)" opacity="0.5"/>
+    <rect x="130" y="252" width="28" height="38" rx="10" fill="#1a5c24"/>
 
-    {/* Shoes */}
-    <ellipse cx="96" cy="282" rx="20" ry="10" fill="#052e16"/>
-    <ellipse cx="124" cy="282" rx="20" ry="10" fill="#052e16"/>
-    {/* Shoe gold band detail */}
-    <path d="M77 280 Q96 273 115 280" stroke="#d4af37" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.9"/>
-    <path d="M105 280 Q124 273 143 280" stroke="#d4af37" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.9"/>
+    {/* ═══ SHOES ═══ */}
+    {/* Left shoe */}
+    <ellipse cx="96" cy="290" rx="24" ry="14" fill="#0d3614"/>
+    {/* Gold top band */}
+    <path d="M73 283 Q96 276 119 283" stroke="#d4af37" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    {/* Shoe sole with grid pattern (from bottom view in reference) */}
+    <ellipse cx="96" cy="296" rx="22" ry="8" fill="url(#soleGrad)"/>
+    {/* Grid lines on sole */}
+    <line x1="80" y1="292" x2="82" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="90" y1="290" x2="92" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="100" y1="290" x2="102" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="110" y1="292" x2="112" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="74" y1="294" x2="118" y2="293" stroke="#8B6914" strokeWidth="1" opacity="0.6"/>
+    <line x1="75" y1="297" x2="117" y2="297" stroke="#8B6914" strokeWidth="1" opacity="0.6"/>
     {/* Shoe highlight */}
-    <ellipse cx="90" cy="278" rx="7" ry="3.5" fill="rgba(255,255,255,0.15)"/>
-    <ellipse cx="118" cy="278" rx="7" ry="3.5" fill="rgba(255,255,255,0.15)"/>
+    <ellipse cx="87" cy="286" rx="9" ry="4" fill="rgba(255,255,255,0.12)"/>
 
-    {/* Sparkles around mascot */}
-    <g opacity="0.8">
-      <path d="M172 42 L175 50 L183 47 L175 50 L178 58 L175 50 L167 53 L175 50 Z" fill="#fde68a"/>
-      <path d="M28 55 L30 61 L36 59 L30 61 L32 67 L30 61 L24 63 L30 61 Z" fill="#4ade80"/>
-      <circle cx="185" cy="72" r="3.5" fill="#fbbf24" opacity="0.9"/>
-      <circle cx="22" cy="85" r="2.5" fill="#6ee7b7" opacity="0.9"/>
-      <circle cx="178" cy="175" r="2.5" fill="#fde68a" opacity="0.7"/>
-      <circle cx="32" cy="168" r="2" fill="#86efac" opacity="0.7"/>
+    {/* Right shoe */}
+    <ellipse cx="144" cy="290" rx="24" ry="14" fill="#0d3614"/>
+    {/* Gold top band */}
+    <path d="M121 283 Q144 276 167 283" stroke="#d4af37" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    {/* Sole */}
+    <ellipse cx="144" cy="296" rx="22" ry="8" fill="url(#soleGrad)"/>
+    <line x1="128" y1="292" x2="130" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="138" y1="290" x2="140" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="148" y1="290" x2="150" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="158" y1="292" x2="160" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
+    <line x1="122" y1="294" x2="166" y2="293" stroke="#8B6914" strokeWidth="1" opacity="0.6"/>
+    <line x1="123" y1="297" x2="165" y2="297" stroke="#8B6914" strokeWidth="1" opacity="0.6"/>
+    <ellipse cx="135" cy="286" rx="9" ry="4" fill="rgba(255,255,255,0.12)"/>
+
+    {/* ═══ SPARKLES ═══ */}
+    <g opacity="0.85">
+      <path d="M195 38 L198 47 L207 44 L198 47 L201 56 L198 47 L189 50 L198 47 Z" fill="#fde68a"/>
+      <path d="M22 55 L24 62 L31 59 L24 62 L26 69 L24 62 L17 65 L24 62 Z" fill="#4ade80"/>
+      <circle cx="208" cy="72" r="3.5" fill="#fbbf24" opacity="0.9"/>
+      <circle cx="18" cy="88" r="2.5" fill="#6ee7b7" opacity="0.9"/>
+      <circle cx="200" cy="168" r="2.5" fill="#fde68a" opacity="0.7"/>
+      <circle cx="18" cy="162" r="2" fill="#86efac" opacity="0.7"/>
     </g>
   </svg>
   );
 };
-
 /* ── TUTORIAL SOUNDS ─────────────────────────────────────────────── */
 const useTutSounds = () => {
   const getCtx = () => {
