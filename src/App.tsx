@@ -5255,6 +5255,32 @@ const TypewriterText = ({text, speed=22}:{text:string;speed?:number}) => {
   return <span>{displayed}{!done&&<span className="cursor-blink"/>}</span>;
 };
 
+interface TutStep {
+  id: string;
+  title: string;
+  dialogue: string;
+  mascotPos: "left"|"right"|"center";
+  mascotMood: "wave"|"point"|"happy"|"think";
+  highlightSel?: string;
+  page?: string;
+  arrowDir?: "up"|"down"|"left"|"right";
+}
+
+const TUTORIAL_STEPS: TutStep[] = [
+  {id:"welcome",   mascotPos:"center", mascotMood:"wave",  title:"Hey there! I'm Bary! 👋",     dialogue:"Welcome to Baryalytics — your all-in-one business management dashboard! I'll walk you through everything. Ready? Let's go! 🚀"},
+  {id:"nav",       mascotPos:"right",  mascotMood:"point", title:"The Navigation Bar 🔝",       dialogue:"This is your floating nav bar at the top. Click any section — Dashboard, Inventory, Sales, Supplier, Finance, or User — to jump right to it!", highlightSel:"nav-bar"},
+  {id:"dashboard", mascotPos:"right",  mascotMood:"happy", title:"Dashboard 📊",                dialogue:"Your home base! See daily sales, monthly revenue, stock levels, and live charts at a glance. Everything important is right here.", page:"Dashboard"},
+  {id:"inventory", mascotPos:"left",   mascotMood:"point", title:"Inventory 📦",                dialogue:"Track all your products here! Add new items, set prices, check expiry dates, and monitor stock levels. Low stock? You'll get alerts automatically!", page:"Inventory"},
+  {id:"sales",     mascotPos:"right",  mascotMood:"happy", title:"Sales 💰",                    dialogue:"Every sale is tracked here with auto-computed profit, tax (12% VAT), and net earnings. Switch between Daily, Monthly, and Yearly views!", page:"Sales"},
+  {id:"supplier",  mascotPos:"left",   mascotMood:"point", title:"Supplier 🚚",                 dialogue:"Manage your suppliers, track deliveries, and see transaction history. Favorite your most-used suppliers for quick access!", page:"Supplier"},
+  {id:"finance",   mascotPos:"right",  mascotMood:"think", title:"Finance 💼",                  dialogue:"The full financial picture — profit overview, expense tracking, cash flow, and budget management. Great for reports and audits!", page:"Finance"},
+  {id:"user",      mascotPos:"left",   mascotMood:"point", title:"User Management 👤",          dialogue:"Control who has access and what they can do. Admin, Manager, and Staff roles each have different permissions. Add 2FA for extra security!", page:"User"},
+  {id:"notif",     mascotPos:"right",  mascotMood:"wave",  title:"Notifications 🔔",            dialogue:"The bell icon shows real-time alerts — low stock, deliveries arriving, suspicious logins, and more. Urgent ones pulse in red!"},
+  {id:"help",      mascotPos:"left",   mascotMood:"happy", title:"Help & Feedback ❓",          dialogue:"That's the ? button — you're using it right now! Come here anytime for FAQs, guides, or to send us feedback."},
+  {id:"settings",  mascotPos:"right",  mascotMood:"point", title:"Settings ⚙️",                dialogue:"Click your name in the top right to access Settings — change your profile, appearance, colors, security, backups, and much more!"},
+  {id:"done",      mascotPos:"center", mascotMood:"wave",  title:"You're all set! 🎉",          dialogue:"That's the full tour of Baryalytics! Remember — I'm always here in the ? menu if you need help. Go elevate your business! ✨"},
+];
+
 /* ── TUTORIAL OVERLAY ────────────────────────────────────────────── */
 const TutorialOverlay = ({
   step, totalSteps, stepIdx, onNext, onPrev, onSkip, currentPage, onPageChange
@@ -5334,7 +5360,7 @@ const TutorialOverlay = ({
 
       {/* Dark overlay ONLY when there's a specific element to spotlight */}
       {spotRect ? (
-        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"all"}} onClick={()=>{}}>
+        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}} >
           <defs>
             <mask id="spot-mask">
               <rect width="100%" height="100%" fill="white"/>
@@ -5348,41 +5374,47 @@ const TutorialOverlay = ({
       ) : null}
 
       {/* Step dots */}
-      <div style={{position:"absolute",top:20,left:"50%",transform:"translateX(-50%)",display:"flex",gap:6,zIndex:3,pointerEvents:"all"}}>
+      <div style={{position:"absolute",top:20,left:"50%",transform:"translateX(-50%)",display:"flex",gap:6,zIndex:4,pointerEvents:"all"}}>
         {TUTORIAL_STEPS.map((_,i)=>(
           <div key={i} style={{width:i===stepIdx?22:7,height:7,borderRadius:99,background:i===stepIdx?"#34d399":i<stepIdx?"rgba(52,211,153,0.45)":"rgba(255,255,255,0.18)",transition:"all 0.35s cubic-bezier(0.34,1.56,0.64,1)"}}/>
         ))}
       </div>
 
       {/* Skip */}
-      <button onClick={()=>{onSkip();playMagic();}} style={{position:"absolute",top:18,right:22,zIndex:3,background:"rgba(0,0,0,0.4)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:999,padding:"6px 16px",color:"rgba(255,255,255,0.6)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",pointerEvents:"all",backdropFilter:"blur(8px)",transition:"all 0.15s"}}
+      <button onClick={()=>{onSkip();playMagic();}} style={{position:"absolute",top:18,right:22,zIndex:4,background:"rgba(0,0,0,0.4)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:999,padding:"6px 16px",color:"rgba(255,255,255,0.6)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",pointerEvents:"all",backdropFilter:"blur(8px)",transition:"all 0.15s"}}
         onMouseEnter={e=>(e.currentTarget.style.color="#fff")} onMouseLeave={e=>(e.currentTarget.style.color="rgba(255,255,255,0.6)")}>
         Skip ✕
       </button>
 
       {/* Mascot + Dialogue layout */}
       {mascotPos==="center"&&(
-        <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:8,zIndex:2,pointerEvents:"all"}}>
-          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer"}}>
+        <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:8,zIndex:5,pointerEvents:"none"}}>
+          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",pointerEvents:"all"}}>
             <BaryMascot size={210} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
           </div>
-          <DialogueBubble step={step} stepIdx={stepIdx} pos="center" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={()=>{onSkip();}} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+          <div style={{pointerEvents:"all"}}>
+            <DialogueBubble step={step} stepIdx={stepIdx} pos="center" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={()=>{onSkip();}} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+          </div>
         </div>
       )}
       {mascotPos==="left"&&(
-        <div style={{position:"absolute",left:0,bottom:0,zIndex:2,display:"flex",alignItems:"flex-end",gap:4,pointerEvents:"all",padding:"0 0 30px 12px"}}>
-          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0}}>
+        <div style={{position:"absolute",left:0,bottom:0,zIndex:5,display:"flex",alignItems:"flex-end",gap:4,pointerEvents:"none",padding:"0 0 30px 12px"}}>
+          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0,pointerEvents:"all"}}>
             <BaryMascot size={185} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
           </div>
-          <DialogueBubble step={step} stepIdx={stepIdx} pos="left" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+          <div style={{pointerEvents:"all"}}>
+            <DialogueBubble step={step} stepIdx={stepIdx} pos="left" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+          </div>
         </div>
       )}
       {mascotPos==="right"&&(
-        <div style={{position:"absolute",right:0,bottom:0,zIndex:2,display:"flex",flexDirection:"row-reverse",alignItems:"flex-end",gap:4,pointerEvents:"all",padding:"0 12px 30px 0"}}>
-          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0,transform:"scaleX(-1)"}}>
+        <div style={{position:"absolute",right:0,bottom:0,zIndex:5,display:"flex",flexDirection:"row-reverse",alignItems:"flex-end",gap:4,pointerEvents:"none",padding:"0 12px 30px 0"}}>
+          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0,transform:"scaleX(-1)",pointerEvents:"all"}}>
             <BaryMascot size={185} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
           </div>
-          <DialogueBubble step={step} stepIdx={stepIdx} pos="right" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+          <div style={{pointerEvents:"all"}}>
+            <DialogueBubble step={step} stepIdx={stepIdx} pos="right" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+          </div>
         </div>
       )}
     </div>,
@@ -5458,17 +5490,6 @@ const DialogueBubble = ({step, stepIdx, pos, onNext, onPrev, onSkip, isFirst, is
     </div>
   );
 };
-
-interface TutStep {
-  id: string;
-  title: string;
-  dialogue: string;
-  mascotPos: "left"|"right"|"center";
-  mascotMood: "wave"|"point"|"happy"|"think";
-  highlightSel?: string; // CSS selector of element to spotlight
-  page?: string; // nav page to switch to
-  arrowDir?: "up"|"down"|"left"|"right";
-}
 
 const FAQS = [
   {q:"How do I add a new product?", a:"Go to Inventory → click '+ Add' → fill in Product Name, Buy Price, Sell Price, and Stock → click 'Add Product'."},
