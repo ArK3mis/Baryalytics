@@ -503,19 +503,22 @@ const G = `
   .section-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:8px;}
 
   /* ── TUTORIAL ── */
-  @keyframes mascotFloat{0%,100%{transform:translateY(0) rotateY(0deg) rotateX(0deg)}25%{transform:translateY(-12px) rotateY(8deg) rotateX(3deg)}50%{transform:translateY(-18px) rotateY(0deg) rotateX(-2deg)}75%{transform:translateY(-8px) rotateY(-8deg) rotateX(3deg)}}
-  @keyframes mascotBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-  @keyframes mascotWave{0%,100%{transform:rotate(0deg)}30%{transform:rotate(20deg)}60%{transform:rotate(-10deg)}}
-  @keyframes dialogueIn{from{opacity:0;transform:scale(0.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  @keyframes peterPanFly{0%{transform:translate(0px,0px) rotate(-2deg)}12%{transform:translate(14px,-28px) rotate(4deg)}25%{transform:translate(28px,-12px) rotate(6deg)}37%{transform:translate(18px,14px) rotate(3deg)}50%{transform:translate(-6px,22px) rotate(-1deg)}62%{transform:translate(-24px,10px) rotate(-5deg)}75%{transform:translate(-20px,-14px) rotate(-4deg)}87%{transform:translate(-8px,-24px) rotate(-2deg)}100%{transform:translate(0px,0px) rotate(-2deg)}}
+  @keyframes mascotWave{0%,100%{transform:rotate(0deg)}25%{transform:rotate(22deg)}75%{transform:rotate(-8deg)}}
+  @keyframes dialogueIn{from{opacity:0;transform:scale(0.8) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
   @keyframes spotlightIn{from{opacity:0}to{opacity:1}}
-  @keyframes tutorialGlow{0%,100%{box-shadow:0 0 12px rgba(52,211,153,0.4),0 0 0 2px rgba(52,211,153,0.3)}50%{box-shadow:0 0 24px rgba(52,211,153,0.7),0 0 0 3px rgba(52,211,153,0.5)}}
-  @keyframes stepPop{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
-  @keyframes coinSpin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-  @keyframes glowPulse{0%,100%{box-shadow:0 0 8px rgba(52,211,153,0.3),0 0 0 2px rgba(52,211,153,0.2),inset 0 0 8px rgba(52,211,153,0.05)}50%{box-shadow:0 0 20px rgba(52,211,153,0.6),0 0 0 3px rgba(52,211,153,0.4),inset 0 0 12px rgba(52,211,153,0.1)}}
+  @keyframes glowPulse{0%,100%{box-shadow:0 0 10px rgba(52,211,153,0.4),0 0 0 2px rgba(52,211,153,0.3)}50%{box-shadow:0 0 26px rgba(52,211,153,0.75),0 0 0 3px rgba(52,211,153,0.55)}}
+  @keyframes typewriterCursor{0%,100%{opacity:1}50%{opacity:0}}
+  @keyframes particleUp{0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(1)}100%{opacity:0;transform:translate(var(--tx,0px),var(--ty,-120px)) rotate(var(--tr,180deg)) scale(0.3)}}
+  @keyframes coinShine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.6)}}
+  @keyframes mascotEnter{from{opacity:0;transform:translateY(60px) scale(0.7)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes shadowPulse{0%,100%{transform:scaleX(1);opacity:0.25}50%{transform:scaleX(0.85);opacity:0.15}}
   .tutorial-btn{animation:glowPulse 2s ease infinite;}
-  .mascot-3d{animation:mascotFloat 4s ease-in-out infinite;transform-style:preserve-3d;filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5)) drop-shadow(0 0 20px rgba(52,211,153,0.3));}
-  .mascot-wave{animation:mascotWave 1s ease-in-out;}
-  .dialogue-bubble{animation:dialogueIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;}
+  .mascot-fly{animation:peterPanFly 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,0.5)) drop-shadow(0 0 18px rgba(52,211,153,0.35));}
+  .mascot-enter{animation:mascotEnter 0.5s cubic-bezier(0.34,1.56,0.64,1) both;}
+  .dialogue-bubble{animation:dialogueIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;}
+  .cursor-blink{display:inline-block;width:2px;height:1em;background:#34d399;margin-left:2px;vertical-align:middle;animation:typewriterCursor 0.7s ease infinite;}
+  .particle{position:fixed;pointer-events:none;z-index:99999;font-size:22px;animation:particleUp 1.2s cubic-bezier(0.25,0.46,0.45,0.94) both;}
   .export-wrap{position:relative;display:inline-flex;}
   .export-btn{display:flex;align-items:center;gap:7px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.22);border-radius:10px;color:#a5b4fc;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;}
   .export-btn:hover{background:rgba(129,140,248,0.2);border-color:rgba(129,140,248,0.38);color:#c7d2fe;}
@@ -5021,129 +5024,441 @@ interface Notif {
 
 /* ── HELP & SUPPORT PANEL ─────────────────────────────────────────── */
 /* ── BARY MASCOT SVG ─────────────────────────────────────────────── */
-// Green coin mascot inspired by the Baryalytics brand character
-const BaryMascot = ({size=200, waving=false}:{size?:number; waving?:boolean}) => (
-  <svg width={size} height={size} viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" style={{overflow:"visible"}}>
-    {/* Shadow under coin */}
-    <ellipse cx="100" cy="212" rx="55" ry="8" fill="rgba(0,0,0,0.3)" />
-    {/* Coin body - main circle */}
+const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;waving?:boolean;gazeX?:number;gazeY?:number}) => {
+  // Pupil offset based on gaze direction (max ±4px)
+  const px = Math.max(-4, Math.min(4, gazeX * 4));
+  const py = Math.max(-3, Math.min(3, gazeY * 3));
+  return (
+  <svg width={size} height={size*1.25} viewBox="0 0 220 275" xmlns="http://www.w3.org/2000/svg" style={{overflow:"visible"}}>
     <defs>
-      <radialGradient id="coinGrad" cx="35%" cy="30%" r="65%">
+      <radialGradient id="domeGrad" cx="38%" cy="28%" r="65%">
         <stop offset="0%" stopColor="#4ade80"/>
-        <stop offset="40%" stopColor="#16a34a"/>
+        <stop offset="45%" stopColor="#16a34a"/>
         <stop offset="100%" stopColor="#052e16"/>
       </radialGradient>
-      <radialGradient id="faceGrad" cx="40%" cy="35%" r="60%">
+      <radialGradient id="faceGrad" cx="42%" cy="35%" r="58%">
         <stop offset="0%" stopColor="#86efac"/>
         <stop offset="100%" stopColor="#22c55e"/>
       </radialGradient>
-      <radialGradient id="goldGrad" cx="40%" cy="30%" r="70%">
-        <stop offset="0%" stopColor="#fde68a"/>
-        <stop offset="100%" stopColor="#b45309"/>
+      <radialGradient id="bodyGrad" cx="35%" cy="25%" r="70%">
+        <stop offset="0%" stopColor="#22c55e"/>
+        <stop offset="100%" stopColor="#14532d"/>
       </radialGradient>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
+      <radialGradient id="goldGrad" cx="35%" cy="30%" r="65%">
+        <stop offset="0%" stopColor="#fde68a"/>
+        <stop offset="60%" stopColor="#d4af37"/>
+        <stop offset="100%" stopColor="#92400e"/>
+      </radialGradient>
+      <radialGradient id="gloveGrad" cx="30%" cy="25%" r="65%">
+        <stop offset="0%" stopColor="#ffffff"/>
+        <stop offset="100%" stopColor="#d1fae5"/>
+      </radialGradient>
+      <filter id="bShadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#052e16" floodOpacity="0.4"/>
+      </filter>
+      <filter id="goldGlow">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
         <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
     </defs>
 
-    {/* Body coin edge (3D effect) */}
-    <ellipse cx="100" cy="108" rx="78" ry="80" fill="#052e16"/>
-    <ellipse cx="97" cy="104" rx="78" ry="80" fill="url(#coinGrad)"/>
+    {/* Flying shadow on ground */}
+    <ellipse cx="110" cy="272" rx="50" ry="5" fill="rgba(0,0,0,0.18)" style={{animation:"shadowPulse 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite"}}/>
 
-    {/* Gold rim */}
-    <ellipse cx="97" cy="104" rx="78" ry="80" fill="none" stroke="#d4af37" strokeWidth="4" opacity="0.8"/>
-    <ellipse cx="97" cy="104" rx="73" ry="75" fill="none" stroke="#fde68a" strokeWidth="1.5" opacity="0.5"/>
+    {/* ── DOME HEAD ── */}
+    {/* Outer gold rim */}
+    <ellipse cx="110" cy="100" rx="95" ry="97" fill="url(#goldGrad)" filter="url(#bShadow)"/>
+    {/* Main dome */}
+    <ellipse cx="108" cy="98" rx="90" ry="92" fill="url(#domeGrad)"/>
+    {/* Inner face circle - lighter */}
+    <ellipse cx="108" cy="100" rx="74" ry="76" fill="url(#faceGrad)"/>
+    {/* Dome highlight */}
+    <ellipse cx="85" cy="68" rx="26" ry="18" fill="rgba(255,255,255,0.18)"/>
+    {/* Gold rim band */}
+    <path d="M18 128 Q110 140 202 128" stroke="#d4af37" strokeWidth="5" fill="none" opacity="0.8"/>
+    <path d="M22 132 Q110 143 198 132" stroke="#fde68a" strokeWidth="2" fill="none" opacity="0.5"/>
 
-    {/* Face area - lighter green */}
-    <ellipse cx="97" cy="100" rx="58" ry="60" fill="url(#faceGrad)"/>
+    {/* ── FACE ── */}
+    {/* Eyebrows */}
+    <path d="M76 88 Q90 82 103 88" stroke="#052e16" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    <path d="M117 88 Q130 82 144 88" stroke="#052e16" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    {/* Eye whites */}
+    <ellipse cx="88" cy="102" rx="16" ry="17" fill="white"/>
+    <ellipse cx="132" cy="102" rx="16" ry="17" fill="white"/>
+    {/* Pupils - follow gaze */}
+    <ellipse cx={88+px} cy={102+py} rx="10" ry="11" fill="#052e16"/>
+    <ellipse cx={132+px} cy={102+py} rx="10" ry="11" fill="#052e16"/>
+    {/* Iris highlight */}
+    <circle cx={90+px} cy={98+py} r="4.5" fill="white"/>
+    <circle cx={134+px} cy={98+py} r="4.5" fill="white"/>
+    <circle cx={84+px} cy={107+py} r="2" fill="rgba(255,255,255,0.5)"/>
+    <circle cx={128+px} cy={107+py} r="2" fill="rgba(255,255,255,0.5)"/>
+    {/* Rosy cheeks */}
+    <ellipse cx="64" cy="115" rx="13" ry="8" fill="#f87171" opacity="0.3"/>
+    <ellipse cx="156" cy="115" rx="13" ry="8" fill="#f87171" opacity="0.3"/>
+    {/* Smile */}
+    <path d="M90 124 Q110 138 130 124" stroke="#052e16" strokeWidth="4" fill="none" strokeLinecap="round"/>
+    {/* Teeth */}
+    <path d="M94 127 Q110 138 126 127" fill="white" opacity="0.85"/>
 
-    {/* Suit jacket - dark green */}
-    <path d="M55 140 Q55 175 97 185 Q139 175 139 140 L130 135 Q120 148 97 150 Q74 148 64 135 Z" fill="#15803d"/>
-    <path d="M55 140 L64 135 Q74 148 97 150 L97 185 Q55 175 55 140Z" fill="#166534"/>
-    <path d="M139 140 L130 135 Q120 148 97 150 L97 185 Q139 175 139 140Z" fill="#14532d"/>
+    {/* ── BODY / SUIT ── */}
+    {/* Main body shape */}
+    <path d="M50 188 Q46 248 110 256 Q174 248 170 188 Q162 168 150 160 L150 172 Q132 182 110 184 Q88 182 70 172 L70 160 Q58 168 50 188Z" fill="url(#bodyGrad)" filter="url(#bShadow)"/>
+    {/* Jacket shadow side */}
+    <path d="M50 188 Q46 248 110 256 L110 184 Q88 182 70 172 L70 160 Q58 168 50 188Z" fill="rgba(0,0,0,0.12)"/>
 
-    {/* Lapels */}
-    <path d="M97 130 L85 140 L78 155 L85 150 Z" fill="#d4af37" opacity="0.9"/>
-    <path d="M97 130 L109 140 L116 155 L109 150 Z" fill="#d4af37" opacity="0.9"/>
+    {/* Chest shirt/waistcoat (cream) */}
+    <ellipse cx="110" cy="178" rx="16" ry="20" fill="#f0fdf4" opacity="0.95"/>
+
+    {/* Gold lapel trim lines */}
+    <path d="M88 162 Q96 180 110 185" stroke="#d4af37" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+    <path d="M132 162 Q124 180 110 185" stroke="#d4af37" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+    {/* Lapel shadow areas */}
+    <path d="M70 172 L84 162 Q94 178 110 184 L110 172 Q88 178 70 172Z" fill="rgba(0,0,0,0.1)"/>
+    <path d="M150 172 L136 162 Q126 178 110 184 L110 172 Q132 178 150 172Z" fill="rgba(0,0,0,0.08)"/>
+
+    {/* Jacket buttons */}
+    <circle cx="110" cy="196" r="3" fill="#d4af37"/>
+    <circle cx="110" cy="208" r="3" fill="#d4af37"/>
+    <circle cx="110" cy="220" r="3" fill="#d4af37"/>
 
     {/* Bow tie */}
-    <path d="M86 130 Q91 127 97 130 Q91 133 86 130Z" fill="#d4af37"/>
-    <path d="M108 130 Q103 127 97 130 Q103 133 108 130Z" fill="#fbbf24"/>
-    <circle cx="97" cy="130" r="3.5" fill="#92400e"/>
+    <path d="M97 160 Q103 156 110 160 Q103 164 97 160Z" fill="#111827"/>
+    <path d="M123 160 Q117 156 110 160 Q117 164 123 160Z" fill="#1f2937"/>
+    <circle cx="110" cy="160" r="4.5" fill="url(#goldGrad)"/>
 
-    {/* Peso sign on chest */}
-    <text x="97" y="120" textAnchor="middle" fontSize="28" fontWeight="900" fill="#d4af37" fontFamily="serif" filter="url(#glow)">₱</text>
+    {/* ₱ symbol on chest */}
+    <text x="110" y="184" textAnchor="middle" fontSize="17" fontWeight="900" fill="#d4af37" fontFamily="Georgia,serif" filter="url(#goldGlow)">₱</text>
 
-    {/* Eyes */}
-    {/* Eye whites */}
-    <ellipse cx="82" cy="88" rx="13" ry="14" fill="white"/>
-    <ellipse cx="112" cy="88" rx="13" ry="14" fill="white"/>
-    {/* Pupils */}
-    <ellipse cx="84" cy="89" rx="8" ry="9" fill="#052e16"/>
-    <ellipse cx="114" cy="89" rx="8" ry="9" fill="#052e16"/>
-    {/* Eye shine */}
-    <circle cx="87" cy="85" r="3" fill="white"/>
-    <circle cx="117" cy="85" r="3" fill="white"/>
-    <circle cx="80" cy="91" r="1.5" fill="white" opacity="0.6"/>
-    <circle cx="110" cy="91" r="1.5" fill="white" opacity="0.6"/>
-    {/* Eyelids for friendliness */}
-    <path d="M69 82 Q82 74 95 82" fill="none" stroke="#052e16" strokeWidth="2.5" strokeLinecap="round"/>
-    <path d="M99 82 Q112 74 125 82" fill="none" stroke="#052e16" strokeWidth="2.5" strokeLinecap="round"/>
+    {/* ── ARMS ── */}
+    {/* Left arm */}
+    <path d="M50 188 Q32 196 18 212" stroke="#166534" strokeWidth="24" fill="none" strokeLinecap="round"/>
+    <path d="M50 188 Q32 196 18 212" stroke="rgba(0,0,0,0.12)" strokeWidth="24" fill="none" strokeLinecap="round" strokeDasharray="0"/>
+    {/* Left glove */}
+    <circle cx="11" cy="216" r="15" fill="url(#gloveGrad)"/>
+    <ellipse cx="4" cy="208" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(-25,4,208)"/>
+    <path d="M3 205 Q7 198 13 200" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
 
-    {/* Rosy cheeks */}
-    <ellipse cx="68" cy="98" rx="10" ry="7" fill="#f87171" opacity="0.35"/>
-    <ellipse cx="126" cy="98" rx="10" ry="7" fill="#f87171" opacity="0.35"/>
-
-    {/* Smile */}
-    <path d="M78 108 Q97 124 116 108" fill="none" stroke="#052e16" strokeWidth="3.5" strokeLinecap="round"/>
-
-    {/* Teeth */}
-    <path d="M82 111 Q97 124 112 111" fill="white" opacity="0.9"/>
-
-    {/* Left arm (normal) */}
-    <g>
-      <ellipse cx="42" cy="135" rx="14" ry="10" fill="#15803d" transform="rotate(-20,42,135)"/>
-      <ellipse cx="28" cy="148" rx="13" ry="9" fill="#15803d" transform="rotate(-30,28,148)"/>
-      {/* Left glove */}
-      <circle cx="18" cy="158" r="11" fill="white"/>
-      <ellipse cx="12" cy="152" rx="5" ry="4" fill="white" transform="rotate(-20,12,152)"/>
-    </g>
-
-    {/* Right arm (waving) */}
-    <g style={{transformOrigin:"148px 130px", animation:waving?"mascotWave 0.8s ease-in-out infinite":"none"}}>
-      <ellipse cx="152" cy="128" rx="14" ry="10" fill="#15803d" transform="rotate(20,152,128)"/>
-      <ellipse cx="166" cy="115" rx="13" ry="9" fill="#15803d" transform="rotate(30,166,115)"/>
+    {/* Right arm - waving when active */}
+    <g style={{transformOrigin:"170px 180px", animation:waving?"mascotWave 0.8s ease-in-out infinite":"none"}}>
+      <path d="M170 188 Q188 196 202 212" stroke="#166534" strokeWidth="24" fill="none" strokeLinecap="round"/>
       {/* Right glove */}
-      <circle cx="176" cy="104" r="11" fill="white"/>
-      <ellipse cx="183" cy="98" rx="5" ry="4" fill="white" transform="rotate(20,183,98)"/>
-      {/* Fingers hint */}
-      <path d="M174 96 Q177 90 181 91" fill="none" stroke="#e5e7eb" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M178 93 Q182 88 186 90" fill="none" stroke="#e5e7eb" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="209" cy="216" r="15" fill="url(#gloveGrad)"/>
+      <ellipse cx="216" cy="208" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(25,216,208)"/>
+      {/* Fingers */}
+      <path d="M207 206 Q212 199 217 202" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
+      <path d="M211 203 Q216 196 220 200" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.5"/>
     </g>
 
-    {/* Legs */}
-    <rect x="83" y="182" width="12" height="22" rx="6" fill="#15803d"/>
-    <rect x="102" y="182" width="12" height="22" rx="6" fill="#15803d"/>
-    {/* Shoes */}
-    <ellipse cx="89" cy="204" rx="13" ry="7" fill="#052e16"/>
-    <ellipse cx="108" cy="204" rx="13" ry="7" fill="#052e16"/>
-    {/* Shoe gold tips */}
-    <ellipse cx="99" cy="204" rx="4" ry="3" fill="#d4af37" opacity="0.7"/>
-    <ellipse cx="118" cy="204" rx="4" ry="3" fill="#d4af37" opacity="0.7"/>
+    {/* ── LEGS ── */}
+    <rect x="85" y="252" width="22" height="30" rx="10" fill="#14532d"/>
+    <rect x="113" y="252" width="22" height="30" rx="10" fill="#14532d"/>
 
-    {/* Sparkle effects around mascot */}
-    <g opacity="0.7">
-      <path d="M160 40 L163 47 L170 44 L163 47 L166 54 L163 47 L156 50 L163 47 Z" fill="#fde68a"/>
-      <path d="M30 50 L32 55 L37 53 L32 55 L34 60 L32 55 L27 57 L32 55 Z" fill="#4ade80"/>
-      <circle cx="170" cy="70" r="3" fill="#fbbf24" opacity="0.8"/>
-      <circle cx="25" cy="80" r="2" fill="#6ee7b7" opacity="0.8"/>
-      <circle cx="155" cy="160" r="2.5" fill="#fde68a" opacity="0.6"/>
+    {/* Shoes */}
+    <ellipse cx="96" cy="282" rx="20" ry="10" fill="#052e16"/>
+    <ellipse cx="124" cy="282" rx="20" ry="10" fill="#052e16"/>
+    {/* Shoe gold band detail */}
+    <path d="M77 280 Q96 273 115 280" stroke="#d4af37" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.9"/>
+    <path d="M105 280 Q124 273 143 280" stroke="#d4af37" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.9"/>
+    {/* Shoe highlight */}
+    <ellipse cx="90" cy="278" rx="7" ry="3.5" fill="rgba(255,255,255,0.15)"/>
+    <ellipse cx="118" cy="278" rx="7" ry="3.5" fill="rgba(255,255,255,0.15)"/>
+
+    {/* Sparkles around mascot */}
+    <g opacity="0.8">
+      <path d="M172 42 L175 50 L183 47 L175 50 L178 58 L175 50 L167 53 L175 50 Z" fill="#fde68a"/>
+      <path d="M28 55 L30 61 L36 59 L30 61 L32 67 L30 61 L24 63 L30 61 Z" fill="#4ade80"/>
+      <circle cx="185" cy="72" r="3.5" fill="#fbbf24" opacity="0.9"/>
+      <circle cx="22" cy="85" r="2.5" fill="#6ee7b7" opacity="0.9"/>
+      <circle cx="178" cy="175" r="2.5" fill="#fde68a" opacity="0.7"/>
+      <circle cx="32" cy="168" r="2" fill="#86efac" opacity="0.7"/>
     </g>
   </svg>
-);
+  );
+};
 
-/* ── TUTORIAL SYSTEM ─────────────────────────────────────────────── */
+/* ── TUTORIAL SOUNDS ─────────────────────────────────────────────── */
+const useTutSounds = () => {
+  const getCtx = () => {
+    try { return new (window.AudioContext || (window as any).webkitAudioContext)(); }
+    catch(e){ return null; }
+  };
+  const playStep = React.useCallback(()=>{
+    const ctx = getCtx(); if(!ctx) return;
+    [523,659,784,1047].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type="sine"; o.frequency.value=freq;
+      const t=ctx.currentTime+i*0.11;
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.12,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001,t+0.45);
+      o.start(t); o.stop(t+0.45);
+    });
+  },[]);
+  const playCoin = React.useCallback(()=>{
+    const ctx = getCtx(); if(!ctx) return;
+    [1200,1500,1800].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type="triangle"; o.frequency.value=freq;
+      const t=ctx.currentTime+i*0.05;
+      g.gain.setValueAtTime(0.18,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.25);
+      o.start(t); o.stop(t+0.25);
+    });
+  },[]);
+  const playMagic = React.useCallback(()=>{
+    const ctx = getCtx(); if(!ctx) return;
+    for(let i=0;i<6;i++){
+      const freq=300+Math.random()*1400;
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type="sine"; o.frequency.setValueAtTime(freq,ctx.currentTime+i*0.06);
+      o.frequency.exponentialRampToValueAtTime(freq*1.5,ctx.currentTime+i*0.06+0.2);
+      g.gain.setValueAtTime(0.08,ctx.currentTime+i*0.06);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.06+0.4);
+      o.start(ctx.currentTime+i*0.06); o.stop(ctx.currentTime+i*0.06+0.4);
+    }
+  },[]);
+  return {playStep, playCoin, playMagic};
+};
+
+/* ── PARTICLE SYSTEM ─────────────────────────────────────────────── */
+interface Particle{id:number;x:number;y:number;emoji:string;tx:number;ty:number;tr:number;delay:number;}
+const ParticleLayer = ({particles}:{particles:Particle[]}) =>
+  ReactDOM.createPortal(
+    <>{particles.map(p=>(
+      <div key={p.id} className="particle" style={{
+        left:p.x, top:p.y,
+        "--tx":`${p.tx}px`,"--ty":`${p.ty}px`,"--tr":`${p.tr}deg`,
+        animationDelay:`${p.delay}s`,
+      } as React.CSSProperties}>
+        {p.emoji}
+      </div>
+    ))}</>,
+    document.body
+  );
+
+/* ── TYPEWRITER TEXT ─────────────────────────────────────────────── */
+const TypewriterText = ({text, speed=22}:{text:string;speed?:number}) => {
+  const [displayed, setDisplayed] = React.useState('');
+  const [done, setDone] = React.useState(false);
+  React.useEffect(()=>{
+    setDisplayed(''); setDone(false);
+    let i=0;
+    const iv = setInterval(()=>{
+      i++;
+      setDisplayed(text.slice(0,i));
+      if(i>=text.length){setDone(true);clearInterval(iv);}
+    }, speed);
+    return ()=>clearInterval(iv);
+  },[text]);
+  return <span>{displayed}{!done&&<span className="cursor-blink"/>}</span>;
+};
+
+/* ── TUTORIAL OVERLAY ────────────────────────────────────────────── */
+const TutorialOverlay = ({
+  step, totalSteps, stepIdx, onNext, onPrev, onSkip, currentPage, onPageChange
+}:{
+  step:TutStep; totalSteps:number; stepIdx:number;
+  onNext:()=>void; onPrev:()=>void; onSkip:()=>void;
+  currentPage:string; onPageChange:(p:string)=>void;
+}) => {
+  const {playStep, playCoin, playMagic} = useTutSounds();
+  const [waving, setWaving] = React.useState(true);
+  const [particles, setParticles] = React.useState<Particle[]>([]);
+  const [spotRect, setSpotRect] = React.useState<DOMRect|null>(null);
+  const [gazeX, setGazeX] = React.useState(0);
+  const [gazeY, setGazeY] = React.useState(0);
+  const isFirst = step.id==="welcome";
+  const isLast  = step.id==="done";
+
+  React.useEffect(()=>{
+    setWaving(true);
+    playStep();
+    const t = setTimeout(()=>setWaving(false),1400);
+    return ()=>clearTimeout(t);
+  },[step.id]);
+
+  React.useEffect(()=>{
+    if(step.page && step.page!==currentPage) onPageChange(step.page);
+  },[step.id]);
+
+  // Spotlight: only if highlightSel exists
+  React.useEffect(()=>{
+    setSpotRect(null);
+    if(!step.highlightSel) return;
+    const el = document.querySelector(`[data-tut="${step.highlightSel}"]`) ||
+               document.querySelector(`.${step.highlightSel}`) ||
+               document.querySelector(`#${step.highlightSel}`);
+    if(el){
+      const r = el.getBoundingClientRect();
+      setSpotRect(r);
+      // Gaze toward highlighted element
+      const cx=window.innerWidth/2, cy=window.innerHeight/2;
+      setGazeX((r.left+r.width/2-cx)/cx);
+      setGazeY((r.top+r.height/2-cy)/cy);
+    }
+  },[step.id]);
+
+  // Track mouse for gaze (when no specific target)
+  React.useEffect(()=>{
+    if(step.highlightSel) return;
+    const handler = (e:MouseEvent) => {
+      const cx=window.innerWidth/2, cy=window.innerHeight/2;
+      setGazeX((e.clientX-cx)/cx*0.8);
+      setGazeY((e.clientY-cy)/cy*0.6);
+    };
+    window.addEventListener("mousemove",handler);
+    return ()=>window.removeEventListener("mousemove",handler);
+  },[step.id, step.highlightSel]);
+
+  const spawnParticles = (cx:number, cy:number) => {
+    const emojis=["🍀","🪙","⭐","✨","💰","🍀","🪙","🍀"];
+    const ps:Particle[] = emojis.map((emoji,i)=>({
+      id:Date.now()+i, x:cx, y:cy, emoji,
+      tx:(Math.random()-0.5)*180,
+      ty:-(Math.random()*120+40),
+      tr:(Math.random()-0.5)*360,
+      delay:i*0.06,
+    }));
+    setParticles(p=>[...p,...ps]);
+    playCoin();
+    setTimeout(()=>setParticles(p=>p.filter(x=>!ps.find(n=>n.id===x.id))),1600);
+  };
+
+  const mascotPos = step.mascotPos;
+
+  return ReactDOM.createPortal(
+    <div style={{position:"fixed",inset:0,zIndex:99998,pointerEvents:"none"}}>
+      <ParticleLayer particles={particles}/>
+
+      {/* Dark overlay ONLY when there's a specific element to spotlight */}
+      {spotRect ? (
+        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"all"}} onClick={()=>{}}>
+          <defs>
+            <mask id="spot-mask">
+              <rect width="100%" height="100%" fill="white"/>
+              <rect x={spotRect.left-14} y={spotRect.top-14} width={spotRect.width+28} height={spotRect.height+28} rx="14" fill="black"/>
+            </mask>
+          </defs>
+          <rect width="100%" height="100%" fill="rgba(0,0,0,0.72)" mask="url(#spot-mask)" style={{animation:"spotlightIn 0.35s ease both"}}/>
+          {/* Spotlight glow ring */}
+          <rect x={spotRect.left-16} y={spotRect.top-16} width={spotRect.width+32} height={spotRect.height+32} rx="16" fill="none" stroke="rgba(52,211,153,0.6)" strokeWidth="2.5" style={{animation:"glowPulse 2s ease infinite"}}/>
+        </svg>
+      ) : null}
+
+      {/* Step dots */}
+      <div style={{position:"absolute",top:20,left:"50%",transform:"translateX(-50%)",display:"flex",gap:6,zIndex:3,pointerEvents:"all"}}>
+        {TUTORIAL_STEPS.map((_,i)=>(
+          <div key={i} style={{width:i===stepIdx?22:7,height:7,borderRadius:99,background:i===stepIdx?"#34d399":i<stepIdx?"rgba(52,211,153,0.45)":"rgba(255,255,255,0.18)",transition:"all 0.35s cubic-bezier(0.34,1.56,0.64,1)"}}/>
+        ))}
+      </div>
+
+      {/* Skip */}
+      <button onClick={()=>{onSkip();playMagic();}} style={{position:"absolute",top:18,right:22,zIndex:3,background:"rgba(0,0,0,0.4)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:999,padding:"6px 16px",color:"rgba(255,255,255,0.6)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",pointerEvents:"all",backdropFilter:"blur(8px)",transition:"all 0.15s"}}
+        onMouseEnter={e=>(e.currentTarget.style.color="#fff")} onMouseLeave={e=>(e.currentTarget.style.color="rgba(255,255,255,0.6)")}>
+        Skip ✕
+      </button>
+
+      {/* Mascot + Dialogue layout */}
+      {mascotPos==="center"&&(
+        <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:8,zIndex:2,pointerEvents:"all"}}>
+          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer"}}>
+            <BaryMascot size={210} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
+          </div>
+          <DialogueBubble step={step} stepIdx={stepIdx} pos="center" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={()=>{onSkip();}} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+        </div>
+      )}
+      {mascotPos==="left"&&(
+        <div style={{position:"absolute",left:0,bottom:0,zIndex:2,display:"flex",alignItems:"flex-end",gap:4,pointerEvents:"all",padding:"0 0 30px 12px"}}>
+          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0}}>
+            <BaryMascot size={185} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
+          </div>
+          <DialogueBubble step={step} stepIdx={stepIdx} pos="left" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+        </div>
+      )}
+      {mascotPos==="right"&&(
+        <div style={{position:"absolute",right:0,bottom:0,zIndex:2,display:"flex",flexDirection:"row-reverse",alignItems:"flex-end",gap:4,pointerEvents:"all",padding:"0 12px 30px 0"}}>
+          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0,transform:"scaleX(-1)"}}>
+            <BaryMascot size={185} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
+          </div>
+          <DialogueBubble step={step} stepIdx={stepIdx} pos="right" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+        </div>
+      )}
+    </div>,
+    document.body
+  );
+};
+
+const DialogueBubble = ({step, stepIdx, pos, onNext, onPrev, onSkip, isFirst, isLast, onSpawn}:{
+  step:TutStep; stepIdx:number; pos:"left"|"right"|"center";
+  onNext:()=>void; onPrev:()=>void; onSkip:()=>void;
+  isFirst:boolean; isLast:boolean;
+  onSpawn:(x:number,y:number)=>void;
+}) => {
+  return (
+    <div className="dialogue-bubble" style={{
+      background:"linear-gradient(145deg,rgba(5,15,20,0.97),rgba(5,46,22,0.95))",
+      border:"2px solid rgba(52,211,153,0.5)",
+      borderRadius:22,
+      padding:"22px 26px",
+      maxWidth:380,
+      minWidth:300,
+      boxShadow:"0 24px 64px rgba(0,0,0,0.65), 0 0 0 1px rgba(52,211,153,0.12), inset 0 1px 0 rgba(255,255,255,0.06)",
+      marginBottom:pos==="center"?0:18,
+      marginLeft:pos==="left"?-6:0,
+      marginRight:pos==="right"?-6:0,
+      position:"relative",
+      backdropFilter:"blur(16px)",
+    }}>
+      {/* Corner sparkle */}
+      <div style={{position:"absolute",top:-8,right:14,fontSize:16,animation:"warnBounce 2s ease infinite"}}>✨</div>
+
+      {/* Tail */}
+      {pos==="left"&&<div style={{position:"absolute",left:-14,bottom:32,width:0,height:0,borderTop:"12px solid transparent",borderBottom:"12px solid transparent",borderRight:"14px solid rgba(52,211,153,0.5)"}}/>}
+      {pos==="right"&&<div style={{position:"absolute",right:-14,bottom:32,width:0,height:0,borderTop:"12px solid transparent",borderBottom:"12px solid transparent",borderLeft:"14px solid rgba(52,211,153,0.5)"}}/>}
+
+      {/* Bary tag */}
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:11}}>
+        <div style={{width:8,height:8,borderRadius:"50%",background:"#34d399",flexShrink:0}} className="pulse"/>
+        <span style={{fontSize:11,fontWeight:800,color:"#34d399",letterSpacing:"0.09em"}}>BARY · BARYALYTICS GUIDE</span>
+        <span style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginLeft:"auto",fontFamily:"monospace"}}>{stepIdx+1}/{TUTORIAL_STEPS.length}</span>
+      </div>
+
+      {/* Title */}
+      <div style={{fontSize:18,fontWeight:900,color:"#fff",marginBottom:10,lineHeight:1.25,letterSpacing:"-0.01em"}}>{step.title}</div>
+
+      {/* Typewriter dialogue */}
+      <div style={{fontSize:14,color:"rgba(200,240,220,0.85)",lineHeight:1.7,marginBottom:20,minHeight:64,fontWeight:400}}>
+        <TypewriterText key={step.id} text={step.dialogue} speed={20}/>
+      </div>
+
+      {/* Nav buttons */}
+      <div style={{display:"flex",gap:8,alignItems:"center"}}>
+        {!isFirst&&(
+          <button onClick={onPrev} style={{padding:"9px 18px",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:12,color:"rgba(255,255,255,0.65)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}}
+            onMouseEnter={e=>(e.currentTarget.style.background="rgba(255,255,255,0.12)")} onMouseLeave={e=>(e.currentTarget.style.background="rgba(255,255,255,0.07)")}>
+            ← Back
+          </button>
+        )}
+        <button
+          onClick={e=>{
+            if(isLast){onSpawn(e.clientX,e.clientY);setTimeout(onSkip,400);}
+            else onNext();
+          }}
+          style={{flex:1,padding:"11px 22px",background:"linear-gradient(135deg,#16a34a,#22c55e,#16a34a)",backgroundSize:"200% auto",border:"none",borderRadius:12,color:"#fff",fontSize:14,fontWeight:800,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:"0 4px 20px rgba(34,197,94,0.4)",transition:"all 0.2s",letterSpacing:"0.01em"}}
+          onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.boxShadow="0 6px 28px rgba(34,197,94,0.6)";(e.currentTarget as HTMLButtonElement).style.transform="translateY(-1px)";}}
+          onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.boxShadow="0 4px 20px rgba(34,197,94,0.4)";(e.currentTarget as HTMLButtonElement).style.transform="translateY(0)";}}>
+          {isLast?"🎉 Let's Go!":isFirst?"Start Tour →":"Next →"}
+        </button>
+      </div>
+
+      {/* Click tip */}
+      {!isLast&&<div style={{textAlign:"center",marginTop:8,fontSize:10,color:"rgba(52,211,153,0.4)",letterSpacing:"0.04em"}}>🍀 Click Bary for a surprise!</div>}
+    </div>
+  );
+};
+
 interface TutStep {
   id: string;
   title: string;
@@ -5154,155 +5469,6 @@ interface TutStep {
   page?: string; // nav page to switch to
   arrowDir?: "up"|"down"|"left"|"right";
 }
-
-const TUTORIAL_STEPS: TutStep[] = [
-  {id:"welcome",   mascotPos:"center", mascotMood:"wave",  title:"Hey there! I'm Bary! 👋",        dialogue:"Welcome to Baryalytics — your all-in-one business management dashboard! I'll walk you through everything. Ready? Let's go! 🚀"},
-  {id:"nav",       mascotPos:"right",  mascotMood:"point", title:"The Navigation Bar 🔝",          dialogue:"This is your floating nav bar at the top. Click any section — Dashboard, Inventory, Sales, Supplier, Finance, or User — to jump right to it!", highlightSel:"nav", arrowDir:"up"},
-  {id:"dashboard", mascotPos:"right",  mascotMood:"happy", title:"Dashboard 📊",                   dialogue:"Your home base! See daily sales, monthly revenue, stock levels, and live charts at a glance. Everything important is right here.", page:"Dashboard"},
-  {id:"inventory", mascotPos:"left",   mascotMood:"point", title:"Inventory 📦",                   dialogue:"Track all your products here! Add new items, set prices, check expiry dates, and monitor stock levels. Low stock? You'll get alerts automatically!", page:"Inventory"},
-  {id:"sales",     mascotPos:"right",  mascotMood:"happy", title:"Sales 💰",                       dialogue:"Every sale is tracked here with auto-computed profit, tax (12% VAT), and net earnings. Switch between Daily, Monthly, and Yearly views!", page:"Sales"},
-  {id:"supplier",  mascotPos:"left",   mascotMood:"point", title:"Supplier 🚚",                    dialogue:"Manage your suppliers, track deliveries, and see transaction history. Favorite your most-used suppliers for quick access!", page:"Supplier"},
-  {id:"finance",   mascotPos:"right",  mascotMood:"think", title:"Finance 💼",                     dialogue:"The full financial picture — profit overview, expense tracking, cash flow, and budget management. Great for reports and audits!", page:"Finance"},
-  {id:"user",      mascotPos:"left",   mascotMood:"point", title:"User Management 👤",             dialogue:"Control who has access and what they can do. Admin, Manager, and Staff roles each have different permissions. Add 2FA for extra security!", page:"User"},
-  {id:"notif",     mascotPos:"right",  mascotMood:"wave",  title:"Notifications 🔔",               dialogue:"The bell icon shows real-time alerts — low stock, deliveries arriving, suspicious logins, and more. Urgent ones pulse in red!", highlightSel:"bell-btn"},
-  {id:"help",      mascotPos:"left",   mascotMood:"happy", title:"Help & Feedback ❓",             dialogue:"That's the ? button — you're using it right now! Come here anytime for FAQs, guides, or to send us feedback.", highlightSel:"help-btn"},
-  {id:"settings",  mascotPos:"right",  mascotMood:"point", title:"Settings ⚙️",                   dialogue:"Click your name in the top right to access Settings — change your profile, appearance, colors, security, backups, and much more!"},
-  {id:"done",      mascotPos:"center", mascotMood:"wave",  title:"You're all set! 🎉",             dialogue:"That's the full tour of Baryalytics! Remember — I'm always here in the ? menu if you need help. Go elevate your business! ✨"},
-];
-
-const TutorialOverlay = ({
-  step, totalSteps, onNext, onPrev, onSkip, currentPage, onPageChange
-}:{
-  step:TutStep; totalSteps:number; stepIdx:number;
-  onNext:()=>void; onPrev:()=>void; onSkip:()=>void;
-  currentPage:string; onPageChange:(p:string)=>void;
-}) => {
-  const [waving, setWaving] = React.useState(true);
-  const isFirst = step.id==="welcome";
-  const isLast  = step.id==="done";
-
-  React.useEffect(()=>{
-    setWaving(true);
-    const t = setTimeout(()=>setWaving(false),1200);
-    return ()=>clearTimeout(t);
-  },[step.id]);
-
-  React.useEffect(()=>{
-    if(step.page && step.page!==currentPage) onPageChange(step.page);
-  },[step.id]);
-
-  const mascotLeft  = step.mascotPos==="left";
-  const mascotRight = step.mascotPos==="right";
-  const mascotCenter= step.mascotPos==="center";
-
-  return ReactDOM.createPortal(
-    <div style={{position:"fixed",inset:0,zIndex:99998,pointerEvents:"none"}}>
-      {/* Dark overlay */}
-      <div style={{
-        position:"absolute",inset:0,
-        background:"rgba(0,0,0,0.78)",
-        backdropFilter:"blur(2px)",
-        animation:"spotlightIn 0.4s ease both",
-        pointerEvents:"all",
-      }}/>
-
-      {/* Step progress dots */}
-      <div style={{position:"absolute",top:24,left:"50%",transform:"translateX(-50%)",display:"flex",gap:6,zIndex:2,pointerEvents:"all"}}>
-        {TUTORIAL_STEPS.map((_,i)=>(
-          <div key={i} style={{width:i===TUTORIAL_STEPS.indexOf(step)?20:7,height:7,borderRadius:99,background:i===TUTORIAL_STEPS.indexOf(step)?"#34d399":i<TUTORIAL_STEPS.indexOf(step)?"rgba(52,211,153,0.4)":"rgba(255,255,255,0.15)",transition:"all 0.3s"}}/>
-        ))}
-      </div>
-
-      {/* Skip button */}
-      <button onClick={onSkip} style={{position:"absolute",top:22,right:24,zIndex:3,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:999,padding:"6px 16px",color:"rgba(255,255,255,0.5)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",pointerEvents:"all",transition:"all 0.15s"}}
-        onMouseEnter={e=>(e.currentTarget.style.color="#fff")} onMouseLeave={e=>(e.currentTarget.style.color="rgba(255,255,255,0.5)")}>
-        Skip Tour ✕
-      </button>
-
-      {/* ── MASCOT + DIALOGUE ── */}
-      {mascotCenter&&(
-        <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:0,zIndex:2,pointerEvents:"all"}}>
-          <div className="mascot-3d" style={{perspective:"800px"}}>
-            <BaryMascot size={220} waving={waving}/>
-          </div>
-          <DialogueBubble step={step} pos="center" onNext={onNext} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast}/>
-        </div>
-      )}
-
-      {mascotLeft&&(
-        <div style={{position:"absolute",left:0,bottom:0,zIndex:2,display:"flex",alignItems:"flex-end",gap:0,pointerEvents:"all",padding:"0 0 40px 24px"}}>
-          <div className="mascot-3d" style={{perspective:"800px",flexShrink:0}}>
-            <BaryMascot size={200} waving={waving}/>
-          </div>
-          <DialogueBubble step={step} pos="left" onNext={onNext} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast}/>
-        </div>
-      )}
-
-      {mascotRight&&(
-        <div style={{position:"absolute",right:0,bottom:0,zIndex:2,display:"flex",flexDirection:"row-reverse",alignItems:"flex-end",gap:0,pointerEvents:"all",padding:"0 24px 40px 0"}}>
-          <div className="mascot-3d" style={{perspective:"800px",flexShrink:0,transform:"scaleX(-1)"}}>
-            <BaryMascot size={200} waving={waving}/>
-          </div>
-          <DialogueBubble step={step} pos="right" onNext={onNext} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast}/>
-        </div>
-      )}
-    </div>,
-    document.body
-  );
-};
-
-const DialogueBubble = ({step, pos, onNext, onPrev, onSkip, isFirst, isLast}:{
-  step:TutStep; pos:"left"|"right"|"center";
-  onNext:()=>void; onPrev:()=>void; onSkip:()=>void;
-  isFirst:boolean; isLast:boolean;
-}) => {
-  const stepIdx = TUTORIAL_STEPS.findIndex(s=>s.id===step.id);
-  return (
-    <div className="dialogue-bubble" style={{
-      background:"rgba(10,15,25,0.97)",
-      border:"1.5px solid rgba(52,211,153,0.4)",
-      borderRadius:20,
-      padding:"20px 22px",
-      maxWidth:340,
-      boxShadow:"0 20px 60px rgba(0,0,0,0.6),0 0 0 1px rgba(52,211,153,0.1)",
-      marginBottom:pos==="center"?0:20,
-      marginLeft:pos==="left"?-8:0,
-      marginRight:pos==="right"?-8:0,
-      position:"relative",
-    }}>
-      {/* Tail pointer */}
-      {pos==="left"&&<div style={{position:"absolute",left:-12,bottom:30,width:0,height:0,borderTop:"10px solid transparent",borderBottom:"10px solid transparent",borderRight:"12px solid rgba(52,211,153,0.4)"}}/>}
-      {pos==="right"&&<div style={{position:"absolute",right:-12,bottom:30,width:0,height:0,borderTop:"10px solid transparent",borderBottom:"10px solid transparent",borderLeft:"12px solid rgba(52,211,153,0.4)"}}/>}
-
-      {/* Bary name tag */}
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-        <div style={{width:8,height:8,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
-        <span style={{fontSize:11,fontWeight:800,color:"#34d399",letterSpacing:"0.08em"}}>BARY · BARYALYTICS</span>
-        <span style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginLeft:"auto"}}>{stepIdx+1}/{TUTORIAL_STEPS.length}</span>
-      </div>
-
-      {/* Title */}
-      <div style={{fontSize:16,fontWeight:800,color:"#fff",marginBottom:8,lineHeight:1.3}}>{step.title}</div>
-
-      {/* Dialogue */}
-      <p style={{fontSize:13,color:"rgba(255,255,255,0.7)",lineHeight:1.65,margin:"0 0 18px"}}>{step.dialogue}</p>
-
-      {/* Navigation */}
-      <div style={{display:"flex",gap:8,alignItems:"center"}}>
-        {!isFirst&&(
-          <button onClick={onPrev} style={{padding:"8px 16px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:10,color:"rgba(255,255,255,0.6)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}}
-            onMouseEnter={e=>(e.currentTarget.style.background="rgba(255,255,255,0.1)")} onMouseLeave={e=>(e.currentTarget.style.background="rgba(255,255,255,0.06)")}>
-            ← Back
-          </button>
-        )}
-        <button onClick={isLast?onSkip:onNext} style={{flex:1,padding:"10px 20px",background:isLast?"linear-gradient(135deg,#16a34a,#22c55e)":"linear-gradient(135deg,#15803d,#16a34a)",border:"none",borderRadius:10,color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:"0 4px 16px rgba(34,197,94,0.3)",transition:"all 0.15s"}}
-          onMouseEnter={e=>(e.currentTarget.style.boxShadow="0 6px 24px rgba(34,197,94,0.5)")} onMouseLeave={e=>(e.currentTarget.style.boxShadow="0 4px 16px rgba(34,197,94,0.3)")}>
-          {isLast?"🎉 Let's Go!":isFirst?"Start Tour →":"Next →"}
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const FAQS = [
   {q:"How do I add a new product?", a:"Go to Inventory → click '+ Add' → fill in Product Name, Buy Price, Sell Price, and Stock → click 'Add Product'."},
