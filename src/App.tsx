@@ -513,12 +513,20 @@ const G = `
   @keyframes coinShine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.6)}}
   @keyframes mascotEnter{from{opacity:0;transform:translateY(60px) scale(0.7)}to{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes shadowPulse{0%,100%{transform:scaleX(1);opacity:0.25}50%{transform:scaleX(0.85);opacity:0.15}}
+  @keyframes idleGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(52,211,153,0.3)) drop-shadow(0 14px 20px rgba(0,0,0,0.35))}50%{filter:drop-shadow(0 0 22px rgba(52,211,153,0.65)) drop-shadow(0 14px 20px rgba(0,0,0,0.35))}}
+  @keyframes sparkleFloat{0%{opacity:0;transform:translate(0,0) scale(0)}20%{opacity:1;transform:translate(var(--sx),var(--sy)) scale(1)}80%{opacity:0.8;transform:translate(var(--sx2),var(--sy2)) scale(0.8)}100%{opacity:0;transform:translate(var(--sx3),var(--sy3)) scale(0)}}
+  @keyframes streakFade{from{opacity:0.8;transform:scale(1)}to{opacity:0;transform:scale(0.3)}}
+  @keyframes companionBob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}
   .tutorial-btn{animation:glowPulse 2s ease infinite;}
   .mascot-fly{animation:peterPanFly 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,0.5)) drop-shadow(0 0 18px rgba(52,211,153,0.35));}
   .mascot-enter{animation:mascotEnter 0.5s cubic-bezier(0.34,1.56,0.64,1) both;}
   .dialogue-bubble{animation:dialogueIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;}
   .cursor-blink{display:inline-block;width:2px;height:1em;background:#34d399;margin-left:2px;vertical-align:middle;animation:typewriterCursor 0.7s ease infinite;}
   .particle{position:fixed;pointer-events:none;z-index:99999;font-size:22px;animation:particleUp 1.2s cubic-bezier(0.25,0.46,0.45,0.94) both;}
+  .bary-companion{position:fixed;z-index:8888;pointer-events:all;cursor:grab;user-select:none;touch-action:none;}
+  .bary-companion:active{cursor:grabbing;}
+  .bary-idle-glow{animation:idleGlow 3s ease-in-out infinite;}
+  .bary-bob{animation:companionBob 3.5s cubic-bezier(0.45,0.05,0.55,0.95) infinite;}
   .export-wrap{position:relative;display:inline-flex;}
   .export-btn{display:flex;align-items:center;gap:7px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.22);border-radius:10px;color:#a5b4fc;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;}
   .export-btn:hover{background:rgba(129,140,248,0.2);border-color:rgba(129,140,248,0.38);color:#c7d2fe;}
@@ -5240,6 +5248,330 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
   </svg>
   );
 };
+/* ── BARY COMPANION (idle floating, autonomous movement, drag) ────── */
+interface Trail { id:number; x:number; y:number; emoji:string; ts:number; }
+
+const BaryCompanion = ({hidden, onStartTutorial}:{hidden:boolean; onStartTutorial:()=>void}) => {
+  const SIZE = 110;
+  // Position state
+  const posRef   = React.useRef({x: window.innerWidth - 160, y: window.innerHeight - 260});
+  const velRef   = React.useRef({vx:0, vy:0});
+  const targetRef= React.useRef({x: window.innerWidth - 160, y: window.innerHeight - 260});
+  const dragRef  = React.useRef(false);
+  const dragOff  = React.useRef({ox:0, oy:0});
+  const elRef    = React.useRef<HTMLDivElement>(null);
+  const rafRef   = React.useRef<number>(0);
+  const lastPosRef = React.useRef<{x:number;y:number}[]>([]);
+
+  // Gaze
+  const [gazeX, setGazeX] = React.useState(0);
+  const [gazeY, setGazeY] = React.useState(0);
+  const [waving, setWaving] = React.useState(false);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [trails, setTrails] = React.useState<Trail[]>([]);
+  const [showMenu, setShowMenu] = React.useState(false);
+  const TRAIL_EMOJIS = ["✨","🍀","🪙","⭐","💚","🌟"];
+
+  // Pick a new random waypoint to drift toward
+  const pickTarget = React.useCallback(()=>{
+    const margin = 120;
+    const mx = window.innerWidth  - SIZE - margin;
+    const my = window.innerHeight - SIZE - margin;
+    targetRef.current = {
+      x: margin + Math.random() * mx,
+      y: 100   + Math.random() * (my - 100),
+    };
+  },[]);
+
+  // Main animation loop
+  React.useEffect(()=>{
+    let waypointTimer = 0;
+
+    const tick = (now:number) => {
+      rafRef.current = requestAnimationFrame(tick);
+      if(!elRef.current) return;
+
+      if(dragRef.current){
+        // While dragging: follow instantly, add trail
+        if(lastPosRef.current.length>1){
+          const prev = lastPosRef.current[lastPosRef.current.length-2];
+          const cur  = lastPosRef.current[lastPosRef.current.length-1];
+          if(cur){
+            const speed = Math.hypot(cur.x-prev.x, cur.y-prev.y);
+            if(speed>6){
+              const id = Date.now()+Math.random();
+              const emoji = TRAIL_EMOJIS[Math.floor(Math.random()*TRAIL_EMOJIS.length)];
+              setTrails(t=>[...t.slice(-18),{id,x:cur.x+SIZE/2,y:cur.y+SIZE/2,emoji,ts:now}]);
+            }
+          }
+        }
+      } else {
+        // Autonomous drift toward target using spring physics
+        const p = posRef.current;
+        const t = targetRef.current;
+        const v = velRef.current;
+        const dx = t.x - p.x;
+        const dy = t.y - p.y;
+        const dist = Math.hypot(dx,dy);
+
+        // Spring: accelerate toward target, dampen velocity
+        const spring = 0.018;
+        const damp   = 0.88;
+        v.vx = (v.vx + dx * spring) * damp;
+        v.vy = (v.vy + dy * spring) * damp;
+
+        // Cap speed
+        const spd = Math.hypot(v.vx,v.vy);
+        if(spd > 4){ v.vx = v.vx/spd*4; v.vy = v.vy/spd*4; }
+
+        p.x += v.vx;
+        p.y += v.vy;
+
+        // Keep in bounds
+        const maxX = window.innerWidth  - SIZE - 8;
+        const maxY = window.innerHeight - SIZE - 8;
+        p.x = Math.max(8, Math.min(maxX, p.x));
+        p.y = Math.max(90, Math.min(maxY, p.y));
+
+        // Pick new target when close enough
+        waypointTimer += 16;
+        if(dist < 24 || waypointTimer > 5000){ pickTarget(); waypointTimer=0; }
+
+        // Update gaze toward center of screen
+        const cx = window.innerWidth/2, cy = window.innerHeight/2;
+        setGazeX((p.x+SIZE/2-cx)/cx*0.7);
+        setGazeY((p.y+SIZE/2-cy)/cy*0.5);
+
+        // Apply position
+        elRef.current.style.left = p.x+'px';
+        elRef.current.style.top  = p.y+'px';
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    // Start new waypoints every few seconds even if not reached
+    const wpt = setInterval(pickTarget, 7000);
+    pickTarget();
+
+    return ()=>{
+      cancelAnimationFrame(rafRef.current);
+      clearInterval(wpt);
+    };
+  },[pickTarget]);
+
+  // Clean up old trails
+  React.useEffect(()=>{
+    const iv = setInterval(()=>{
+      const now = performance.now();
+      setTrails(t=>t.filter(tr=>now-tr.ts < 1100));
+    },200);
+    return ()=>clearInterval(iv);
+  },[]);
+
+  // Drag handlers
+  const startDrag = React.useCallback((cx:number, cy:number)=>{
+    dragRef.current = true;
+    setIsDragging(true);
+    setShowMenu(false);
+    dragOff.current = {ox: cx - posRef.current.x, oy: cy - posRef.current.y};
+    velRef.current = {vx:0,vy:0};
+    // Wave on pickup
+    setWaving(true);
+    setTimeout(()=>setWaving(false),800);
+  },[]);
+
+  const moveDrag = React.useCallback((cx:number, cy:number)=>{
+    if(!dragRef.current) return;
+    const nx = cx - dragOff.current.ox;
+    const ny = cy - dragOff.current.oy;
+    posRef.current = {x:nx, y:ny};
+    lastPosRef.current = [...lastPosRef.current.slice(-4), {x:nx, y:ny}];
+    if(elRef.current){
+      elRef.current.style.left = nx+'px';
+      elRef.current.style.top  = ny+'px';
+    }
+  },[]);
+
+  const endDrag = React.useCallback(()=>{
+    if(!dragRef.current) return;
+    dragRef.current = false;
+    setIsDragging(false);
+    lastPosRef.current = [];
+    // Fling toward new target
+    pickTarget();
+  },[pickTarget]);
+
+  React.useEffect(()=>{
+    const mm = (e:MouseEvent)=>moveDrag(e.clientX,e.clientY);
+    const mu = ()=>endDrag();
+    const tm = (e:TouchEvent)=>{e.preventDefault();moveDrag(e.touches[0].clientX,e.touches[0].clientY);};
+    const tu = ()=>endDrag();
+    window.addEventListener('mousemove',mm);
+    window.addEventListener('mouseup',mu);
+    window.addEventListener('touchmove',tm,{passive:false});
+    window.addEventListener('touchend',tu);
+    return ()=>{
+      window.removeEventListener('mousemove',mm);
+      window.removeEventListener('mouseup',mu);
+      window.removeEventListener('touchmove',tm);
+      window.removeEventListener('touchend',tu);
+    };
+  },[moveDrag,endDrag]);
+
+  // Idle sparkle particles
+  const [idleSparkles, setIdleSparkles] = React.useState<{id:number;x:number;y:number;size:number;op:number;color:string}[]>([]);
+  React.useEffect(()=>{
+    const iv = setInterval(()=>{
+      if(dragRef.current) return;
+      const p = posRef.current;
+      const colors = ["#34d399","#fde68a","#86efac","#4ade80","#d4af37"];
+      const s = {
+        id: Date.now()+Math.random(),
+        x: p.x + 20 + Math.random()*(SIZE-40),
+        y: p.y + 10 + Math.random()*(SIZE-30),
+        size: 4+Math.random()*8,
+        op: 0.6+Math.random()*0.4,
+        color: colors[Math.floor(Math.random()*colors.length)],
+      };
+      setIdleSparkles(prev=>[...prev.slice(-12),s]);
+      setTimeout(()=>setIdleSparkles(prev=>prev.filter(x=>x.id!==s.id)),1200);
+    },280);
+    return ()=>clearInterval(iv);
+  },[]);
+
+  if(hidden) return null;
+
+  return ReactDOM.createPortal(
+    <>
+      {/* Idle sparkle particles */}
+      {idleSparkles.map(s=>(
+        <div key={s.id} style={{
+          position:"fixed",left:s.x,top:s.y,
+          width:s.size,height:s.size,borderRadius:"50%",
+          background:s.color,opacity:s.op,
+          zIndex:8887,pointerEvents:"none",
+          animation:"particleUp 1.2s ease both",
+          boxShadow:`0 0 ${s.size}px ${s.color}`,
+        }}/>
+      ))}
+
+      {/* Drag trail emojis */}
+      {trails.map(tr=>(
+        <div key={tr.id} style={{
+          position:"fixed",left:tr.x-12,top:tr.y-12,
+          fontSize:20,zIndex:8887,pointerEvents:"none",
+          animation:"particleUp 1.0s ease both",
+          filter:"drop-shadow(0 0 6px rgba(52,211,153,0.8))",
+        }}>{tr.emoji}</div>
+      ))}
+
+      {/* Dragging glow ring */}
+      {isDragging&&(
+        <div style={{
+          position:"fixed",
+          left: posRef.current.x - 12,
+          top:  posRef.current.y - 12,
+          width: SIZE+24, height: SIZE*1.3+24,
+          borderRadius:"50%",
+          border:"3px solid rgba(52,211,153,0.6)",
+          boxShadow:"0 0 30px rgba(52,211,153,0.5), inset 0 0 20px rgba(52,211,153,0.15)",
+          zIndex:8886,pointerEvents:"none",
+          animation:"glowPulse 0.8s ease infinite",
+        }}/>
+      )}
+
+      {/* Companion body */}
+      <div
+        ref={elRef}
+        className="bary-companion"
+        style={{
+          left: posRef.current.x,
+          top:  posRef.current.y,
+          width: SIZE,
+          transition: isDragging ? "none" : undefined,
+        }}
+        onMouseDown={e=>{e.preventDefault();startDrag(e.clientX,e.clientY);}}
+        onTouchStart={e=>{e.preventDefault();startDrag(e.touches[0].clientX,e.touches[0].clientY);}}
+        onClick={()=>{if(!isDragging) setShowMenu(v=>!v);}}
+      >
+        {/* Bob + glow wrapper */}
+        <div className={isDragging?"":"bary-bob"} style={{
+          filter: isDragging
+            ? "drop-shadow(0 0 24px rgba(52,211,153,0.9)) drop-shadow(0 8px 16px rgba(0,0,0,0.4))"
+            : undefined,
+        }}>
+          <div className={isDragging?"":"bary-idle-glow"}>
+            <BaryMascot size={SIZE} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
+          </div>
+        </div>
+
+        {/* Tooltip label when idle */}
+        {!isDragging&&!showMenu&&(
+          <div style={{
+            position:"absolute",bottom:-28,left:"50%",transform:"translateX(-50%)",
+            background:"rgba(5,46,22,0.85)",border:"1px solid rgba(52,211,153,0.4)",
+            borderRadius:999,padding:"3px 12px",fontSize:10,fontWeight:700,
+            color:"#6ee7b7",whiteSpace:"nowrap",backdropFilter:"blur(8px)",
+            letterSpacing:"0.06em",animation:"fadeUp 0.3s ease both",
+          }}>👆 Click me!</div>
+        )}
+
+        {/* Context menu */}
+        {showMenu&&(
+          <div style={{
+            position:"absolute",bottom:SIZE*1.3+8,left:"50%",transform:"translateX(-50%)",
+            background:"rgba(5,15,10,0.96)",border:"1.5px solid rgba(52,211,153,0.45)",
+            borderRadius:16,padding:"10px 8px",minWidth:180,
+            boxShadow:"0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(52,211,153,0.1)",
+            backdropFilter:"blur(16px)",animation:"dialogueIn 0.25s cubic-bezier(0.34,1.56,0.64,1) both",
+            zIndex:8890,
+          }}>
+            {/* Tail */}
+            <div style={{position:"absolute",bottom:-10,left:"50%",transform:"translateX(-50%)",width:0,height:0,
+              borderLeft:"10px solid transparent",borderRight:"10px solid transparent",
+              borderTop:"10px solid rgba(52,211,153,0.45)"}}/>
+            <div style={{fontSize:11,fontWeight:800,color:"#34d399",letterSpacing:"0.08em",textAlign:"center",marginBottom:8,paddingBottom:6,borderBottom:"1px solid rgba(52,211,153,0.15)"}}>
+              <span className="pulse" style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:"#34d399",marginRight:6,verticalAlign:"middle"}}/>
+              BARY
+            </div>
+            {[
+              {icon:"🎓",label:"Start Tutorial",    action:()=>{setShowMenu(false);onStartTutorial();}},
+              {icon:"🍀",label:"Drop Clovers",      action:()=>{
+                setShowMenu(false);
+                const p=posRef.current;
+                for(let i=0;i<8;i++){
+                  setTimeout(()=>{
+                    const id=Date.now()+i;
+                    const emoji=["🍀","🪙","⭐","✨"][i%4];
+                    setTrails(t=>[...t,{id,x:p.x+SIZE/2+(Math.random()-0.5)*60,y:p.y+SIZE/2,emoji,ts:performance.now()}]);
+                  },i*80);
+                }
+              }},
+              {icon:"👋",label:"Say Hi!",           action:()=>{setShowMenu(false);setWaving(true);setTimeout(()=>setWaving(false),1400);}},
+              {icon:"🎲",label:"Teleport",           action:()=>{setShowMenu(false);pickTarget();velRef.current={vx:0,vy:0};posRef.current=targetRef.current;if(elRef.current){elRef.current.style.left=posRef.current.x+'px';elRef.current.style.top=posRef.current.y+'px';}}},
+            ].map(item=>(
+              <button key={item.label} onClick={item.action} style={{
+                display:"flex",alignItems:"center",gap:10,width:"100%",
+                padding:"8px 12px",background:"none",border:"none",
+                cursor:"pointer",fontFamily:"'Inter',sans-serif",borderRadius:10,
+                transition:"background 0.12s",
+              }}
+                onMouseEnter={e=>(e.currentTarget.style.background="rgba(52,211,153,0.1)")}
+                onMouseLeave={e=>(e.currentTarget.style.background="none")}
+              >
+                <span style={{fontSize:16}}>{item.icon}</span>
+                <span style={{fontSize:12,fontWeight:600,color:"rgba(200,240,220,0.9)"}}>{item.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </>,
+    document.body
+  );
+};
+
 /* ── TUTORIAL SOUNDS ─────────────────────────────────────────────── */
 const useTutSounds = () => {
   const getCtx = () => {
@@ -6844,6 +7176,8 @@ export default function App() {
                 ?
               </button>
               {showHelp&&<HelpPanel onClose={()=>setShowHelp(false)} lm={lm} onStartTutorial={()=>{setTutStep(0);setShowTutorial(true);}}/>}
+              {/* BaryCompanion — always floating, hidden during tutorial */}
+              <BaryCompanion hidden={showTutorial} onStartTutorial={()=>{setTutStep(0);setShowTutorial(true);}}/>
               {showTutorial&&(
                 <TutorialOverlay
                   step={TUTORIAL_STEPS[tutStep]}
