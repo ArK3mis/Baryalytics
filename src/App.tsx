@@ -513,8 +513,13 @@ const G = `
   @keyframes coinShine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.6)}}
   @keyframes mascotEnter{from{opacity:0;transform:translateY(60px) scale(0.7)}to{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes shadowPulse{0%,100%{transform:scaleX(1);opacity:0.25}50%{transform:scaleX(0.85);opacity:0.15}}
+  @keyframes idleGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(52,211,153,0.3)) drop-shadow(0 14px 20px rgba(0,0,0,0.35))}50%{filter:drop-shadow(0 0 22px rgba(52,211,153,0.65)) drop-shadow(0 14px 20px rgba(0,0,0,0.35))}}
+  @keyframes streakFade{from{opacity:0.8;transform:scale(1)}to{opacity:0;transform:scale(0.3)}}
+  @keyframes baryPose1{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(8deg) translateY(-12px)}}
+  @keyframes baryPose2{0%,100%{transform:rotate(0deg) scale(1)}33%{transform:rotate(-6deg) scale(1.04)}66%{transform:rotate(6deg) scale(0.97)}}
+  @keyframes baryPose3{0%,100%{transform:rotate(12deg) translateY(0)}50%{transform:rotate(-4deg) translateY(-18px)}}
+  @keyframes baryTrail{from{opacity:0.7;transform:scale(1)}to{opacity:0;transform:scale(0.2) translateY(-20px)}}
   .tutorial-btn{animation:glowPulse 2s ease infinite;}
-  .mascot-fly{animation:peterPanFly 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,0.5)) drop-shadow(0 0 18px rgba(52,211,153,0.35));}
   .mascot-enter{animation:mascotEnter 0.5s cubic-bezier(0.34,1.56,0.64,1) both;}
   .dialogue-bubble{animation:dialogueIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;}
   .cursor-blink{display:inline-block;width:2px;height:1em;background:#34d399;margin-left:2px;vertical-align:middle;animation:typewriterCursor 0.7s ease infinite;}
@@ -5240,6 +5245,7 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
   </svg>
   );
 };
+/* ── BARY COMPANION (idle floating, autonomous movement, drag) ────── */
 /* ── TUTORIAL SOUNDS ─────────────────────────────────────────────── */
 const useTutSounds = () => {
   const getCtx = () => {
@@ -5353,18 +5359,125 @@ const TutorialOverlay = ({
   currentPage:string; onPageChange:(p:string)=>void;
 }) => {
   const {playStep, playCoin, playMagic} = useTutSounds();
-  const [waving, setWaving] = React.useState(true);
+  const [waving, setWaving]   = React.useState(true);
   const [particles, setParticles] = React.useState<Particle[]>([]);
-  const [spotRect, setSpotRect] = React.useState<DOMRect|null>(null);
-  const [gazeX, setGazeX] = React.useState(0);
-  const [gazeY, setGazeY] = React.useState(0);
+  const [spotRect, setSpotRect]   = React.useState<DOMRect|null>(null);
+  const [gazeX, setGazeX]   = React.useState(0);
+  const [gazeY, setGazeY]   = React.useState(0);
   const isFirst = step.id==="welcome";
   const isLast  = step.id==="done";
+
+  // Bary's live flying position (JS-driven, smooth spline)
+  const flyRef   = React.useRef({x:window.innerWidth/2-90, y:window.innerHeight/2-120});
+  const rafRef   = React.useRef<number>(0);
+  const elRef    = React.useRef<HTMLDivElement>(null);
+  const poseRef  = React.useRef(0); // current pose index
+  const [pose, setPose] = React.useState(0); // 0=neutral 1=tilt-left 2=tilt-right 3=dive
+  const [trailDots, setTrailDots] = React.useState<{id:number;x:number;y:number;color:string}[]>([]);
+
+  // Predefined organic waypoints — figure-8 style, avoiding center clump
+  // Points are relative to vw/vh so they adapt to screen size
+  const getWaypoints = React.useCallback(()=>{
+    const W = window.innerWidth, H = window.innerHeight;
+    const M = 130; // margin
+    // A figure-8 / lemniscate inspired path with varied altitude
+    return [
+      {x:W*0.15, y:H*0.55, pose:1},  // left mid
+      {x:W*0.25, y:H*0.18, pose:2},  // left high
+      {x:W*0.55, y:H*0.12, pose:0},  // top center
+      {x:W*0.78, y:H*0.22, pose:2},  // right high
+      {x:W*0.82, y:H*0.58, pose:3},  // right mid low
+      {x:W*0.68, y:H*0.78, pose:1},  // right low
+      {x:W*0.45, y:H*0.70, pose:0},  // center low
+      {x:W*0.20, y:H*0.75, pose:3},  // left low
+    ].map(p=>({x:Math.max(M,Math.min(W-M,p.x)), y:Math.max(100,Math.min(H-180,p.y)), pose:p.pose}));
+  },[]);
+
+  const waypointsRef = React.useRef(getWaypoints());
+  const wpIdxRef     = React.useRef(0);
+
+  // Smooth cubic bezier interpolation between waypoints
+  const lerp = (a:number,b:number,t:number) => a+(b-a)*t;
+  const easeInOut = (t:number) => t<0.5 ? 2*t*t : -1+(4-2*t)*t;
+
+  const tRef    = React.useRef(0); // 0→1 between waypoints
+  const speedRef= React.useRef(0.004);
+
+  React.useEffect(()=>{
+    waypointsRef.current = getWaypoints();
+    wpIdxRef.current = 0;
+    tRef.current = 0;
+  },[step.id]);
+
+  React.useEffect(()=>{
+    let trailTimer = 0;
+    const tick = (now:number) => {
+      rafRef.current = requestAnimationFrame(tick);
+      if(!elRef.current) return;
+
+      tRef.current = Math.min(1, tRef.current + speedRef.current);
+      const pts = waypointsRef.current;
+      const cur = pts[wpIdxRef.current];
+      const nxt = pts[(wpIdxRef.current+1)%pts.length];
+      const prv = pts[(wpIdxRef.current-1+pts.length)%pts.length];
+      const aft = pts[(wpIdxRef.current+2)%pts.length];
+
+      const t = easeInOut(tRef.current);
+
+      // Catmull-Rom spline for organic curved paths
+      const catmull = (p0:number,p1:number,p2:number,p3:number,t:number) => {
+        const t2=t*t, t3=t2*t;
+        return 0.5*((2*p1)+(-p0+p2)*t+(2*p0-5*p1+4*p2-p3)*t2+(-p0+3*p1-3*p2+p3)*t3);
+      };
+      const bx = catmull(prv.x,cur.x,nxt.x,aft.x,t);
+      const by = catmull(prv.y,cur.y,nxt.y,aft.y,t);
+
+      // Natural tilt: lean into direction of travel
+      const dx = bx - flyRef.current.x;
+      const dy = by - flyRef.current.y;
+      const tiltDeg = Math.max(-18,Math.min(18,dx*0.3));
+      const diveAdd  = dy > 0 ? Math.min(12,dy*0.2) : 0;
+
+      flyRef.current = {x:bx, y:by};
+      elRef.current.style.left = bx+'px';
+      elRef.current.style.top  = by+'px';
+      elRef.current.style.transform = `rotate(${tiltDeg}deg) translateY(${diveAdd}px)`;
+
+      // Update gaze toward dialogue box (fixed bottom-corner)
+      const dialogX = step.mascotPos==="left" ? window.innerWidth*0.6 : window.innerWidth*0.2;
+      const dialogY = window.innerHeight*0.75;
+      const cx=bx+90, cy=by+110;
+      setGazeX((dialogX-cx)/(window.innerWidth/2)*0.6);
+      setGazeY((dialogY-cy)/(window.innerHeight/2)*0.5);
+
+      // Advance waypoint
+      if(tRef.current>=1){
+        wpIdxRef.current=(wpIdxRef.current+1)%pts.length;
+        tRef.current=0;
+        const np=pts[wpIdxRef.current].pose;
+        setPose(np);
+        setWaving(np===2||np===0);
+        setTimeout(()=>setWaving(false),900);
+      }
+
+      // Sparkle trail every ~300ms
+      trailTimer+=16;
+      if(trailTimer>300){
+        trailTimer=0;
+        const colors=["#34d399","#fde68a","#86efac","#4ade80","#d4af37"];
+        const dot={id:Date.now()+Math.random(),x:bx+70,y:by+90,color:colors[Math.floor(Math.random()*colors.length)]};
+        setTrailDots(prev=>[...prev.slice(-8),dot]);
+        setTimeout(()=>setTrailDots(p=>p.filter(d=>d.id!==dot.id)),900);
+      }
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return ()=>cancelAnimationFrame(rafRef.current);
+  },[step.id, step.mascotPos]);
 
   React.useEffect(()=>{
     setWaving(true);
     playStep();
-    const t = setTimeout(()=>setWaving(false),1400);
+    const t=setTimeout(()=>setWaving(false),1400);
     return ()=>clearTimeout(t);
   },[step.id]);
 
@@ -5372,58 +5485,50 @@ const TutorialOverlay = ({
     if(step.page && step.page!==currentPage) onPageChange(step.page);
   },[step.id]);
 
-  // Spotlight: only if highlightSel exists
+  // Spotlight
   React.useEffect(()=>{
     setSpotRect(null);
     if(!step.highlightSel) return;
-    const el = document.querySelector(`[data-tut="${step.highlightSel}"]`) ||
-               document.querySelector(`.${step.highlightSel}`) ||
-               document.querySelector(`#${step.highlightSel}`);
-    if(el){
-      const r = el.getBoundingClientRect();
-      setSpotRect(r);
-      // Gaze toward highlighted element
-      const cx=window.innerWidth/2, cy=window.innerHeight/2;
-      setGazeX((r.left+r.width/2-cx)/cx);
-      setGazeY((r.top+r.height/2-cy)/cy);
-    }
+    const el=document.querySelector(`[data-tut="${step.highlightSel}"]`)||
+              document.querySelector(`.${step.highlightSel}`)||
+              document.querySelector(`#${step.highlightSel}`);
+    if(el){ setSpotRect(el.getBoundingClientRect()); }
   },[step.id]);
 
-  // Track mouse for gaze (when no specific target)
-  React.useEffect(()=>{
-    if(step.highlightSel) return;
-    const handler = (e:MouseEvent) => {
-      const cx=window.innerWidth/2, cy=window.innerHeight/2;
-      setGazeX((e.clientX-cx)/cx*0.8);
-      setGazeY((e.clientY-cy)/cy*0.6);
-    };
-    window.addEventListener("mousemove",handler);
-    return ()=>window.removeEventListener("mousemove",handler);
-  },[step.id, step.highlightSel]);
-
-  const spawnParticles = (cx:number, cy:number) => {
+  const spawnParticles=(cx:number,cy:number)=>{
     const emojis=["🍀","🪙","⭐","✨","💰","🍀","🪙","🍀"];
-    const ps:Particle[] = emojis.map((emoji,i)=>({
-      id:Date.now()+i, x:cx, y:cy, emoji,
-      tx:(Math.random()-0.5)*180,
-      ty:-(Math.random()*120+40),
-      tr:(Math.random()-0.5)*360,
-      delay:i*0.06,
+    const ps:Particle[]=emojis.map((emoji,i)=>({
+      id:Date.now()+i,x:cx,y:cy,emoji,
+      tx:(Math.random()-0.5)*180,ty:-(Math.random()*120+40),
+      tr:(Math.random()-0.5)*360,delay:i*0.06,
     }));
     setParticles(p=>[...p,...ps]);
     playCoin();
     setTimeout(()=>setParticles(p=>p.filter(x=>!ps.find(n=>n.id===x.id))),1600);
   };
 
-  const mascotPos = step.mascotPos;
+  // Pose CSS animation per pose index
+  const poseAnims = ["baryPose1","baryPose2","baryPose3","baryPose1"];
+  const poseDurs  = ["3.8s","4.2s","3.5s","4s"];
 
   return ReactDOM.createPortal(
     <div style={{position:"fixed",inset:0,zIndex:99998,pointerEvents:"none"}}>
       <ParticleLayer particles={particles}/>
 
-      {/* Dark overlay ONLY when there's a specific element to spotlight */}
-      {spotRect ? (
-        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}} >
+      {/* Sparkle trail dots */}
+      {trailDots.map(d=>(
+        <div key={d.id} style={{
+          position:"fixed",left:d.x,top:d.y,
+          width:8,height:8,borderRadius:"50%",
+          background:d.color,zIndex:99997,pointerEvents:"none",
+          animation:"baryTrail 0.9s ease both",
+          boxShadow:`0 0 8px ${d.color}`,
+        }}/>
+      ))}
+
+      {/* Spotlight overlay — only for specific elements */}
+      {spotRect&&(
+        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}}>
           <defs>
             <mask id="spot-mask">
               <rect width="100%" height="100%" fill="white"/>
@@ -5431,10 +5536,9 @@ const TutorialOverlay = ({
             </mask>
           </defs>
           <rect width="100%" height="100%" fill="rgba(0,0,0,0.72)" mask="url(#spot-mask)" style={{animation:"spotlightIn 0.35s ease both"}}/>
-          {/* Spotlight glow ring */}
           <rect x={spotRect.left-16} y={spotRect.top-16} width={spotRect.width+32} height={spotRect.height+32} rx="16" fill="none" stroke="rgba(52,211,153,0.6)" strokeWidth="2.5" style={{animation:"glowPulse 2s ease infinite"}}/>
         </svg>
-      ) : null}
+      )}
 
       {/* Step dots */}
       <div style={{position:"absolute",top:20,left:"50%",transform:"translateX(-50%)",display:"flex",gap:6,zIndex:4,pointerEvents:"all"}}>
@@ -5449,37 +5553,46 @@ const TutorialOverlay = ({
         Skip ✕
       </button>
 
-      {/* Mascot + Dialogue layout */}
-      {mascotPos==="center"&&(
-        <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:8,zIndex:5,pointerEvents:"none"}}>
-          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",pointerEvents:"all"}}>
-            <BaryMascot size={210} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
-          </div>
-          <div style={{pointerEvents:"all"}}>
-            <DialogueBubble step={step} stepIdx={stepIdx} pos="center" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={()=>{onSkip();}} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
-          </div>
-        </div>
-      )}
-      {mascotPos==="left"&&(
-        <div style={{position:"absolute",left:0,bottom:0,zIndex:5,display:"flex",alignItems:"flex-end",gap:4,pointerEvents:"none",padding:"0 0 30px 12px"}}>
-          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0,pointerEvents:"all"}}>
-            <BaryMascot size={185} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
-          </div>
-          <div style={{pointerEvents:"all"}}>
-            <DialogueBubble step={step} stepIdx={stepIdx} pos="left" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
-          </div>
-        </div>
-      )}
-      {mascotPos==="right"&&(
-        <div style={{position:"absolute",right:0,bottom:0,zIndex:5,display:"flex",flexDirection:"row-reverse",alignItems:"flex-end",gap:4,pointerEvents:"none",padding:"0 12px 30px 0"}}>
-          <div className="mascot-fly mascot-enter" onClick={e=>spawnParticles(e.clientX,e.clientY)} style={{cursor:"pointer",flexShrink:0,transform:"scaleX(-1)",pointerEvents:"all"}}>
-            <BaryMascot size={185} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
-          </div>
-          <div style={{pointerEvents:"all"}}>
-            <DialogueBubble step={step} stepIdx={stepIdx} pos="right" onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+      {/* Bary — absolutely positioned, JS driven */}
+      <div
+        ref={elRef}
+        style={{
+          position:"fixed",
+          left:flyRef.current.x,
+          top:flyRef.current.y,
+          zIndex:5,
+          pointerEvents:"all",
+          cursor:"pointer",
+          willChange:"transform,left,top",
+          transition:"none",
+        }}
+        onClick={e=>spawnParticles(e.clientX,e.clientY)}
+      >
+        {/* Pose animation wrapper */}
+        <div style={{
+          animation:`${poseAnims[pose]} ${poseDurs[pose]} ease-in-out infinite`,
+          filter:"drop-shadow(0 12px 24px rgba(0,0,0,0.45)) drop-shadow(0 0 16px rgba(52,211,153,0.35))",
+        }}>
+          <div className="mascot-enter">
+            <BaryMascot size={170} waving={waving} gazeX={gazeX} gazeY={gazeY}/>
           </div>
         </div>
-      )}
+        {/* Click hint */}
+        <div style={{textAlign:"center",fontSize:9,color:"rgba(52,211,153,0.5)",marginTop:-8,letterSpacing:"0.06em",fontWeight:700}}>✨ tap me</div>
+      </div>
+
+      {/* Dialogue — fixed to corner based on mascotPos */}
+      <div style={{
+        position:"fixed",
+        bottom:28,
+        left:step.mascotPos==="right"?24:undefined,
+        right:step.mascotPos==="left"?24:undefined,
+        ...(step.mascotPos==="center"?{left:"50%",transform:"translateX(-50%)"}:{}),
+        zIndex:6,pointerEvents:"all",
+        maxWidth:380,width:"calc(100vw - 48px)",
+      }}>
+        <DialogueBubble step={step} stepIdx={stepIdx} pos={step.mascotPos} onNext={()=>{onNext();playStep();}} onPrev={onPrev} onSkip={onSkip} isFirst={isFirst} isLast={isLast} onSpawn={spawnParticles}/>
+      </div>
     </div>,
     document.body
   );
