@@ -352,6 +352,23 @@ const isValidEmail = (v:string): string => {
   return ""; // empty = valid
 };
 
+/* ── TOOLTIP (appears near cursor) ──────────────────────────────── */
+const Tooltip = ({text, children}:{text:string; children:React.ReactNode}) => {
+  const [pos, setPos] = React.useState<{x:number;y:number}|null>(null);
+  return (
+    <span className="tip-wrap"
+      onMouseMove={e=>setPos({x:e.clientX, y:e.clientY-12})}
+      onMouseLeave={()=>setPos(null)}
+    >
+      {children}
+      {pos&&ReactDOM.createPortal(
+        <div className="tip-box" style={{left:pos.x, top:pos.y}}>{text}</div>,
+        document.body
+      )}
+    </span>
+  );
+};
+
 /* ── BARYALYTICS LOGO COMPONENT ───────────────────────────────────── */
 // Faithful to the uploaded logo: golden circle, white B, white baseline bar,
 // blue upward arrow line, red upward arrow line
@@ -548,7 +565,21 @@ const G = `
   transition:all 0.2s;
   }
   .stat-forecast:hover{border-color:rgba(129,140,248,0.25);transform:translateY(-2px);}
-  /* ── RESPONSIVE HELPERS ── */
+  /* ── TOOLTIP (follows cursor) ── */
+  .tip-wrap{position:relative;display:inline-flex;}
+  .tip-box{position:fixed;z-index:9000;background:rgba(10,10,20,0.95);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.85);pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.4);backdrop-filter:blur(8px);transform:translate(-50%,-110%);animation:fadeUp 0.15s ease both;}
+
+  /* ── WARNING color: amber not red (reserve red for critical only) ── */
+  .warn-amber{color:#fbbf24!important;}
+  .warn-amber-bg{background:rgba(251,191,36,0.08)!important;border-color:rgba(251,191,36,0.2)!important;}
+  .critical-red{color:#fb7185!important;}
+  .chip-warn{display:inline-flex;align-items:center;gap:4px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.22);color:#fde68a;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:600;}
+
+  /* ── Dashboard mode toggle ── */
+  .dash-toggle{display:flex;align-items:center;gap:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;padding:2px;}
+  .dash-toggle-btn{padding:5px 16px;border:none;border-radius:999px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;letter-spacing:0.04em;}
+  .dash-toggle-on{background:#fff;color:#000;}
+  .dash-toggle-off{background:none;color:rgba(255,255,255,0.45);}
   .mob-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .mob-scroll::-webkit-scrollbar{height:3px;}
 
@@ -6695,6 +6726,7 @@ export default function App() {
   const [showHelp, setShowHelp]      = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutStep, setTutStep]        = useState(0);
+  const [dashMode, setDashMode]      = useState<"simple"|"detailed">("simple");
   const [mobileOpen, setMobileOpen]  = useState(false);
   const [isDark, setIsDark]          = useState(true);
 
@@ -7045,163 +7077,267 @@ export default function App() {
         <main style={{position:"relative",zIndex:10,maxWidth:1440,margin:"0 auto",padding:`0 ${isXs?"10px":isSm?"12px":isMob?"16px":"24px"} 48px`}}>
           {page==="Dashboard"&&(
             <>
-              <div className="grid-5col" style={{display:"grid",gridTemplateColumns:cols(5),gap:isSm?10:16,marginBottom:20}}>
-                <div className="card">
-                  <div className="card-title">Daily Sales <button className="card-x"><X size={13}/></button></div>
-                  <div className="stat-num" style={{fontSize:isSm?20:26,fontWeight:700,color:"#fff",marginTop:2}}>₱167,001</div>
-                  <div style={{marginTop:6}}><span className="chip-up"><TrendingUp size={10}/> 15%</span></div>
+              {/* ── Mode toggle header ── */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:12}}>
+                <div>
+                  <h2 style={{fontSize:isSm?16:20,fontWeight:800,color:"#fff",margin:0,letterSpacing:"-0.02em"}}>Overview</h2>
+                  <p style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:2}}>Today's snapshot of your business</p>
                 </div>
-                <div className="card">
-                  <div className="card-title">Monthly Sales <button className="card-x"><X size={13}/></button></div>
-                  <div className="stat-num" style={{fontSize:isSm?20:26,fontWeight:700,color:"#fff",marginTop:2}}>₱12.5 M</div>
-                  <div style={{marginTop:6}}><span className="chip-up"><TrendingUp size={10}/> 10%</span></div>
-                </div>
-                <div className="card">
-                  <div className="card-title">Sales Target <button className="card-x"><X size={13}/></button></div>
-                  <div style={{display:"flex",alignItems:"baseline",gap:isSm?4:8,marginTop:2}}>
-                    <span style={{fontSize:isSm?20:30,fontWeight:700,color:"#fff"}}>5,000</span>
-                    <span style={{fontSize:isSm?11:15,color:"rgba(255,255,255,0.35)"}}>/ 25,000</span>
-                  </div>
-                  <div style={{marginTop:8,height:4,background:"rgba(255,255,255,0.07)",borderRadius:99,overflow:"hidden"}}>
-                    <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#10b981)",borderRadius:99}}/>
-                  </div>
-                </div>
-                <div className="card">
-                  <div className="card-title">Available Stock <button className="card-x"><X size={13}/></button></div>
-                  <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:2}}>
-                    <span style={{fontSize:isSm?20:28,fontWeight:700,color:"#34d399"}}>32,091</span>
-                    <span style={{fontSize:isSm?11:15,color:"rgba(52,211,153,0.6)"}}>Items</span>
-                  </div>
-                </div>
-                <div className="card">
-                  <div className="card-title">Low Stock Alerts <button className="card-x"><X size={13}/></button></div>
-                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:2}}>
-                    <div style={{display:"flex",alignItems:"baseline",gap:6}}>
-                      <span style={{fontSize:isSm?20:28,fontWeight:700,color:"#fb7185"}}>67</span>
-                      <span style={{fontSize:isSm?11:15,color:"rgba(251,113,133,0.6)"}}>products</span>
-                    </div>
-                    <AlertTriangle size={isSm?18:24} color="#fb7185"/>
+                {/* Simple / Detailed toggle — prominent and easy to find */}
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <span style={{fontSize:11,color:"rgba(255,255,255,0.4)",fontWeight:600}}>View:</span>
+                  <div style={{display:"flex",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:999,padding:3,gap:2}}>
+                    {(["Simple","Detailed"] as const).map(m=>(
+                      <button key={m} onClick={()=>setDashMode(m.toLowerCase() as "simple"|"detailed")} style={{
+                        padding:"6px 20px",borderRadius:999,border:"none",cursor:"pointer",
+                        fontFamily:"'Inter',sans-serif",fontSize:12,fontWeight:700,transition:"all 0.2s",
+                        background:dashMode===m.toLowerCase()?"#fff":"transparent",
+                        color:dashMode===m.toLowerCase()?"#000":"rgba(255,255,255,0.5)",
+                        boxShadow:dashMode===m.toLowerCase()?"0 2px 8px rgba(0,0,0,0.3)":"none",
+                      }}>{m}</button>
+                    ))}
                   </div>
                 </div>
               </div>
-              <div style={{display:"grid",gridTemplateColumns:cols(3),gap:isSm?10:16,marginBottom:20}}>
-                <div className="card" style={{display:"flex",flexDirection:"column",minHeight:290}}>
-                  <div className="card-title">Sales Overview <button className="card-x"><X size={13}/></button></div>
-                  <div className="tab-wrap" style={{marginBottom:16}}>
-                    {["DAILY","MONTHLY","YEARLY"].map(t=>(
-                      <button key={t} onClick={()=>setCtab(t)} className={ctab===t?"tab-on":"tab-off"}>{t}</button>
-                    ))}
-                  </div>
-                  <div style={{flex:1,minHeight:190}}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={salesData} margin={{top:0,right:0,left:-20,bottom:0}}>
-                        <defs>
-                          <linearGradient id="bG" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#10b981" stopOpacity={1}/>
-                            <stop offset="100%" stopColor="#047857" stopOpacity={0.35}/>
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
-                        <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${v/1000}k`}/>
-                        <Tooltip content={<CT/>} cursor={{fill:"rgba(255,255,255,0.03)"}}/>
-                        <Bar dataKey="value" fill="url(#bG)" radius={[4,4,0,0]}/>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div style={{marginTop:10,fontSize:10,color:"rgba(255,255,255,0.2)",textAlign:"right"}}>Updated: March 6, 2026, 05:27 AM</div>
-                </div>
 
-                <div className="card" style={{display:"flex",flexDirection:"column",minHeight:290}}>
-                  <div className="card-title">Profit & Loss <button className="card-x"><X size={13}/></button></div>
-                  <div style={{flex:1,minHeight:190,position:"relative"}}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={profitData} margin={{top:20,right:0,left:-20,bottom:0}}>
-                        <defs>
-                          <linearGradient id="aG" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
-                        <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${v/1000}k`}/>
-                        <Tooltip content={<CT/>}/>
-                        <ReferenceLine x="Jun" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4"/>
-                        <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#aG)"/>
-                      </AreaChart>
-                    </ResponsiveContainer>
-                    <div style={{position:"absolute",top:"16%",left:"46%",background:"rgba(20,20,35,0.95)",border:"1px solid rgba(255,255,255,0.13)",borderRadius:10,padding:"8px 12px",boxShadow:"0 4px 20px rgba(0,0,0,0.5)"}}>
-                      <div style={{fontSize:14,fontWeight:700,color:"#fff"}}>₱15,000</div>
-                      <div style={{fontSize:11,color:"#34d399",display:"flex",alignItems:"center",gap:4,marginTop:2}}><TrendingUp size={10}/> Trend Up</div>
+              {/* ══ SIMPLE MODE ══ */}
+              {dashMode==="simple"&&(
+                <>
+                  <div style={{display:"grid",gridTemplateColumns:cols(isSm?2:4),gap:isSm?10:14,marginBottom:14}}>
+                    <div className="card fu1">
+                      <div className="card-title" style={{fontSize:10}}>Today's Sales</div>
+                      <div style={{fontSize:isSm?20:26,fontWeight:800,color:"#fff",marginTop:4}}>₱167,001</div>
+                      <span className="chip-up" style={{marginTop:6,display:"inline-flex",gap:4}}><TrendingUp size={10}/> +15% vs yesterday</span>
                     </div>
-                    <div style={{position:"absolute",bottom:6,right:2,fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.18)",letterSpacing:"0.07em"}}>AI FORECASTING</div>
+                    <div className="card fu1" style={{animationDelay:"0.05s"}}>
+                      <div className="card-title" style={{fontSize:10}}>This Month</div>
+                      <div style={{fontSize:isSm?20:26,fontWeight:800,color:"#fff",marginTop:4}}>₱12.5M</div>
+                      <span className="chip-up" style={{marginTop:6,display:"inline-flex",gap:4}}><TrendingUp size={10}/> +10% vs last month</span>
+                    </div>
+                    <div className="card fu1" style={{animationDelay:"0.1s"}}>
+                      <div className="card-title" style={{fontSize:10}}>Monthly Target</div>
+                      <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:4}}>
+                        <span style={{fontSize:isSm?18:24,fontWeight:800,color:"#fff"}}>5,000</span>
+                        <span style={{fontSize:11,color:"rgba(255,255,255,0.35)"}}>of 25,000</span>
+                      </div>
+                      <div style={{marginTop:8,height:5,background:"rgba(255,255,255,0.07)",borderRadius:99,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#10b981)",borderRadius:99}}/>
+                      </div>
+                      <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:3}}>20% complete</div>
+                    </div>
+                    {/* Grouped stock + alert card — amber, not red */}
+                    <div className="card fu1" style={{animationDelay:"0.15s",borderColor:"rgba(251,191,36,0.22)"}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                        <div className="card-title" style={{fontSize:10}}>Items Needing Attention</div>
+                        <AlertTriangle size={13} color="#fbbf24"/>
+                      </div>
+                      <div style={{display:"flex",flexDirection:"column",gap:5}}>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <span style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>Low on stock</span>
+                          <span style={{fontSize:11,fontWeight:700,color:"#fbbf24",background:"rgba(251,191,36,0.1)",padding:"2px 8px",borderRadius:999}}>67 items</span>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <span style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>Expiring soon</span>
+                          <span style={{fontSize:11,fontWeight:700,color:"#f97316",background:"rgba(249,115,22,0.1)",padding:"2px 8px",borderRadius:999}}>3 items</span>
+                        </div>
+                        <button onClick={()=>setPage("Inventory")} style={{marginTop:4,padding:"5px 0",background:"none",border:"none",color:"rgba(52,211,153,0.7)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left"}}>
+                          Go to Inventory →
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{marginTop:10,fontSize:10,color:"rgba(255,255,255,0.2)",textAlign:"right"}}>Updated: March 6, 2026, 05:27 AM</div>
-                </div>
 
-                <div className="card" style={{display:"flex",flexDirection:"column",minHeight:290}}>
-                  <div className="card-title">Best Selling Products <button className="card-x"><X size={13}/></button></div>
-                  <div style={{flex:1,minHeight:190,position:"relative"}}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie data={pieData} cx="50%" cy="50%" innerRadius={58} outerRadius={92} paddingAngle={3} dataKey="value" stroke="none" cornerRadius={4}>
-                          {pieData.map((_,i)=><Cell key={i} fill={PIE_COLORS[i%PIE_COLORS.length]}/>)}
-                        </Pie>
-                        <Tooltip content={<CT/>}/>
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div style={{position:"absolute",inset:0,pointerEvents:"none",fontSize:11}}>
-                      <div style={{position:"absolute",top:"6%",left:"2%",color:"rgba(255,255,255,0.5)",lineHeight:1.5}}>Nike Jacket<br/><span style={{color:"#fff",fontWeight:700}}>14.6%</span></div>
-                      <div style={{position:"absolute",top:"6%",right:"2%",color:"rgba(255,255,255,0.5)",lineHeight:1.5,textAlign:"right"}}>Binatog<br/><span style={{color:"#fff",fontWeight:700}}>22.8%</span></div>
-                      <div style={{position:"absolute",top:"43%",right:"2%",color:"rgba(255,255,255,0.5)",lineHeight:1.5,textAlign:"right"}}>Taho<br/><span style={{color:"#fff",fontWeight:700}}>13.7%</span></div>
-                      <div style={{position:"absolute",bottom:"16%",left:"2%",color:"rgba(255,255,255,0.5)",lineHeight:1.5}}>Wireless Headset<br/><span style={{color:"#fff",fontWeight:700}}>18.3%</span></div>
-                      <div style={{position:"absolute",bottom:"6%",right:"2%",color:"rgba(255,255,255,0.5)",lineHeight:1.5,textAlign:"right"}}>Iphone 15<br/><span style={{color:"#fff",fontWeight:700}}>30.6%</span></div>
+                  {/* Simple 2-col: chart + alerts */}
+                  <div style={{display:"grid",gridTemplateColumns:cols(2),gap:isSm?10:14,marginBottom:14}}>
+                    <div className="card fu2">
+                      <div className="card-title">Sales This Week</div>
+                      <ResponsiveContainer width="100%" height={200}>
+                        <BarChart data={[{n:"Mon",v:9200},{n:"Tue",v:9800},{n:"Wed",v:10400},{n:"Thu",v:9600},{n:"Fri",v:11200},{n:"Sat",v:13500},{n:"Sun",v:12800}]}>
+                          <XAxis dataKey="n" tick={{fill:"rgba(255,255,255,0.35)",fontSize:10}} axisLine={false} tickLine={false}/>
+                          <YAxis tick={{fill:"rgba(255,255,255,0.3)",fontSize:9}} axisLine={false} tickLine={false} tickFormatter={v=>`₱${v/1000}k`}/>
+                          <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}} labelStyle={{color:"#fff"}}/>
+                          <Bar dataKey="v" fill="#34d399" radius={[4,4,0,0]}/>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="card fu2">
+                      <div className="card-title">Items Needing Attention</div>
+                      <div style={{display:"flex",flexDirection:"column",gap:7,marginTop:4}}>
+                        {[
+                          {icon:"📦",label:"Adidas Shirt",issue:"Running low on stock",c:"#fbbf24"},
+                          {icon:"📦",label:"Taho",issue:"Running low on stock",c:"#fbbf24"},
+                          {icon:"📦",label:"iPhone 16",issue:"Running low on stock",c:"#fbbf24"},
+                          {icon:"⏰",label:"Vitamin C 500mg",issue:"Expires in 3 days",c:"#f97316"},
+                        ].map(a=>(
+                          <div key={a.label} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",background:`${a.c}08`,border:`1px solid ${a.c}18`,borderRadius:10}}>
+                            <span style={{fontSize:15}}>{a.icon}</span>
+                            <div style={{flex:1,minWidth:0}}>
+                              <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.8)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a.label}</div>
+                              <div style={{fontSize:10,color:a.c,marginTop:1}}>{a.issue}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <div style={{marginTop:10,fontSize:10,color:"rgba(255,255,255,0.2)",textAlign:"right"}}>Updated: March 6, 2026, 05:27 AM</div>
-                </div>
-              </div>
-              <div style={{display:"grid",gridTemplateColumns:cols(3),gap:16,marginBottom:28}}>
-                <div className="card">
-                  <div className="card-title">Top Products <button className="card-x"><X size={13}/></button></div>
-                  <div style={{display:"flex",flexDirection:"column",gap:18,marginTop:6}}>
-                    {[{name:"Iphone 15",val:30.6},{name:"Wireless Headset",val:13.7},{name:"Binatog",val:22.8}].map(p=>(
-                      <div key={p.name}>
-                        <div style={{display:"flex",justifyContent:"space-between",fontSize:13,marginBottom:8}}>
-                          <span style={{color:"rgba(255,255,255,0.7)",fontWeight:500}}>{p.name}</span>
-                          <span style={{color:"rgba(255,255,255,0.45)"}}>{p.val}%</span>
-                        </div>
-                        <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:99,overflow:"hidden"}}>
-                          <div style={{height:"100%",width:`${p.val*2.5}%`,background:"linear-gradient(90deg,#34d399,#10b981)",borderRadius:99,boxShadow:"0 0 8px rgba(52,211,153,0.35)"}}/>
-                        </div>
+                </>
+              )}
+
+              {/* ══ DETAILED MODE ══ */}
+              {dashMode==="detailed"&&(
+                <>
+                  {/* 5 stat cards — low stock uses amber not red */}
+                  <div className="grid-5col" style={{display:"grid",gridTemplateColumns:cols(5),gap:isSm?10:16,marginBottom:16}}>
+                    <div className="card fu1">
+                      <div className="card-title">Today's Sales <button className="card-x"><X size={13}/></button></div>
+                      <div className="stat-num" style={{fontSize:isSm?20:26,fontWeight:700,color:"#fff",marginTop:2}}>₱167,001</div>
+                      <div style={{marginTop:6}}><span className="chip-up"><TrendingUp size={10}/> 15%</span></div>
+                    </div>
+                    <div className="card fu1">
+                      <div className="card-title">Monthly Sales <button className="card-x"><X size={13}/></button></div>
+                      <div className="stat-num" style={{fontSize:isSm?20:26,fontWeight:700,color:"#fff",marginTop:2}}>₱12.5 M</div>
+                      <div style={{marginTop:6}}><span className="chip-up"><TrendingUp size={10}/> 10%</span></div>
+                    </div>
+                    <div className="card fu1">
+                      <div className="card-title">Monthly Target <button className="card-x"><X size={13}/></button></div>
+                      <div style={{display:"flex",alignItems:"baseline",gap:isSm?4:8,marginTop:2}}>
+                        <span style={{fontSize:isSm?20:30,fontWeight:700,color:"#fff"}}>5,000</span>
+                        <span style={{fontSize:isSm?11:15,color:"rgba(255,255,255,0.35)"}}>/ 25,000</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="card">
-                  <div className="card-title">Expenses Overview <button className="card-x"><X size={13}/></button></div>
-                  <div style={{display:"flex",flexDirection:"column",gap:14,marginTop:4}}>
-                    {[{l:"TODAY'S EXPENSES",v:"₱10,040",I:BarChart3},{l:"MONTHLY EXPENSES",v:"₱450,067",I:Wallet}].map(e=>(
-                      <div key={e.l} style={{padding:"16px 18px",borderRadius:13,background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.06)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <div>
-                          <p style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.3)",letterSpacing:"0.07em",marginBottom:6}}>{e.l}</p>
-                          <p style={{fontSize:22,fontWeight:700,color:"#fb7185"}}>{e.v}</p>
-                        </div>
-                        <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.14)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                          <e.I size={18} color="#fb7185"/>
-                        </div>
+                      <div style={{marginTop:8,height:4,background:"rgba(255,255,255,0.07)",borderRadius:99,overflow:"hidden"}}>
+                        <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#10b981)",borderRadius:99}}/>
                       </div>
-                    ))}
+                    </div>
+                    <div className="card fu1">
+                      <div className="card-title">Items in Stock <button className="card-x"><X size={13}/></button></div>
+                      <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:2}}>
+                        <span style={{fontSize:isSm?20:28,fontWeight:700,color:"#34d399"}}>32,091</span>
+                        <span style={{fontSize:isSm?11:15,color:"rgba(52,211,153,0.6)"}}>units</span>
+                      </div>
+                    </div>
+                    {/* Stock warnings — amber, not red */}
+                    <div className="card fu1" style={{borderColor:"rgba(251,191,36,0.2)"}}>
+                      <div className="card-title">Stock Warnings <button className="card-x"><X size={13}/></button></div>
+                      <div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:2}}>
+                        <span style={{fontSize:isSm?20:28,fontWeight:700,color:"#fbbf24"}}>67</span>
+                        <span style={{fontSize:isSm?11:15,color:"rgba(251,191,36,0.6)"}}>items</span>
+                      </div>
+                      <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",marginTop:3}}>need restocking</div>
+                    </div>
                   </div>
-                </div>
-                <div className="card">
-                  <div className="card-title">Alerts <button className="card-x"><X size={13}/></button></div>
-                  <div style={{marginTop:4}}>
-                    {["Adidas Shirt - Low Stock","Taho - Low Stock","Iphone 16 - Low Stock","PS5 - Low Stock"].map(a=>(
-                      <div key={a} className="alert-row"><AlertTriangle size={14} color="#fb7185" style={{flexShrink:0}}/>{a}</div>
-                    ))}
+
+                  {/* Charts row */}
+                  <div style={{display:"grid",gridTemplateColumns:cols(3),gap:isSm?10:16,marginBottom:16}}>
+                    <div className="card fu2" style={{display:"flex",flexDirection:"column",minHeight:290}}>
+                      <div className="card-title">Sales Overview <button className="card-x"><X size={13}/></button></div>
+                      <div className="tab-wrap" style={{marginBottom:16}}>
+                        {["DAILY","WEEKLY","MONTHLY"].map(t=>(
+                          <button key={t} onClick={()=>setCtab(t)} className={ctab===t?"tab-on":"tab-off"}>{t}</button>
+                        ))}
+                      </div>
+                      <div style={{flex:1,minHeight:0}}>
+                        <ResponsiveContainer width="100%" height={195}>
+                          <BarChart data={[{n:"Mon",v:9200},{n:"Tue",v:9800},{n:"Wed",v:10400},{n:"Thu",v:9600},{n:"Fri",v:11200},{n:"Sat",v:13500},{n:"Sun",v:12800}]}>
+                            <XAxis dataKey="n" tick={{fill:"rgba(255,255,255,0.35)",fontSize:10}} axisLine={false} tickLine={false}/>
+                            <YAxis tick={{fill:"rgba(255,255,255,0.3)",fontSize:9}} axisLine={false} tickLine={false} tickFormatter={v=>`₱${v/1000}k`}/>
+                            <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}} labelStyle={{color:"#fff"}}/>
+                            <Bar dataKey="v" fill="#34d399" radius={[4,4,0,0]}><Cell fill="#38bdf8"/><Cell fill="#38bdf8"/><Cell fill="#34d399"/><Cell fill="#38bdf8"/><Cell fill="#818cf8"/><Cell fill="#818cf8"/><Cell fill="#818cf8"/></Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <p style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:4}}>Updated: March 6, 2026, 05:27 AM</p>
+                    </div>
+                    <div className="card fu2" style={{display:"flex",flexDirection:"column",minHeight:290}}>
+                      <div className="card-title">Revenue vs Expenses <button className="card-x"><X size={13}/></button></div>
+                      <div style={{flex:1,minHeight:0,marginTop:8}}>
+                        <ResponsiveContainer width="100%" height={210}>
+                          <AreaChart data={[{n:"Jul",r:82000,e:61000},{n:"Aug",r:90000,e:67000},{n:"Sep",r:105000,e:72000},{n:"Oct",r:98000,e:70000},{n:"Nov",r:115000,e:80000},{n:"Dec",r:140000,e:95000},{n:"Jan",r:125000,e:88000}]}>
+                            <defs>
+                              <linearGradient id="gR2" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#34d399" stopOpacity={0.3}/><stop offset="95%" stopColor="#34d399" stopOpacity={0}/></linearGradient>
+                              <linearGradient id="gE2" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#fbbf24" stopOpacity={0.2}/><stop offset="95%" stopColor="#fbbf24" stopOpacity={0}/></linearGradient>
+                            </defs>
+                            <XAxis dataKey="n" tick={{fill:"rgba(255,255,255,0.35)",fontSize:10}} axisLine={false} tickLine={false}/>
+                            <YAxis tick={{fill:"rgba(255,255,255,0.3)",fontSize:9}} axisLine={false} tickLine={false} tickFormatter={v=>`₱${v/1000}k`}/>
+                            <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}} labelStyle={{color:"#fff"}}/>
+                            <Area type="monotone" dataKey="r" stroke="#34d399" fill="url(#gR2)" strokeWidth={2} name="Revenue"/>
+                            <Area type="monotone" dataKey="e" stroke="#fbbf24" fill="url(#gE2)" strokeWidth={2} name="Expenses"/>
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <p style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:4}}>Updated: March 6, 2026, 05:27 AM</p>
+                    </div>
+                    <div className="card fu2" style={{display:"flex",flexDirection:"column",minHeight:290}}>
+                      <div className="card-title">Top Products <button className="card-x"><X size={13}/></button></div>
+                      <div style={{flex:1,display:"flex",alignItems:"center"}}>
+                        <ResponsiveContainer width="100%" height={180}>
+                          <PieChart>
+                            <Pie data={[{name:"Nike Jacket",value:14.6},{name:"Binatog",value:22.8},{name:"Taho",value:13.7},{name:"iPhone 15",value:30.6},{name:"Headset",value:18.3}]} cx="50%" cy="50%" outerRadius={70} dataKey="value" label={({name,value})=>`${value}%`} labelLine={false}>
+                              {["#34d399","#10b981","#059669","#047857","#6ee7b7"].map((c,i)=><Cell key={i} fill={c}/>)}
+                            </Pie>
+                            <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}}/>
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <p style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:4}}>Updated: March 6, 2026, 05:27 AM</p>
+                    </div>
                   </div>
-                </div>
-              </div>
+
+                  {/* Bottom row */}
+                  <div style={{display:"grid",gridTemplateColumns:cols(3),gap:isSm?10:16,marginBottom:16}}>
+                    <div className="card fu3">
+                      <div className="card-title">Best Sellers <button className="card-x"><X size={13}/></button></div>
+                      {[{n:"iPhone 15",p:30.6},{n:"Binatog",p:22.8},{n:"Wireless Headset",p:18.3},{n:"Nike Jacket",p:14.6},{n:"Taho",p:13.7}].map((item,i)=>(
+                        <div key={item.n} style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+                          <span style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.3)",width:16,textAlign:"right"}}>{i+1}</span>
+                          <div style={{flex:1}}>
+                            <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.8)",marginBottom:3}}>{item.n}</div>
+                            <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:99}}><div style={{height:"100%",width:`${item.p/30.6*100}%`,background:"linear-gradient(90deg,#34d399,#38bdf8)",borderRadius:99}}/></div>
+                          </div>
+                          <span style={{fontSize:11,fontWeight:700,color:"#34d399"}}>{item.p}%</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="card fu3">
+                      <div className="card-title">Expenses <button className="card-x"><X size={13}/></button></div>
+                      {[{l:"Today's Expenses",v:"₱10,000",I:Receipt},{l:"Monthly Expenses",v:"₱450,000",I:CircleDollarSign}].map(e=>(
+                        <div key={e.l} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:12,marginBottom:8}}>
+                          <div>
+                            <p style={{fontSize:10,fontWeight:600,color:"rgba(255,255,255,0.3)",letterSpacing:"0.07em",marginBottom:4}}>{e.l.toUpperCase()}</p>
+                            <p style={{fontSize:20,fontWeight:700,color:"#fbbf24"}}>{e.v}</p>
+                          </div>
+                          <div style={{width:38,height:38,borderRadius:"50%",background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.14)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                            <e.I size={17} color="#fbbf24"/>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Grouped alerts — amber, plain language, no separate red panels */}
+                    <div className="card fu3" style={{borderColor:"rgba(251,191,36,0.18)"}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+                        <div className="card-title">Items Needing Attention</div>
+                        <AlertTriangle size={14} color="#fbbf24"/>
+                      </div>
+                      {[
+                        {icon:"📦",label:"Adidas Shirt",issue:"Running low on stock"},
+                        {icon:"📦",label:"Taho",issue:"Running low on stock"},
+                        {icon:"📦",label:"iPhone 16",issue:"Running low on stock"},
+                        {icon:"⏰",label:"PS5",issue:"Running low on stock"},
+                      ].map(a=>(
+                        <div key={a.label} style={{background:"rgba(251,191,36,0.05)",border:"1px solid rgba(251,191,36,0.12)",borderRadius:8,padding:"7px 10px",marginBottom:6,display:"flex",alignItems:"center",gap:8}}>
+                          <span style={{fontSize:14}}>{a.icon}</span>
+                          <div>
+                            <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.8)"}}>{a.label}</div>
+                            <div style={{fontSize:10,color:"#fbbf24"}}>{a.issue}</div>
+                          </div>
+                        </div>
+                      ))}
+                      <button onClick={()=>setPage("Inventory")} style={{width:"100%",marginTop:4,padding:"7px",background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:8,color:"#6ee7b7",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Go to Inventory →</button>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* AI section */}
               {aiPage === "predict"
                 ? <PredictSales onBack={()=>setAiPage(null)}/>
                 : aiPage === "demand"
