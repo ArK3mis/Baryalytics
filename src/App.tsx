@@ -8,7 +8,7 @@ import {
   Trash2, Plus, Minus, Star, Store, Truck, MapPin, ExternalLink, ArrowLeft, Sparkles,
 } from "lucide-react";
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTip, ResponsiveContainer,
   PieChart, Pie, Cell, ReferenceLine, Area, AreaChart,
   LineChart, Line, CartesianGrid, Legend,
 } from "recharts";
@@ -438,8 +438,9 @@ const G = `
   ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
   .card{background:#13131f;border-radius:16px;border:1px solid rgba(255,255,255,0.07);padding:20px;position:relative;overflow:hidden;}
   .card-title{font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;letter-spacing:0.01em;}
-  .card-x{background:none;border:none;color:rgba(255,255,255,0.2);cursor:pointer;display:flex;align-items:center;padding:2px;}
-  .card-x:hover{color:rgba(255,255,255,0.5);}
+  .card-x{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);cursor:pointer;display:flex;align-items:center;padding:3px 5px;border-radius:6px;transition:all 0.15s;}
+  .card-x:hover{background:rgba(251,113,133,0.15);border-color:rgba(251,113,133,0.3);color:#fda4af;}
+  .first-hint{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:10px;font-size:12px;color:rgba(52,211,153,0.8);font-weight:500;}
   .nav-bar{
   background:rgba(13,13,22,0.75);
   backdrop-filter:blur(20px);
@@ -470,9 +471,9 @@ const G = `
   .btn-g:hover{background:rgba(52,211,153,0.25);}
   .btn-r{background:rgba(251,113,133,0.15);border:1px solid rgba(251,113,133,0.25);border-radius:10px;color:#fda4af;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
   .tab-wrap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:3px;display:inline-flex;gap:2px;}
-  .tab-on{background:#fff;color:#000;border-radius:999px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;border:none;font-family:'Inter',sans-serif;letter-spacing:0.02em;}
-  .tab-off{background:none;border:none;color:rgba(255,255,255,0.4);padding:5px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:0.02em;transition:color 0.15s;}
-  .tab-off:hover{color:rgba(255,255,255,0.75);}
+  .tab-on{background:rgba(52,211,153,0.18);color:#34d399;border-radius:999px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(52,211,153,0.3);font-family:'Inter',sans-serif;letter-spacing:0.02em;}
+  .tab-off{background:none;border:1px solid transparent;color:rgba(255,255,255,0.4);padding:5px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:0.02em;border-radius:999px;transition:all 0.15s;}
+  .tab-off:hover{color:rgba(255,255,255,0.75);background:rgba(255,255,255,0.05);}
   .th{padding:12px 14px;color:rgba(255,255,255,0.35);font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);white-space:nowrap;}
   .td{padding:13px 14px;font-size:13px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);}
   .tr:hover td{background:rgba(255,255,255,0.015);}
@@ -790,7 +791,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${v/1000}k`}/>
-                <Tooltip content={<MultiCT/>}/>
+                <RechartsTip content={<MultiCT/>}/>
                 <ReferenceLine x="Jan" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4" label={{value:"Forecast →",position:"insideTopRight",fill:"rgba(255,255,255,0.2)",fontSize:10}}/>
                 <Line type="monotone" dataKey="actual" stroke="#10b981" strokeWidth={2.5} dot={{fill:"#10b981",r:3,strokeWidth:0}} connectNulls={false}/>
                 <Line type="monotone" dataKey="predicted" stroke="#818cf8" strokeWidth={2.5} strokeDasharray="6 3" dot={{fill:"#818cf8",r:3,strokeWidth:0}} connectNulls={false}/>
@@ -815,7 +816,7 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
                 <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${v/1000}k`}/>
-                <Tooltip content={<CT/>}/>
+                <RechartsTip content={<CT/>}/>
                 <Bar dataKey="sales" fill="url(#wkG)" radius={[6,6,0,0]}/>
               </BarChart>
             </ResponsiveContainer>
@@ -2353,7 +2354,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:10}} angle={-35} textAnchor="end" interval={0}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
-                <Tooltip content={<TooltipInv/>}/>
+                <RechartsTip content={<TooltipInv/>}/>
                 <Bar dataKey="stock"   fill="url(#stG)" radius={[4,4,0,0]} barSize={12}/>
                 <Bar dataKey="demand"  fill="url(#dmD)" radius={[4,4,0,0]} barSize={12}/>
                 <Bar dataKey="restock" fill="url(#rkG)" radius={[4,4,0,0]} barSize={12}/>
@@ -2607,7 +2608,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
-                <Tooltip content={<ProfitTT/>}/>
+                <RechartsTip content={<ProfitTT/>}/>
                 <ReferenceLine x="Jan" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4"
                   label={{value:"Forecast →",position:"insideTopRight",fill:"rgba(255,255,255,0.2)",fontSize:10}}/>
                 <Line type="monotone" dataKey="profit"    name="actual"    stroke="#38bdf8" strokeWidth={2.5}
@@ -2653,7 +2654,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:10}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
-                <Tooltip content={<ProfitTT/>}/>
+                <RechartsTip content={<ProfitTT/>}/>
                 <Bar dataKey="revenue"  name="revenue"  fill="url(#rvG)" radius={[5,5,0,0]} barSize={16}/>
                 <Bar dataKey="expenses" name="expenses" fill="url(#exG)" radius={[5,5,0,0]} barSize={16}/>
                 <Bar dataKey="profit"   name="profit"   fill="url(#prG)" radius={[5,5,0,0]} barSize={16}/>
@@ -3067,7 +3068,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
                   )}
                 />
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
-                <Tooltip content={<ExpTT/>}/>
+                <RechartsTip content={<ExpTT/>}/>
                 {EXP_CATEGORIES.map(c=>(
                   <Bar key={c.key} dataKey={c.label} name={c.label}
                     stackId="exp" fill={`url(#eg_${c.key})`}
@@ -3605,11 +3606,12 @@ const FIN_DAILY = Array.from({length:30},(_,i)=>({
   rev:    14000 + Math.round(Math.sin(i/2.5)*3000 + Math.random()*2000),
 }));
 const FIN_EXP_CATS = [
-  {key:"utilities", label:"Utilities",          color:"#fbbf24", val:24200},
-  {key:"salaries",  label:"Salaries",            color:"#38bdf8", val:128000},
-  {key:"rent",      label:"Rent",                color:"#818cf8", val:45000},
-  {key:"supplies",  label:"Supplies",            color:"#34d399", val:29800},
-  {key:"other",     label:"Other Operational",   color:"#fb7185", val:19200},
+  {key:"utilities",    label:"Utilities",          color:"#fbbf24", val:24200},
+  {key:"salaries",     label:"Salaries",            color:"#38bdf8", val:128000},
+  {key:"rent",         label:"Rent",                color:"#818cf8", val:45000},
+  {key:"supplies",     label:"Supplies",            color:"#34d399", val:29800},
+  {key:"maintenance",  label:"Maintenance",         color:"#f97316", val:18500},
+  {key:"other",        label:"Other Operational",   color:"#a78bfa", val:19200},
 ];
 const BUDGET_LIMIT = 320000;
 const FIN_CURR = FIN_DATA[6]; // Jan (current)
@@ -3730,7 +3732,7 @@ const Finance = () => {
               <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:10}} interval={profitTab==="Daily"?4:0}/>
               <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
-              <Tooltip content={<FinTT/>}/>
+              <RechartsTip content={<FinTT/>}/>
               <Area type="monotone" dataKey="profit" stroke="#34d399" strokeWidth={0} fill="url(#finPG)"/>
               <Line type="monotone" dataKey="rev"    stroke="rgba(255,255,255,0.15)" strokeWidth={1.5} dot={false}/>
               <Line type="monotone" dataKey="profit" stroke="#34d399" strokeWidth={2.5} dot={false}/>
@@ -3778,9 +3780,9 @@ const Finance = () => {
           <div className="card-title">Monthly Expenses by Category</div>
           <div style={{height:280}}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={FIN_DATA.slice(-6).map(r=>({name:r.m, Utilities:24200,Salaries:128000,Rent:45000,Supplies:29800,Other:r.exp-24200-128000-45000-29800}))} margin={{top:8,right:8,left:-10,bottom:0}}>
+              <BarChart data={FIN_DATA.slice(-6).map(r=>({name:r.m, Utilities:24200,Salaries:128000,Rent:45000,Supplies:29800,Maintenance:18500,Other:r.exp-24200-128000-45000-29800-18500}))} margin={{top:8,right:8,left:-10,bottom:0}}>
                 <defs>
-                  {[["util","#fbbf24"],["sal","#38bdf8"],["rent","#818cf8"],["sup","#34d399"],["oth","#fb7185"]].map(([id,c])=>(
+                  {[["util","#fbbf24"],["sal","#38bdf8"],["rent","#818cf8"],["sup","#34d399"],["maint","#f97316"],["oth","#a78bfa"]].map(([id,c])=>(
                     <linearGradient key={id} id={`feg_${id}`} x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor={c} stopOpacity={1}/>
                       <stop offset="100%" stopColor={c} stopOpacity={0.5}/>
@@ -3790,17 +3792,18 @@ const Finance = () => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
-                <Tooltip content={<FinTT/>}/>
-                <Bar dataKey="Utilities" stackId="e" fill="url(#feg_util)" radius={[0,0,0,0]}/>
-                <Bar dataKey="Salaries"  stackId="e" fill="url(#feg_sal)"  radius={[0,0,0,0]}/>
-                <Bar dataKey="Rent"      stackId="e" fill="url(#feg_rent)" radius={[0,0,0,0]}/>
-                <Bar dataKey="Supplies"  stackId="e" fill="url(#feg_sup)"  radius={[0,0,0,0]}/>
-                <Bar dataKey="Other"     stackId="e" fill="url(#feg_oth)"  radius={[4,4,0,0]}/>
+                <RechartsTip content={<FinTT/>}/>
+                <Bar dataKey="Utilities"   stackId="e" fill="url(#feg_util)"  radius={[0,0,0,0]}/>
+                <Bar dataKey="Salaries"    stackId="e" fill="url(#feg_sal)"   radius={[0,0,0,0]}/>
+                <Bar dataKey="Rent"        stackId="e" fill="url(#feg_rent)"  radius={[0,0,0,0]}/>
+                <Bar dataKey="Supplies"    stackId="e" fill="url(#feg_sup)"   radius={[0,0,0,0]}/>
+                <Bar dataKey="Maintenance" stackId="e" fill="url(#feg_maint)" radius={[0,0,0,0]}/>
+                <Bar dataKey="Other"       stackId="e" fill="url(#feg_oth)"   radius={[4,4,0,0]}/>
               </BarChart>
             </ResponsiveContainer>
           </div>
           <div style={{display:"flex",gap:14,flexWrap:"wrap",marginTop:4}}>
-            {[["Utilities","#fbbf24"],["Salaries","#38bdf8"],["Rent","#818cf8"],["Supplies","#34d399"],["Other","#fb7185"]].map(([l,c])=>(
+            {[["Utilities","#fbbf24"],["Salaries","#38bdf8"],["Rent","#818cf8"],["Supplies","#34d399"],["Maintenance","#f97316"],["Other","#a78bfa"]].map(([l,c])=>(
               <span key={l} style={{display:"flex",alignItems:"center",gap:5,fontSize:11,color:"rgba(255,255,255,0.4)"}}>
                 <div style={{width:9,height:9,borderRadius:2,background:c}}/>{l}
               </span>
@@ -3857,7 +3860,7 @@ const Finance = () => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:10}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:10}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
-                <Tooltip content={<FinTT/>}/>
+                <RechartsTip content={<FinTT/>}/>
                 <Bar dataKey="prev" name="Dec (Prev)" fill="url(#cmpP)" radius={[4,4,0,0]} barSize={18}/>
                 <Bar dataKey="curr" name="Jan (Curr)" fill="url(#cmpC)" radius={[4,4,0,0]} barSize={18}/>
               </BarChart>
@@ -3963,7 +3966,7 @@ const Finance = () => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
-                <Tooltip content={<FinTT/>}/>
+                <RechartsTip content={<FinTT/>}/>
                 <Area type="monotone" dataKey="balance" stroke="#a78bfa" strokeWidth={0} fill="url(#cfBal)"/>
                 <Line type="monotone" dataKey="inflow"  name="Inflow"  stroke="#34d399" strokeWidth={2} dot={false}/>
                 <Line type="monotone" dataKey="outflow" name="Outflow" stroke="#fb7185" strokeWidth={2} dot={false} strokeDasharray="5 3"/>
@@ -3980,6 +3983,48 @@ const Finance = () => {
           </div>
         </div>
       </div>
+
+      {/* ── Maintenance Expenses section ── */}
+      <div className="card fu5" style={{marginBottom:16}}>
+        <div className="card-title">
+          <div style={{display:"flex",alignItems:"center",gap:7}}>
+            <span style={{fontSize:16}}>🔧</span>
+            Maintenance Expenses
+          </div>
+          <span style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontWeight:400}}>This month</span>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:12,marginBottom:16}}>
+          {[
+            {label:"Equipment Repair",   val:6200, icon:"⚙️", note:"AC unit + computers"},
+            {label:"Building Upkeep",    val:5800, icon:"🏗️", note:"Plumbing & paint"},
+            {label:"Vehicle Service",    val:3100, icon:"🚗", note:"Delivery van"},
+            {label:"IT & Systems",       val:2400, icon:"💻", note:"Server & network"},
+            {label:"Cleaning Services",  val:700,  icon:"🧹", note:"Weekly contract"},
+            {label:"Other Maintenance",  val:300,  icon:"🔩", note:"Misc repairs"},
+          ].map(m=>(
+            <div key={m.label} style={{padding:"12px 14px",background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:12}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+                <span style={{fontSize:18}}>{m.icon}</span>
+                <span style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.6)"}}>{m.label}</span>
+              </div>
+              <div style={{fontSize:20,fontWeight:800,color:"#f97316"}}>₱{m.val.toLocaleString()}</div>
+              <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:3}}>{m.note}</div>
+            </div>
+          ))}
+        </div>
+        {/* Maintenance total + progress vs budget */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.18)",borderRadius:10}}>
+          <div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:3}}>TOTAL MAINTENANCE THIS MONTH</div>
+            <div style={{fontSize:24,fontWeight:800,color:"#f97316"}}>₱18,500</div>
+          </div>
+          <div style={{textAlign:"right"}}>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:3}}>vs. last month</div>
+            <span className="chip-up" style={{fontSize:12}}><TrendingUp size={11}/> ₱1,200 less</span>
+          </div>
+        </div>
+      </div>
+
       <div className="fu5 grid-split" style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
         <div className="card">
           <div className="card-title">
@@ -4069,7 +4114,7 @@ const Finance = () => {
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.25)",fontSize:9}}/>
                 <YAxis hide/>
-                <Tooltip content={<FinTT/>}/>
+                <RechartsTip content={<FinTT/>}/>
                 <Bar dataKey="profit" fill="url(#ytdG)" radius={[4,4,0,0]}/>
               </BarChart>
             </ResponsiveContainer>
@@ -7083,7 +7128,7 @@ export default function App() {
                   <h2 style={{fontSize:isSm?16:20,fontWeight:800,color:"#fff",margin:0,letterSpacing:"-0.02em"}}>Overview</h2>
                   <p style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:2}}>Today's snapshot of your business</p>
                 </div>
-                {/* Simple / Detailed toggle — prominent and easy to find */}
+                {/* Simple / Detailed toggle */}
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   <span style={{fontSize:11,color:"rgba(255,255,255,0.4)",fontWeight:600}}>View:</span>
                   <div style={{display:"flex",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:999,padding:3,gap:2}}>
@@ -7100,7 +7145,29 @@ export default function App() {
                 </div>
               </div>
 
-              {/* ══ SIMPLE MODE ══ */}
+              {/* First-visit onboarding hint */}
+              <div style={{display:"flex",alignItems:"center",gap:12,padding:"10px 16px",background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:12,marginBottom:16,flexWrap:"wrap"}}>
+                <span style={{fontSize:18}}>👋</span>
+                <div style={{flex:1,minWidth:200}}>
+                  <span style={{fontSize:12,color:"rgba(52,211,153,0.9)",fontWeight:600}}>New here? </span>
+                  <span style={{fontSize:12,color:"rgba(255,255,255,0.5)"}}>Click the <strong style={{color:"rgba(255,255,255,0.7)"}}>?</strong> button in the top bar and select <strong style={{color:"rgba(255,255,255,0.7)"}}>Tutorial Mode</strong> — Bary will guide you through everything!</span>
+                </div>
+                <button onClick={()=>{setShowHelp(true);}} style={{padding:"6px 14px",background:"rgba(52,211,153,0.12)",border:"1px solid rgba(52,211,153,0.3)",borderRadius:999,color:"#34d399",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0,whiteSpace:"nowrap"}}>
+                  Start Tutorial →
+                </button>
+              </div>
+
+              {/* Onboarding hint — shown once */}
+              {dashMode==="simple"&&(
+                <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 16px",background:"rgba(52,211,153,0.07)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:12,marginBottom:14,flexWrap:"wrap",gap:10}}>
+                  <span style={{fontSize:18}}>👋</span>
+                  <div style={{flex:1}}>
+                    <span style={{fontSize:12,fontWeight:600,color:"rgba(52,211,153,0.9)"}}>New here? </span>
+                    <span style={{fontSize:12,color:"rgba(255,255,255,0.5)"}}>Click the <b style={{color:"#fff"}}>?</b> button in the top bar to launch the guided tour with Bary!</span>
+                  </div>
+                  <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Switch to <b style={{color:"rgba(255,255,255,0.5)"}}>Detailed</b> for all widgets →</span>
+                </div>
+              )}
               {dashMode==="simple"&&(
                 <>
                   <div style={{display:"grid",gridTemplateColumns:cols(isSm?2:4),gap:isSm?10:14,marginBottom:14}}>
@@ -7155,7 +7222,7 @@ export default function App() {
                         <BarChart data={[{n:"Mon",v:9200},{n:"Tue",v:9800},{n:"Wed",v:10400},{n:"Thu",v:9600},{n:"Fri",v:11200},{n:"Sat",v:13500},{n:"Sun",v:12800}]}>
                           <XAxis dataKey="n" tick={{fill:"rgba(255,255,255,0.35)",fontSize:10}} axisLine={false} tickLine={false}/>
                           <YAxis tick={{fill:"rgba(255,255,255,0.3)",fontSize:9}} axisLine={false} tickLine={false} tickFormatter={v=>`₱${v/1000}k`}/>
-                          <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}} labelStyle={{color:"#fff"}}/>
+                          <RechartsTip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12} as any} labelStyle={{color:"#fff"} as any}/>
                           <Bar dataKey="v" fill="#34d399" radius={[4,4,0,0]}/>
                         </BarChart>
                       </ResponsiveContainer>
@@ -7240,7 +7307,7 @@ export default function App() {
                           <BarChart data={[{n:"Mon",v:9200},{n:"Tue",v:9800},{n:"Wed",v:10400},{n:"Thu",v:9600},{n:"Fri",v:11200},{n:"Sat",v:13500},{n:"Sun",v:12800}]}>
                             <XAxis dataKey="n" tick={{fill:"rgba(255,255,255,0.35)",fontSize:10}} axisLine={false} tickLine={false}/>
                             <YAxis tick={{fill:"rgba(255,255,255,0.3)",fontSize:9}} axisLine={false} tickLine={false} tickFormatter={v=>`₱${v/1000}k`}/>
-                            <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}} labelStyle={{color:"#fff"}}/>
+                            <RechartsTip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12} as any} labelStyle={{color:"#fff"} as any}/>
                             <Bar dataKey="v" fill="#34d399" radius={[4,4,0,0]}><Cell fill="#38bdf8"/><Cell fill="#38bdf8"/><Cell fill="#34d399"/><Cell fill="#38bdf8"/><Cell fill="#818cf8"/><Cell fill="#818cf8"/><Cell fill="#818cf8"/></Bar>
                           </BarChart>
                         </ResponsiveContainer>
@@ -7258,7 +7325,7 @@ export default function App() {
                             </defs>
                             <XAxis dataKey="n" tick={{fill:"rgba(255,255,255,0.35)",fontSize:10}} axisLine={false} tickLine={false}/>
                             <YAxis tick={{fill:"rgba(255,255,255,0.3)",fontSize:9}} axisLine={false} tickLine={false} tickFormatter={v=>`₱${v/1000}k`}/>
-                            <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}} labelStyle={{color:"#fff"}}/>
+                            <RechartsTip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12} as any} labelStyle={{color:"#fff"} as any}/>
                             <Area type="monotone" dataKey="r" stroke="#34d399" fill="url(#gR2)" strokeWidth={2} name="Revenue"/>
                             <Area type="monotone" dataKey="e" stroke="#fbbf24" fill="url(#gE2)" strokeWidth={2} name="Expenses"/>
                           </AreaChart>
@@ -7274,7 +7341,7 @@ export default function App() {
                             <Pie data={[{name:"Nike Jacket",value:14.6},{name:"Binatog",value:22.8},{name:"Taho",value:13.7},{name:"iPhone 15",value:30.6},{name:"Headset",value:18.3}]} cx="50%" cy="50%" outerRadius={70} dataKey="value" label={({name,value})=>`${value}%`} labelLine={false}>
                               {["#34d399","#10b981","#059669","#047857","#6ee7b7"].map((c,i)=><Cell key={i} fill={c}/>)}
                             </Pie>
-                            <Tooltip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12}}/>
+                            <RechartsTip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12} as any}/>
                           </PieChart>
                         </ResponsiveContainer>
                       </div>
