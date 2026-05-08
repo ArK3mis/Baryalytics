@@ -30,7 +30,7 @@ const pieData = [
   {name:"Taho",value:13.7},{name:"Iphone 15",value:30.6},
   {name:"Wireless Headset",value:18.3},
 ];
-const PIE_COLORS = ["#34d399","#10b981","#059669","#047857","#6ee7b7"];
+const PIE_COLORS = ["#34d399","#34d399","#34d399","#047857","#34d399"];
 
 // Predict Sales data
 const historicalVsPredicted = [
@@ -104,11 +104,11 @@ const PROFIT_TREND = [
 
 // Expense Prediction data
 const EXP_CATEGORIES = [
-  {key:"rent",      label:"Rent",               color:"#818cf8", light:"rgba(129,140,248,0.12)", border:"rgba(129,140,248,0.25)"},
-  {key:"salaries",  label:"Salaries",            color:"#38bdf8", light:"rgba(56,189,248,0.12)",  border:"rgba(56,189,248,0.25)"},
+  {key:"rent",      label:"Rent",               color:"#34d399", light:"rgba(255,255,255,0.12)", border:"rgba(255,255,255,0.25)"},
+  {key:"salaries",  label:"Salaries",            color:"#34d399", light:"rgba(52,211,153,0.12)",  border:"rgba(52,211,153,0.25)"},
   {key:"utilities", label:"Utilities",           color:"#fbbf24", light:"rgba(251,191,36,0.12)",  border:"rgba(251,191,36,0.25)"},
   {key:"supplies",  label:"Supplies",            color:"#34d399", light:"rgba(52,211,153,0.12)",  border:"rgba(52,211,153,0.25)"},
-  {key:"other",     label:"Other Operational",   color:"#fb7185", light:"rgba(251,113,133,0.12)", border:"rgba(251,113,133,0.25)"},
+  {key:"other",     label:"Other Operational",   color:"#ef4444", light:"rgba(251,113,133,0.12)", border:"rgba(251,113,133,0.25)"},
 ];
 const EXP_HISTORY = [
   {month:"Aug", rent:45000, salaries:120000, utilities:18500, supplies:22000, other:14500, predicted:false},
@@ -123,11 +123,11 @@ const EXP_HISTORY = [
 const EXP_INSIGHTS = [
   {cat:"Utilities",  pct:"+10%", color:"#fbbf24", icon:"⚡",
    text:"Utility expenses may increase by 10% based on seasonal usage patterns and rising energy costs during summer months."},
-  {cat:"Salaries",   pct:"+2.4%",color:"#38bdf8", icon:"👥",
+  {cat:"Salaries",   pct:"+2.4%",color:"#34d399", icon:"👥",
    text:"Salary costs are expected to rise slightly due to planned staff expansion in Q1. Budget for one additional hire."},
   {cat:"Supplies",   pct:"+4.6%",color:"#34d399", icon:"📦",
    text:"Supply costs are forecast to increase due to higher predicted demand. Consider bulk purchasing to reduce per-unit cost."},
-  {cat:"Other Costs",pct:"+3.3%",color:"#fb7185", icon:"📋",
+  {cat:"Other Costs",pct:"+3.3%",color:"#ef4444", icon:"📋",
    text:"Other operational costs show a modest upward trend driven by delivery and logistics fees tied to increased order volume."},
 ];
 
@@ -148,10 +148,10 @@ const HEATMAP_WEEKLY: number[][] = HEATMAP_DAILY.map(d=>d.map(v=>Math.min(100,Ma
 const HEATMAP_MONTHLY: number[][] = HEATMAP_DAILY.map(d=>d.map(v=>Math.min(100,Math.round(v*1.5))));
 
 const TOP_PRODUCTS_DAILY   = [
-  {name:"Coca-Cola 1.5L",  qty:142, color:"#34d399"},{name:"Binatog",      qty:118, color:"#818cf8"},
-  {name:"Taho",            qty:104, color:"#38bdf8"},{name:"Snickers Bar", qty:92,  color:"#fbbf24"},
-  {name:"Chippy",          qty:85,  color:"#fb7185"},{name:"Iphone 15",    qty:78,  color:"#a78bfa"},
-  {name:"T-Shirts",        qty:65,  color:"#34d399"},{name:"Nike Jacket",  qty:58,  color:"#38bdf8"},
+  {name:"Coca-Cola 1.5L",  qty:142, color:"#34d399"},{name:"Binatog",      qty:118, color:"#34d399"},
+  {name:"Taho",            qty:104, color:"#34d399"},{name:"Snickers Bar", qty:92,  color:"#fbbf24"},
+  {name:"Chippy",          qty:85,  color:"#ef4444"},{name:"Iphone 15",    qty:78,  color:"#34d399"},
+  {name:"T-Shirts",        qty:65,  color:"#34d399"},{name:"Nike Jacket",  qty:58,  color:"#34d399"},
 ];
 const TOP_PRODUCTS_WEEKLY  = TOP_PRODUCTS_DAILY.map(p=>({...p,qty:p.qty*7+Math.round(Math.random()*50)}));
 const TOP_PRODUCTS_MONTHLY = TOP_PRODUCTS_DAILY.map(p=>({...p,qty:p.qty*30+Math.round(Math.random()*200)}));
@@ -162,10 +162,10 @@ const PEAK_HOURS_MONTHLY = [{label:"Last weekend of month",intensity:96},{label:
 
 const BOUGHT_TOGETHER = [
   {a:"Coca-Cola 1.5L",  b:"Chippy",         freq:68, color:"#34d399"},
-  {a:"Taho",            b:"Binatog",         freq:54, color:"#a78bfa"},
+  {a:"Taho",            b:"Binatog",         freq:54, color:"#34d399"},
   {a:"Snickers Bar",    b:"Coca-Cola 1.5L",  freq:49, color:"#fbbf24"},
-  {a:"Iphone 15",       b:"Wireless Headset",freq:41, color:"#38bdf8"},
-  {a:"Nike Jacket",     b:"Running Shoes",   freq:36, color:"#fb7185"},
+  {a:"Iphone 15",       b:"Wireless Headset",freq:41, color:"#34d399"},
+  {a:"Nike Jacket",     b:"Running Shoes",   freq:36, color:"#ef4444"},
 ];
 
 const LOYAL_CUSTOMERS = [
@@ -181,9 +181,9 @@ const LOYAL_CUSTOMERS = [
 const CB_INSIGHTS = [
   {icon:"🥤",color:"#34d399",pct:"+72%",title:"Soft Drinks + Snacks Bundle",
    text:"Customers frequently buy soft drinks together with snacks. Consider creating a combo deal for Coca-Cola 1.5L and Chippy to boost basket size."},
-  {icon:"⏰",color:"#818cf8",pct:"Peak",title:"Afternoon Rush (3–5 PM)",
+  {icon:"⏰",color:"#34d399",pct:"Peak",title:"Afternoon Rush (3–5 PM)",
    text:"Purchase activity spikes dramatically between 3:00 PM and 5:00 PM daily. Ensure full staff coverage and stock replenishment before this window."},
-  {icon:"📱",color:"#38bdf8",pct:"+41%",title:"Electronics Cross-Sell",
+  {icon:"📱",color:"#34d399",pct:"+41%",title:"Electronics Cross-Sell",
    text:"Customers who buy Iphone 15 frequently also purchase Wireless Headset within the same visit. Display them together in-store or online."},
   {icon:"🏆",color:"#fbbf24",pct:"Top 7",title:"Loyalty Program Opportunity",
    text:"Your top 7 loyal customers account for 38% of total revenue. A VIP rewards tier could increase their average order value by an estimated 15%."},
@@ -229,7 +229,7 @@ const AUTH_CSS = `
   }
   .auth-submit{
     width:100%; padding:15px;
-    background:linear-gradient(135deg,#b8860b,#d4a017,#8b6508);
+    background:linear-gradient(135deg,#fbbf24,#d4a017,#8b6508);
     border:none; border-radius:14px;
     color:#fff; font-size:15px; font-weight:700;
     cursor:pointer; font-family:'Inter',sans-serif;
@@ -267,7 +267,7 @@ const AUTH_CSS = `
     cursor:pointer;appearance:none;flex-shrink:0;
     transition:all 0.15s;position:relative;
   }
-  .auth-checkbox:checked{background:#b8860b;border-color:#b8860b;}
+  .auth-checkbox:checked{background:#fbbf24;border-color:#fbbf24;}
   .auth-checkbox:checked::after{
     content:'✓';position:absolute;top:50%;left:50%;
     transform:translate(-50%,-50%);color:#fff;font-size:11px;font-weight:700;
@@ -285,14 +285,14 @@ const ToastProvider = ({children}:{children?:React.ReactNode}) => {
   const [toasts, setToasts] = React.useState<{id:number;msg:string;type:ToastType}[]>([]);
   const show = React.useCallback((msg:string, type:ToastType="success") => {
     const id = Date.now();
-    setToasts(t=>[...t,{id,msg,type}]);
-    setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)), 2800);
+    setToasts((t:any[])=>[...t,{id,msg,type}]);
+    setTimeout(()=>setToasts((t:any[])=>t.filter((x:any)=>x.id!==id)), 2800);
   },[]);
   const icons:Record<ToastType,string> = {success:"✅",error:"❌",info:"ℹ️"};
   const colors:Record<ToastType,{bg:string;border:string;text:string}> = {
-    success:{bg:"rgba(52,211,153,0.12)",  border:"rgba(52,211,153,0.35)",  text:"#6ee7b7"},
-    error:  {bg:"rgba(251,113,133,0.12)", border:"rgba(251,113,133,0.35)", text:"#fda4af"},
-    info:   {bg:"rgba(56,189,248,0.12)",  border:"rgba(56,189,248,0.35)",  text:"#7dd3fc"},
+    success:{bg:"rgba(52,211,153,0.12)",  border:"rgba(52,211,153,0.35)",  text:"#34d399"},
+    error:  {bg:"rgba(251,113,133,0.12)", border:"rgba(251,113,133,0.35)", text:"#ef4444"},
+    info:   {bg:"rgba(52,211,153,0.12)",  border:"rgba(52,211,153,0.35)",  text:"#6ee7b7"},
   };
   return (
     <ToastCtx.Provider value={show}>
@@ -383,11 +383,11 @@ const BaryalyticsLogo = ({size=52}:{size?:number}) => {
         <radialGradient id="bLogo_bg" cx="40%" cy="35%" r="65%">
           <stop offset="0%"   stopColor="#c9950a"/>
           <stop offset="50%"  stopColor="#a07208"/>
-          <stop offset="100%" stopColor="#3a2600"/>
+          <stop offset="100%" stopColor="#1a1a1a"/>
         </radialGradient>
         <radialGradient id="bLogo_bg2" cx="60%" cy="60%" r="55%">
-          <stop offset="0%"   stopColor="#d4af37" stopOpacity="0.4"/>
-          <stop offset="100%" stopColor="#3a2600" stopOpacity="0"/>
+          <stop offset="0%"   stopColor="#fbbf24" stopOpacity="0.4"/>
+          <stop offset="100%" stopColor="#1a1a1a" stopOpacity="0"/>
         </radialGradient>
       </defs>
       <circle cx="50" cy="50" r="47" fill="url(#bLogo_bg)"/>
@@ -397,9 +397,9 @@ const BaryalyticsLogo = ({size=52}:{size?:number}) => {
       <rect x="14" y="74" width="50" height="6" rx="3" fill="white"/>
       <polyline
         points="24,72 34,55 44,60 64,28"
-        fill="none" stroke="#38bdf8" strokeWidth="4.5"
+        fill="none" stroke="#34d399" strokeWidth="4.5"
         strokeLinecap="round" strokeLinejoin="round"/>
-      <polygon points="64,28 56,30 62,36" fill="#38bdf8"/>
+      <polygon points="64,28 56,30 62,36" fill="#34d399"/>
       <polyline
         points="24,72 34,58 44,63 64,33"
         fill="none" stroke="#ef4444" strokeWidth="3.5"
@@ -439,7 +439,7 @@ const G = `
   .card{background:#13131f;border-radius:16px;border:1px solid rgba(255,255,255,0.07);padding:20px;position:relative;overflow:hidden;}
   .card-title{font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;letter-spacing:0.01em;}
   .card-x{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);cursor:pointer;display:flex;align-items:center;padding:3px 5px;border-radius:6px;transition:all 0.15s;}
-  .card-x:hover{background:rgba(251,113,133,0.15);border-color:rgba(251,113,133,0.3);color:#fda4af;}
+  .card-x:hover{background:rgba(251,113,133,0.15);border-color:rgba(251,113,133,0.3);color:#ef4444;}
   .first-hint{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:10px;font-size:12px;color:rgba(52,211,153,0.8);font-weight:500;}
   .nav-bar{
   background:rgba(13,13,22,0.75);
@@ -453,11 +453,11 @@ const G = `
   .nav-pill{color:rgba(255,255,255,0.45);padding:6px 16px;font-size:13px;font-weight:500;border-radius:999px;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:all 0.18s;letter-spacing:0.01em;}
   .nav-pill:hover{color:#fff;background:rgba(255,255,255,0.07);}
   .chip-up{background:rgba(52,211,153,0.15);color:#34d399;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;}
-  .chip-down{background:rgba(251,113,133,0.15);color:#fb7185;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;}
-  .badge-g{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.2);color:#6ee7b7;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
-  .badge-r{background:rgba(251,113,133,0.12);border:1px solid rgba(251,113,133,0.2);color:#fda4af;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
-  .badge-a{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.2);color:#fde68a;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
-  .badge-v{background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.2);color:#c7d2fe;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
+  .chip-down{background:rgba(251,113,133,0.15);color:#ef4444;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;}
+  .badge-g{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.2);color:#34d399;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
+  .badge-r{background:rgba(251,113,133,0.12);border:1px solid rgba(251,113,133,0.2);color:#ef4444;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
+  .badge-a{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.2);color:#fbbf24;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
+  .badge-v{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#c7d2fe;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;}
   .alert-row{background:rgba(251,113,133,0.08);border:1px solid rgba(251,113,133,0.18);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.75);cursor:pointer;transition:background 0.15s;margin-bottom:8px;}
   .alert-row:last-child{margin-bottom:0;}
   .alert-row:hover{background:rgba(251,113,133,0.14);}
@@ -467,9 +467,9 @@ const G = `
   select.inp option{background:#13131f;}
   .btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.65);padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;white-space:nowrap;}
   .btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
-  .btn-g{background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.25);border-radius:10px;color:#6ee7b7;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+  .btn-g{background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.25);border-radius:10px;color:#34d399;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
   .btn-g:hover{background:rgba(52,211,153,0.25);}
-  .btn-r{background:rgba(251,113,133,0.15);border:1px solid rgba(251,113,133,0.25);border-radius:10px;color:#fda4af;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .btn-r{background:rgba(251,113,133,0.15);border:1px solid rgba(251,113,133,0.25);border-radius:10px;color:#ef4444;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
   .tab-wrap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:3px;display:inline-flex;gap:2px;}
   .tab-on{background:rgba(52,211,153,0.18);color:#34d399;border-radius:999px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(52,211,153,0.3);font-family:'Inter',sans-serif;letter-spacing:0.02em;}
   .tab-off{background:none;border:1px solid transparent;color:rgba(255,255,255,0.4);padding:5px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:0.02em;border-radius:999px;transition:all 0.15s;}
@@ -479,7 +479,7 @@ const G = `
   .tr:hover td{background:rgba(255,255,255,0.015);}
   .tr:last-child td{border-bottom:none;}
   .ai-card{background:#161622;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;}
-  .ai-card:hover{border-color:rgba(129,140,248,0.35);background:#1a1a2e;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
+  .ai-card:hover{border-color:rgba(255,255,255,0.35);background:#1a1a2e;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
   .bg-tl{position:fixed;top:0;left:0;width:700px;height:700px;background:radial-gradient(ellipse at 0% 0%,rgba(29,78,216,0.11) 0%,transparent 70%);pointer-events:none;z-index:0;}
   .bg-br{position:fixed;bottom:0;right:0;width:700px;height:700px;background:radial-gradient(ellipse at 100% 100%,rgba(5,150,105,0.09) 0%,transparent 70%);pointer-events:none;z-index:0;}
   @keyframes tMove{0%{left:0%}20%{left:25%}25%{left:25%}45%{left:50%}50%{left:50%}70%{left:75%}75%{left:75%}95%{left:100%}100%{left:100%}}
@@ -514,9 +514,9 @@ const G = `
   @keyframes formShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
   .form-shake{animation:formShake 0.4s ease both;}
   .inp-err{border-color:rgba(251,113,133,0.7)!important;background:rgba(251,113,133,0.06)!important;box-shadow:0 0 0 3px rgba(251,113,133,0.12)!important;}
-  .inp-err:focus{border-color:#fb7185!important;box-shadow:0 0 0 3px rgba(251,113,133,0.2)!important;}
-  .lbl-err{color:#fda4af!important;}
-  .err-msg{font-size:11px;color:#fda4af;margin-top:5px;display:flex;align-items:center;gap:4px;animation:fadeUp 0.2s ease both;}
+  .inp-err:focus{border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(251,113,133,0.2)!important;}
+  .lbl-err{color:#ef4444!important;}
+  .err-msg{font-size:11px;color:#ef4444;margin-top:5px;display:flex;align-items:center;gap:4px;animation:fadeUp 0.2s ease both;}
   .field-label{font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.07em;display:block;margin-bottom:6px;}
   .section-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:8px;}
 
@@ -543,11 +543,11 @@ const G = `
   .cursor-blink{display:inline-block;width:2px;height:1em;background:#34d399;margin-left:2px;vertical-align:middle;animation:typewriterCursor 0.7s ease infinite;}
   .particle{position:fixed;pointer-events:none;z-index:99999;font-size:22px;animation:particleUp 1.2s cubic-bezier(0.25,0.46,0.45,0.94) both;}
   .export-wrap{position:relative;display:inline-flex;}
-  .export-btn{display:flex;align-items:center;gap:7px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.22);border-radius:10px;color:#a5b4fc;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;}
-  .export-btn:hover{background:rgba(129,140,248,0.2);border-color:rgba(129,140,248,0.38);color:#c7d2fe;}
+  .export-btn{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);border-radius:10px;color:#a5b4fc;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.18s;}
+  .export-btn:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.38);color:#c7d2fe;}
   .insight-card{
-  background:linear-gradient(135deg,rgba(129,140,248,0.1),rgba(167,139,250,0.06));
-  border:1px solid rgba(129,140,248,0.2);
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0.06));
+  border:1px solid rgba(255,255,255,0.2);
   border-radius:14px;
   padding:16px 20px;
   margin-bottom:10px;
@@ -556,7 +556,7 @@ const G = `
   align-items:flex-start;
   transition:border-color 0.15s;
   }
-  .insight-card:hover{border-color:rgba(129,140,248,0.35);}
+  .insight-card:hover{border-color:rgba(255,255,255,0.35);}
   .insight-card:last-child{margin-bottom:0;}
   .stat-forecast{
   background:#13131f;
@@ -565,7 +565,7 @@ const G = `
   padding:20px;
   transition:all 0.2s;
   }
-  .stat-forecast:hover{border-color:rgba(129,140,248,0.25);transform:translateY(-2px);}
+  .stat-forecast:hover{border-color:rgba(255,255,255,0.25);transform:translateY(-2px);}
   /* ── TOOLTIP (follows cursor) ── */
   .tip-wrap{position:relative;display:inline-flex;}
   .tip-box{position:fixed;z-index:9000;background:rgba(10,10,20,0.95);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.85);pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.4);backdrop-filter:blur(8px);transform:translate(-50%,-110%);animation:fadeUp 0.15s ease both;}
@@ -573,8 +573,8 @@ const G = `
   /* ── WARNING color: amber not red (reserve red for critical only) ── */
   .warn-amber{color:#fbbf24!important;}
   .warn-amber-bg{background:rgba(251,191,36,0.08)!important;border-color:rgba(251,191,36,0.2)!important;}
-  .critical-red{color:#fb7185!important;}
-  .chip-warn{display:inline-flex;align-items:center;gap:4px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.22);color:#fde68a;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:600;}
+  .critical-red{color:#ef4444!important;}
+  .chip-warn{display:inline-flex;align-items:center;gap:4px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.22);color:#fbbf24;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:600;}
 
   /* ── Dashboard mode toggle ── */
   .dash-toggle{display:flex;align-items:center;gap:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;padding:2px;}
@@ -731,8 +731,8 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
 
   const insights = [
     {text:"Sales are expected to increase by 8% next week based on upward momentum in recent months.", pct:"+8%", color:"#34d399"},
-    {text:"Weekend sales (Sat–Sun) consistently outperform weekdays by 25–35%. Prepare additional stock.", pct:"+30%", color:"#818cf8"},
-    {text:"December historically peaks — January may see a 10% correction before recovery in February.", pct:"-10%", color:"#fb7185"},
+    {text:"Weekend sales (Sat–Sun) consistently outperform weekdays by 25–35%. Prepare additional stock.", pct:"+30%", color:"#34d399"},
+    {text:"December historically peaks — January may see a 10% correction before recovery in February.", pct:"-10%", color:"#ef4444"},
     {text:"Monthly sales trajectory shows consistent growth of ₱1,000–₱1,500 per month on average.", pct:"+12%", color:"#fbbf24"},
   ];
 
@@ -743,8 +743,8 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
           <ArrowLeft size={15}/> Back
         </button>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
-          <div style={{width:42,height:42,borderRadius:12,background:"rgba(129,140,248,0.15)",border:"1px solid rgba(129,140,248,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <LineChartIcon size={20} color="#818cf8"/>
+          <div style={{width:42,height:42,borderRadius:12,background:"rgba(255,255,255,0.15)",border:"1px solid rgba(255,255,255,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <LineChartIcon size={20} color="#34d399"/>
           </div>
           <div>
             <h1 style={{fontSize:22,fontWeight:700,color:"#fff"}}>Predict Sales</h1>
@@ -753,14 +753,14 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
         </div>
         <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:8,background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:10,padding:"6px 14px"}}>
           <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
-          <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Model: Active</span>
+          <span style={{fontSize:12,color:"#34d399",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Yesterday's Sales",value:"₱10,000",sub:"Dec 31, 2025",icon:TrendingUp,color:"#34d399",bg:"rgba(52,211,153,0.1)",change:"+5.2%",up:true},
-          {label:"Today's Predicted",value:"₱10,800",sub:"Jan 1, 2026",icon:Sparkles,color:"#818cf8",bg:"rgba(129,140,248,0.1)",change:"+8.0%",up:true},
-          {label:"Weekly Forecast",value:"₱76,500",sub:"Next 7 days",icon:BarChart3,color:"#38bdf8",bg:"rgba(56,189,248,0.1)",change:"+11.2%",up:true},
+          {label:"Today's Predicted",value:"₱10,800",sub:"Jan 1, 2026",icon:Sparkles,color:"#34d399",bg:"rgba(255,255,255,0.1)",change:"+8.0%",up:true},
+          {label:"Weekly Forecast",value:"₱76,500",sub:"Next 7 days",icon:BarChart3,color:"#34d399",bg:"rgba(52,211,153,0.1)",change:"+11.2%",up:true},
           {label:"Monthly Forecast",value:"₱318,000",sub:"January 2026",icon:DollarSign,color:"#fbbf24",bg:"rgba(251,191,36,0.1)",change:"+14.9%",up:true},
         ].map((s,i) => (
           <div key={i} className="stat-forecast">
@@ -781,8 +781,8 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
           <div className="card-title">
             Past Sales vs Predicted Sales
             <div style={{display:"flex",gap:16,fontSize:11}}>
-              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#10b981",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Actual</span></span>
-              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#818cf8",borderRadius:99,borderTop:"1px dashed #818cf8"}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Predicted</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#34d399",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Actual</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#34d399",borderRadius:99,borderTop:"1px dashed #34d399"}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Predicted</span></span>
             </div>
           </div>
           <div style={{height:240}}>
@@ -793,8 +793,8 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${v/1000}k`}/>
                 <RechartsTip content={<MultiCT/>}/>
                 <ReferenceLine x="Jan" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4" label={{value:"Forecast →",position:"insideTopRight",fill:"rgba(255,255,255,0.2)",fontSize:10}}/>
-                <Line type="monotone" dataKey="actual" stroke="#10b981" strokeWidth={2.5} dot={{fill:"#10b981",r:3,strokeWidth:0}} connectNulls={false}/>
-                <Line type="monotone" dataKey="predicted" stroke="#818cf8" strokeWidth={2.5} strokeDasharray="6 3" dot={{fill:"#818cf8",r:3,strokeWidth:0}} connectNulls={false}/>
+                <Line type="monotone" dataKey="actual" stroke="#34d399" strokeWidth={2.5} dot={{fill:"#34d399",r:3,strokeWidth:0}} connectNulls={false}/>
+                <Line type="monotone" dataKey="predicted" stroke="#34d399" strokeWidth={2.5} strokeDasharray="6 3" dot={{fill:"#34d399",r:3,strokeWidth:0}} connectNulls={false}/>
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -809,8 +809,8 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
               <BarChart data={weeklyForecast} margin={{top:10,right:0,left:-20,bottom:0}}>
                 <defs>
                   <linearGradient id="wkG" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#818cf8" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#6366f1" stopOpacity={0.4}/>
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={1}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0.4}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
@@ -844,11 +844,11 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
                     <tr key={i} className="tr">
                       <td className="td" style={{textAlign:"left",color:"rgba(255,255,255,0.7)",fontWeight:500}}>{r.month}</td>
                       <td className="td" style={{color:"rgba(255,255,255,0.45)"}}>{r.previous ? `₱${r.previous.toLocaleString()}` : <span style={{color:"rgba(255,255,255,0.2)",fontSize:11}}>—</span>}</td>
-                      <td className="td" style={{color:"#818cf8",fontWeight:600}}>₱{r.predicted?.toLocaleString()}</td>
+                      <td className="td" style={{color:"#34d399",fontWeight:600}}>₱{r.predicted?.toLocaleString()}</td>
                       <td className="td">
                         {change
                           ? <span className={isUp ? "chip-up" : "chip-down"}>{isUp ? <TrendingUp size={9}/> : <TrendingDown size={9}/>}{isUp?"+":""}{change}%</span>
-                          : <span style={{fontSize:11,color:"#818cf8",fontWeight:600}}>Forecast</span>
+                          : <span style={{fontSize:11,color:"#34d399",fontWeight:600}}>Forecast</span>
                         }
                       </td>
                     </tr>
@@ -861,14 +861,14 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <Sparkles size={15} color="#818cf8"/>
+              <Sparkles size={15} color="#34d399"/>
               AI Insights & Trend Analysis
             </div>
           </div>
           <div>
             {insights.map((ins, i) => (
               <div key={i} className="insight-card">
-                <div style={{minWidth:42,height:42,borderRadius:10,background:"rgba(129,140,248,0.1)",border:"1px solid rgba(129,140,248,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <div style={{minWidth:42,height:42,borderRadius:10,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
                   <span style={{fontSize:13,fontWeight:700,color:ins.color}}>{ins.pct}</span>
                 </div>
                 <p style={{fontSize:13,color:"rgba(255,255,255,0.6)",lineHeight:1.6}}>{ins.text}</p>
@@ -879,8 +879,8 @@ const PredictSales = ({ onBack }: { onBack: () => void }) => {
       </div>
       <div className="fu5 grid-3col" style={{display:"grid",gridTemplateColumns:colsW(3),gap:16}}>
         {[
-          {label:"Predicted Sales — Tomorrow",value:"₱10,800",note:"Jan 2, 2026 · Based on Dec 31 trend",color:"#818cf8",bg:"rgba(129,140,248,0.08)",border:"rgba(129,140,248,0.2)"},
-          {label:"Predicted Sales — Next 7 Days",value:"₱76,500",note:"Jan 2–8, 2026 · Avg ₱10,928/day",color:"#38bdf8",bg:"rgba(56,189,248,0.08)",border:"rgba(56,189,248,0.2)"},
+          {label:"Predicted Sales — Tomorrow",value:"₱10,800",note:"Jan 2, 2026 · Based on Dec 31 trend",color:"#34d399",bg:"rgba(255,255,255,0.08)",border:"rgba(255,255,255,0.2)"},
+          {label:"Predicted Sales — Next 7 Days",value:"₱76,500",note:"Jan 2–8, 2026 · Avg ₱10,928/day",color:"#34d399",bg:"rgba(52,211,153,0.08)",border:"rgba(52,211,153,0.2)"},
           {label:"Predicted Sales — Next Month",value:"₱318,000",note:"January 2026 · +14.9% vs December",color:"#34d399",bg:"rgba(52,211,153,0.08)",border:"rgba(52,211,153,0.2)"},
         ].map((s,i) => (
           <div key={i} style={{background:s.bg,border:`1px solid ${s.border}`,borderRadius:14,padding:"20px 22px"}}>
@@ -910,14 +910,14 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
     return obj;
   });
 
-  const trendColors = ["#34d399","#818cf8","#38bdf8","#fbbf24","#fb7185"];
+  const trendColors = ["#34d399","#34d399","#34d399","#fbbf24","#ef4444"];
 
   const topRecs = [
     {product:"Coca-Cola 1.5L",        pct:25, note:"Demand surge expected due to upcoming summer season.",  color:"#34d399"},
-    {product:"Iphone 15",             pct:29, note:"New model awareness driving repeat and new buyer demand.", color:"#818cf8"},
-    {product:"Nike Jacket",           pct:20, note:"Seasonal fashion trend — cooler months ahead.",           color:"#38bdf8"},
+    {product:"Iphone 15",             pct:29, note:"New model awareness driving repeat and new buyer demand.", color:"#34d399"},
+    {product:"Nike Jacket",           pct:20, note:"Seasonal fashion trend — cooler months ahead.",           color:"#34d399"},
     {product:"Running Shoes",         pct:16, note:"Fitness campaign season boosting athletic wear demand.",    color:"#fbbf24"},
-    {product:"Wireless Headphones",   pct:20, note:"Remote work trend sustaining strong electronics demand.",  color:"#a78bfa"},
+    {product:"Wireless Headphones",   pct:20, note:"Remote work trend sustaining strong electronics demand.",  color:"#34d399"},
   ];
 
   return (
@@ -937,7 +937,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
         </div>
         <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:8,background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:10,padding:"6px 14px"}}>
           <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
-          <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Model: Active</span>
+          <span style={{fontSize:12,color:"#34d399",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
       <div className="fu2" style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
@@ -961,8 +961,8 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Top Demand Product",  value:"Coca-Cola 1.5L", sub:"Predicted 400 units",   color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:Package},
-          {label:"Highest Growth",      value:"+28.9%",         sub:"Iphone 15 this week",   color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:TrendingUp},
-          {label:"Products Forecasted", value:`${filtered.length}`,sub:`in ${catFilter==="All"?"all categories":catFilter}`, color:"#38bdf8", bg:"rgba(56,189,248,0.1)", I:Boxes},
+          {label:"Highest Growth",      value:"+28.9%",         sub:"Iphone 15 this week",   color:"#34d399", bg:"rgba(255,255,255,0.1)", I:TrendingUp},
+          {label:"Products Forecasted", value:`${filtered.length}`,sub:`in ${catFilter==="All"?"all categories":catFilter}`, color:"#34d399", bg:"rgba(52,211,153,0.1)", I:Boxes},
           {label:"Avg Demand Increase", value:"+16.1%",         sub:"Across all products",   color:"#fbbf24", bg:"rgba(251,191,36,0.1)",  I:BarChart3},
         ].map((s,i)=>(
           <div key={i} className="stat-forecast">
@@ -993,7 +993,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
                 <defs>
                   <linearGradient id="dmG" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#34d399" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#059669" stopOpacity={0.4}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0.4}/>
                   </linearGradient>
                   <linearGradient id="pvG" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="rgba(255,255,255,0.25)" stopOpacity={1}/>
@@ -1094,7 +1094,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
                   return (
                     <tr key={p.id} className="tr" style={{cursor:"pointer"}} onClick={()=>setSelectedProduct(p)}>
                       <td className="td" style={{paddingLeft:20,color:"rgba(255,255,255,0.3)",fontWeight:600,width:36}}>
-                        {i===0?<span style={{color:"#fbbf24"}}>①</span>:i===1?<span style={{color:"rgba(255,255,255,0.5)"}}>②</span>:i===2?<span style={{color:"#fb7185"}}>③</span>:i+1}
+                        {i===0?<span style={{color:"#fbbf24"}}>①</span>:i===1?<span style={{color:"rgba(255,255,255,0.5)"}}>②</span>:i===2?<span style={{color:"#ef4444"}}>③</span>:i+1}
                       </td>
                       <td className="td" style={{textAlign:"left",color:"#e2e8f0",fontWeight:500}}>{p.name}</td>
                       <td className="td"><span className="badge-a" style={{fontSize:10}}>{p.cat}</span></td>
@@ -1102,7 +1102,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
                       <td className="td" style={{color:"#34d399",fontWeight:700}}>{p.predicted}</td>
                       <td className="td">
                         <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:3}}>
-                          {up ? <TrendingUp size={15} color="#34d399"/> : <TrendingDown size={15} color="#fb7185"/>}
+                          {up ? <TrendingUp size={15} color="#34d399"/> : <TrendingDown size={15} color="#ef4444"/>}
                         </div>
                       </td>
                       <td className="td">
@@ -1134,7 +1134,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
               {[
                 {l:"Previous",v:selectedProduct.prev+" units",c:"rgba(255,255,255,0.45)"},
                 {l:"Predicted",v:selectedProduct.predicted+" units",c:"#34d399"},
-                {l:"Growth",v:"+"+selectedProduct.change+"%",c:"#6ee7b7"},
+                {l:"Growth",v:"+"+selectedProduct.change+"%",c:"#34d399"},
               ].map(s=>(
                 <div key={s.l} style={{textAlign:"center"}}>
                   <div style={{fontSize:16,fontWeight:700,color:s.c}}>{s.v}</div>
@@ -1187,7 +1187,7 @@ const DemandForecasting = ({ onBack }: { onBack: () => void }) => {
 /* ── EXPORT MENU COMPONENT ────────────────────────────────────────── */
 const EXPORT_GROUPS = [
   {
-    key:"pdf", icon:"📄", label:"PDF", color:"#fb7185",
+    key:"pdf", icon:"📄", label:"PDF", color:"#ef4444",
     items:[
       {icon:"📄",label:"Standard PDF",         sub:"Best for sharing & printing"},
       {icon:"🗜️",label:"Compressed PDF",        sub:"Reduced file size"},
@@ -1205,7 +1205,7 @@ const EXPORT_GROUPS = [
     ],
   },
   {
-    key:"data", icon:"🗒️", label:"Data", color:"#38bdf8",
+    key:"data", icon:"🗒️", label:"Data", color:"#34d399",
     items:[
       {icon:"🗒️",label:"CSV",                   sub:"Universal plain-text format"},
       {icon:"📦",label:"JSON",                  sub:"Raw structured data"},
@@ -1239,8 +1239,8 @@ const ExportMenu = ({label="Export"}:{label?:string}) => {
     >
       <div
         style={{
-          background:"#14142a",
-          border:"1px solid rgba(129,140,248,0.3)",
+          background:"#141a14",
+          border:"1px solid rgba(255,255,255,0.3)",
           borderRadius:20, width:420, maxWidth:"94vw",
           boxShadow:"0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05)",
           overflow:"hidden",
@@ -1436,8 +1436,8 @@ const Inventory = () => {
   // ── Expiry helpers ──
   const expiring  = inv.filter(i=>i.expiry && daysUntil(i.expiry)<=30 && daysUntil(i.expiry)>0);
   const expired   = inv.filter(i=>i.expiry && daysUntil(i.expiry)<=0);
-  const expiryColor = (d:string) => { const n=daysUntil(d); return n<=0?"#fb7185":n<=7?"#f97316":n<=30?"#fbbf24":"#34d399"; };
-  const expiryBg    = (d:string) => { const n=daysUntil(d); return n<=0?"rgba(251,113,133,0.12)":n<=7?"rgba(249,115,22,0.1)":n<=30?"rgba(251,191,36,0.08)":"rgba(52,211,153,0.06)"; };
+  const expiryColor = (d:string) => { const n=daysUntil(d); return n<=0?"#ef4444":n<=7?"#fbbf24":n<=30?"#fbbf24":"#34d399"; };
+  const expiryBg    = (d:string) => { const n=daysUntil(d); return n<=0?"rgba(251,113,133,0.12)":n<=7?"rgba(251,191,36,0.1)":n<=30?"rgba(251,191,36,0.08)":"rgba(52,211,153,0.06)"; };
   const expiryLabel = (d:string) => { const n=daysUntil(d); return n<=0?"Expired":n<=7?`${n}d left`:n<=30?`${n}d left`:""; };
 
   return (
@@ -1446,7 +1446,7 @@ const Inventory = () => {
         <div className="fu1 expiry-warn" style={{background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.25)",borderRadius:14,padding:"14px 18px"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
             <span className="warn-icon" style={{fontSize:20}}>⚠️</span>
-            <span style={{fontSize:13,fontWeight:700,color:"#fda4af"}}>
+            <span style={{fontSize:13,fontWeight:700,color:"#ef4444"}}>
               {expired.length>0&&`${expired.length} expired product${expired.length>1?"s":""}`}
               {expired.length>0&&expiring.length>0&&" · "}
               {expiring.length>0&&`${expiring.length} expiring within 30 days`}
@@ -1479,12 +1479,12 @@ const Inventory = () => {
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div>
               <div style={{display:"flex",alignItems:"baseline",gap:8}}>
-                <span style={{fontSize:36,fontWeight:700,color:"#fb7185"}}>{inv.filter(i=>i.stocks<=20).length}</span>
+                <span style={{fontSize:36,fontWeight:700,color:"#ef4444"}}>{inv.filter(i=>i.stocks<=20).length}</span>
                 <span style={{fontSize:14,color:"rgba(251,113,133,0.7)"}}>low stock</span>
               </div>
               <div style={{fontSize:12,color:"rgba(255,255,255,0.35)",marginTop:4}}>{expired.length} expired · {expiring.length} expiring soon</div>
             </div>
-            <div style={{padding:12,background:"rgba(251,113,133,0.1)",borderRadius:"50%"}}><PackageMinus size={28} color="#fb7185"/></div>
+            <div style={{padding:12,background:"rgba(251,113,133,0.1)",borderRadius:"50%"}}><PackageMinus size={28} color="#ef4444"/></div>
           </div>
         </div>
       </div>
@@ -1500,13 +1500,13 @@ const Inventory = () => {
           {[["add","+ Add"],["delete","Delete"],["update","Update"],["history","📋 Log"],["expiry","🗓 Expiry"]].map(([v,l])=>(
             <button key={v} onClick={()=>{if(v==="update"&&inv.length)setuP(inv[0]);setView(v);}}
               className="btn"
-              style={v==="add"?{background:"rgba(52,211,153,0.12)",borderColor:"rgba(52,211,153,0.25)",color:"#6ee7b7"}:
-                     v==="history"?{background:"rgba(129,140,248,0.1)",borderColor:"rgba(129,140,248,0.22)",color:"#a5b4fc"}:
-                     v==="expiry"?{background:"rgba(251,191,36,0.1)",borderColor:"rgba(251,191,36,0.22)",color:"#fde68a"}:undefined}>
+              style={v==="add"?{background:"rgba(52,211,153,0.12)",borderColor:"rgba(52,211,153,0.25)",color:"#34d399"}:
+                     v==="history"?{background:"rgba(255,255,255,0.1)",borderColor:"rgba(255,255,255,0.22)",color:"rgba(255,255,255,0.6)"}:
+                     v==="expiry"?{background:"rgba(251,191,36,0.1)",borderColor:"rgba(251,191,36,0.22)",color:"#fbbf24"}:undefined}>
               {l}
             </button>
           ))}
-          <button onClick={undo} disabled={!hist.length} className="btn" style={{opacity:hist.length?1:0.4,display:"flex",alignItems:"center",gap:6,background:hist.length?"rgba(52,211,153,0.12)":undefined,borderColor:hist.length?"rgba(52,211,153,0.2)":undefined,color:hist.length?"#6ee7b7":undefined}}>
+          <button onClick={undo} disabled={!hist.length} className="btn" style={{opacity:hist.length?1:0.4,display:"flex",alignItems:"center",gap:6,background:hist.length?"rgba(52,211,153,0.12)":undefined,borderColor:hist.length?"rgba(52,211,153,0.2)":undefined,color:hist.length?"#34d399":undefined}}>
             <Undo2 size={14}/> Undo
           </button>
         </div>
@@ -1527,13 +1527,13 @@ const Inventory = () => {
                   const el=item.expiry?expiryLabel(item.expiry):"";
                   return(
                     <tr key={item.id} className={`tr${item.id===newId?" row-new":""}`} style={{animationDelay:`${idx*40}ms`}}>
-                      <td className="td" style={{color:"#38bdf8",fontWeight:600}}>{item.name}</td>
+                      <td className="td" style={{color:"#34d399",fontWeight:600}}>{item.name}</td>
                       <td className="td" style={{color:"rgba(255,255,255,0.5)"}}>{item.cat}</td>
                       <td className="td">
                         <span style={{color:item.stocks<=20?"#fbbf24":"rgba(255,255,255,0.65)",fontWeight:600}}>{item.stocks}</span>
                       </td>
-                      <td className="td" style={{color:"#fda4af"}}>₱{item.bp.toFixed(2)}</td>
-                      <td className="td" style={{color:"#6ee7b7"}}>₱{item.sp.toFixed(2)}</td>
+                      <td className="td" style={{color:"#ef4444"}}>₱{item.bp.toFixed(2)}</td>
+                      <td className="td" style={{color:"#34d399"}}>₱{item.sp.toFixed(2)}</td>
                       <td className="td">
                         {item.expiry?(
                           <span style={{display:"inline-flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:999,fontSize:11,fontWeight:700,background:expiryBg(item.expiry),color:ec,border:`1px solid ${ec}30`}}>
@@ -1558,7 +1558,7 @@ const Inventory = () => {
             {Object.values(invErrors).some(Boolean)&&(
               <div style={{display:"flex",alignItems:"center",gap:7,padding:"7px 14px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
                 <span style={{fontSize:14}}>⚠️</span>
-                <span style={{fontSize:12,fontWeight:600,color:"#fda4af"}}>Please fill in all required fields</span>
+                <span style={{fontSize:12,fontWeight:600,color:"#ef4444"}}>Please fill in all required fields</span>
               </div>
             )}
           </div>
@@ -1568,8 +1568,8 @@ const Inventory = () => {
               const hasErr = invErrors[f];
               return (
                 <div key={f}>
-                  <label className={hasErr?"lbl-err":""} style={{fontSize:11,fontWeight:700,color:hasErr?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
-                    {l.toUpperCase()}{required&&<span style={{color:"#fb7185",marginLeft:3}}>*</span>}
+                  <label className={hasErr?"lbl-err":""} style={{fontSize:11,fontWeight:700,color:hasErr?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                    {l.toUpperCase()}{required&&<span style={{color:"#ef4444",marginLeft:3}}>*</span>}
                   </label>
                   <input type={t} value={(nP as any)[f]}
                     onChange={e=>{setnP({...nP,[f]:e.target.value});invClearErr(f);}}
@@ -1605,7 +1605,7 @@ const Inventory = () => {
       {view==="delete"&&(
         <div className="card fu1">
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-            <h2 style={{fontSize:18,fontWeight:700,color:"#fb7185"}}>Delete a Product</h2>
+            <h2 style={{fontSize:18,fontWeight:700,color:"#ef4444"}}>Delete a Product</h2>
             <button onClick={()=>setView("main")} className="btn" style={{padding:"6px 12px",fontSize:12}}>← Back</button>
           </div>
           <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14,maxWidth:640}}>
@@ -1619,7 +1619,7 @@ const Inventory = () => {
           </div>
           {dP&&(
             <div style={{marginTop:16,padding:16,background:"rgba(251,113,133,0.06)",border:"1px solid rgba(251,113,133,0.18)",borderRadius:12}}>
-              <p style={{color:"rgba(255,255,255,0.5)",fontSize:13,marginBottom:14}}>Delete <span style={{color:"#fda4af",fontWeight:700}}>{dP.name}</span>? This cannot be undone.</p>
+              <p style={{color:"rgba(255,255,255,0.5)",fontSize:13,marginBottom:14}}>Delete <span style={{color:"#ef4444",fontWeight:700}}>{dP.name}</span>? This cannot be undone.</p>
               <div style={{display:"flex",gap:10}}>
                 <button onClick={del} className="btn-r">Confirm Delete</button>
                 <button onClick={()=>setdP(null)} className="btn">Cancel</button>
@@ -1636,7 +1636,7 @@ const Inventory = () => {
             <div style={{display:"flex",alignItems:"center",gap:8}}>
               {Object.values(invErrors).some(Boolean)&&(
                 <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 12px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
-                  <span style={{fontSize:12,fontWeight:600,color:"#fda4af"}}>⚠️ Fill required fields</span>
+                  <span style={{fontSize:12,fontWeight:600,color:"#ef4444"}}>⚠️ Fill required fields</span>
                 </div>
               )}
               <button onClick={()=>{setView("main");setInvErrors({});}} className="btn" style={{padding:"6px 12px",fontSize:12}}>← Back</button>
@@ -1654,8 +1654,8 @@ const Inventory = () => {
                 const hasErr = invErrors[eKey];
                 return (
                   <div key={f}>
-                    <label className={hasErr?"lbl-err":""} style={{fontSize:11,fontWeight:700,color:hasErr?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
-                      {l.toUpperCase()}<span style={{color:"#fb7185",marginLeft:3}}>*</span>
+                    <label className={hasErr?"lbl-err":""} style={{fontSize:11,fontWeight:700,color:hasErr?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                      {l.toUpperCase()}<span style={{color:"#ef4444",marginLeft:3}}>*</span>
                     </label>
                     <input type={t} value={uP[f]}
                       onChange={e=>{setuP({...uP,[f]:t==="number"?+e.target.value:e.target.value});invClearErr(eKey);}}
@@ -1688,8 +1688,8 @@ const Inventory = () => {
         <div className="card fu1">
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:34,height:34,borderRadius:10,background:"rgba(129,140,248,0.12)",border:"1px solid rgba(129,140,248,0.22)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <ClipboardList size={16} color="#818cf8"/>
+              <div style={{width:34,height:34,borderRadius:10,background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.22)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <ClipboardList size={16} color="#34d399"/>
               </div>
               <div>
                 <div style={{fontSize:15,fontWeight:700,color:"#fff"}}>Stock Change Log</div>
@@ -1706,7 +1706,7 @@ const Inventory = () => {
               const isAdd   = entry.action==="Added"||entry.qty.startsWith("+");
               const isDel   = entry.action==="Deleted";
               const isAdj   = entry.action==="Adjustment";
-              const color   = isDel?"#fb7185":isAdd?"#34d399":"#fbbf24";
+              const color   = isDel?"#ef4444":isAdd?"#34d399":"#fbbf24";
               const bg      = isDel?"rgba(251,113,133,0.06)":isAdd?"rgba(52,211,153,0.05)":"rgba(251,191,36,0.05)";
               const icon    = isDel?"🗑️":entry.action==="Added"?"📦":entry.action==="Sale"?"🛒":"✏️";
               return (
@@ -1752,7 +1752,7 @@ const Inventory = () => {
             <button onClick={()=>setView("main")} className="btn" style={{padding:"7px 14px",fontSize:12}}>← Back</button>
           </div>
           <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
-            {[{c:"#fb7185",l:"Expired"},{c:"#f97316",l:"≤ 7 days"},{c:"#fbbf24",l:"≤ 30 days"},{c:"#34d399",l:"Safe"}].map(b=>(
+            {[{c:"#ef4444",l:"Expired"},{c:"#fbbf24",l:"≤ 7 days"},{c:"#fbbf24",l:"≤ 30 days"},{c:"#34d399",l:"Safe"}].map(b=>(
               <div key={b.l} style={{display:"flex",alignItems:"center",gap:6,padding:"4px 12px",background:`${b.c}10`,border:`1px solid ${b.c}25`,borderRadius:999,fontSize:11,color:b.c,fontWeight:600}}>
                 <div style={{width:6,height:6,borderRadius:"50%",background:b.c}}/>
                 {b.l}
@@ -1868,12 +1868,12 @@ const Sales = () => {
     <div style={{display:"flex",flexDirection:"column",gap:20}}>
       <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:14}}>
         <StatCard icon="💰" label="Total Sales"  value={fmt(totals.sales)}  sub={`${totals.qty} units sold`}           color="#34d399" bg="rgba(52,211,153,0.06)"/>
-        <StatCard icon="📈" label="Gross Profit" value={fmt(totals.profit)} sub={`Margin: ${(totals.profit/totals.sales*100).toFixed(1)}%`} color="#38bdf8" bg="rgba(56,189,248,0.06)"/>
+        <StatCard icon="📈" label="Gross Profit" value={fmt(totals.profit)} sub={`Margin: ${(totals.profit/totals.sales*100).toFixed(1)}%`} color="#34d399" bg="rgba(52,211,153,0.06)"/>
         <StatCard icon="🧾" label="Tax (12% VAT)" value={fmt(totals.tax)}   sub="Value-added tax"                       color="#fbbf24" bg="rgba(251,191,36,0.06)"/>
       </div>
       <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14}}>
-        <StatCard icon="🏆" label="Net Profit"   value={fmt(totals.net)}    sub="After tax deduction"                   color="#a78bfa" bg="rgba(167,139,250,0.06)"/>
-        <StatCard icon="📦" label="Total COGS"   value={fmt(totals.cost)}   sub="Cost of goods sold"                    color="#fb7185" bg="rgba(251,113,133,0.06)"/>
+        <StatCard icon="🏆" label="Net Profit"   value={fmt(totals.net)}    sub="After tax deduction"                   color="#34d399" bg="rgba(255,255,255,0.06)"/>
+        <StatCard icon="📦" label="Total COGS"   value={fmt(totals.cost)}   sub="Cost of goods sold"                    color="#ef4444" bg="rgba(251,113,133,0.06)"/>
       </div>
       <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:14}}>
         <div className="card fu2">
@@ -1891,7 +1891,7 @@ const Sales = () => {
                 <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.85)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{item.name}</div>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:2}}>{item.qty} units · {fmt(item.totalSales)}</div>
                 <div style={{height:3,background:"rgba(255,255,255,0.06)",borderRadius:99,marginTop:5}}>
-                  <div style={{height:"100%",width:`${Math.min(100,(item.qty/sortedByQty[0].qty)*100)}%`,background:"linear-gradient(90deg,#34d399,#38bdf8)",borderRadius:99}}/>
+                  <div style={{height:"100%",width:`${Math.min(100,(item.qty/sortedByQty[0].qty)*100)}%`,background:"linear-gradient(90deg,#34d399,#34d399)",borderRadius:99}}/>
                 </div>
               </div>
               <span className="chip-up"><TrendingUp size={9}/> {item.margin.toFixed(0)}%</span>
@@ -1913,7 +1913,7 @@ const Sales = () => {
                 <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.75)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{item.name}</div>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:2}}>{item.qty} units · {fmt(item.totalSales)}</div>
                 <div style={{height:3,background:"rgba(255,255,255,0.06)",borderRadius:99,marginTop:5}}>
-                  <div style={{height:"100%",width:`${Math.min(100,(item.qty/sortedByQty[0].qty)*100)}%`,background:"linear-gradient(90deg,#fb7185,#f97316)",borderRadius:99}}/>
+                  <div style={{height:"100%",width:`${Math.min(100,(item.qty/sortedByQty[0].qty)*100)}%`,background:"linear-gradient(90deg,#ef4444,#fbbf24)",borderRadius:99}}/>
                 </div>
               </div>
               <span className="chip-down"><TrendingDown size={9}/> {item.margin.toFixed(0)}%</span>
@@ -1943,20 +1943,20 @@ const Sales = () => {
             <tbody>
               {rows.map((item,idx)=>(
                 <tr key={item.id} className="tr row-new" style={{animationDelay:`${idx*40}ms`}}>
-                  <td className="td" style={{color:"#38bdf8",fontWeight:600,whiteSpace:"nowrap"}}>{item.name}</td>
+                  <td className="td" style={{color:"#34d399",fontWeight:600,whiteSpace:"nowrap"}}>{item.name}</td>
                   <td className="td" style={{color:"rgba(255,255,255,0.5)"}}>{item.cat}</td>
                   <td className="td" style={{color:"rgba(255,255,255,0.7)",fontWeight:600}}>{item.qty}</td>
-                  <td className="td" style={{color:"#6ee7b7",fontWeight:600}}>{fmt(item.totalSales)}</td>
+                  <td className="td" style={{color:"#34d399",fontWeight:600}}>{fmt(item.totalSales)}</td>
                   <td className="td" style={{color:"rgba(255,255,255,0.45)"}}>{fmt(item.totalCost)}</td>
                   <td className="td" style={{color:"#34d399",fontWeight:600}}>{fmt(item.profit)}</td>
                   <td className="td" style={{color:"#fbbf24"}}>{fmt(item.tax)}</td>
-                  <td className="td" style={{color:"#a78bfa",fontWeight:700}}>{fmt(item.netProfit)}</td>
+                  <td className="td" style={{color:"#34d399",fontWeight:700}}>{fmt(item.netProfit)}</td>
                   <td className="td">
                     <span style={{
                       display:"inline-flex",alignItems:"center",gap:4,
                       padding:"3px 10px",borderRadius:999,fontSize:11,fontWeight:700,
                       background:item.margin>=30?"rgba(52,211,153,0.1)":item.margin>=15?"rgba(251,191,36,0.1)":"rgba(251,113,133,0.1)",
-                      color:item.margin>=30?"#34d399":item.margin>=15?"#fbbf24":"#fb7185",
+                      color:item.margin>=30?"#34d399":item.margin>=15?"#fbbf24":"#ef4444",
                     }}>
                       {item.margin>=30?<TrendingUp size={9}/>:<TrendingDown size={9}/>}
                       {item.margin.toFixed(1)}%
@@ -1969,11 +1969,11 @@ const Sales = () => {
               <tr style={{borderTop:"2px solid rgba(255,255,255,0.08)"}}>
                 <td className="td" colSpan={2} style={{fontWeight:800,color:"rgba(255,255,255,0.7)",fontSize:12,letterSpacing:"0.05em"}}>TOTAL</td>
                 <td className="td" style={{fontWeight:700,color:"rgba(255,255,255,0.7)"}}>{totals.qty}</td>
-                <td className="td" style={{fontWeight:800,color:"#6ee7b7"}}>{fmt(totals.sales)}</td>
+                <td className="td" style={{fontWeight:800,color:"#34d399"}}>{fmt(totals.sales)}</td>
                 <td className="td" style={{fontWeight:700,color:"rgba(255,255,255,0.45)"}}>{fmt(totals.cost)}</td>
                 <td className="td" style={{fontWeight:800,color:"#34d399"}}>{fmt(totals.profit)}</td>
                 <td className="td" style={{fontWeight:700,color:"#fbbf24"}}>{fmt(totals.tax)}</td>
-                <td className="td" style={{fontWeight:800,color:"#a78bfa"}}>{fmt(totals.net)}</td>
+                <td className="td" style={{fontWeight:800,color:"#34d399"}}>{fmt(totals.net)}</td>
                 <td className="td" style={{fontWeight:700,color:"rgba(255,255,255,0.4)",fontSize:12}}>{(totals.profit/totals.sales*100).toFixed(1)}%</td>
               </tr>
             </tfoot>
@@ -2070,7 +2070,7 @@ const Supplier = () => {
           {[["add","Add Supplier"],["delete","Delete Supplier"],["update","Edit Supplier"]].map(([v,l])=>(
             <button key={v} onClick={()=>{if(v==="update"&&sups.length)seteS(sups[0]);setView(v);}} className="btn">{l}</button>
           ))}
-          <button onClick={undo} disabled={!hist.length} className="btn" style={{opacity:hist.length?1:0.4,display:"flex",alignItems:"center",gap:6,background:hist.length?"rgba(52,211,153,0.12)":undefined,color:hist.length?"#6ee7b7":undefined}}><Undo2 size={14}/> Undo</button>
+          <button onClick={undo} disabled={!hist.length} className="btn" style={{opacity:hist.length?1:0.4,display:"flex",alignItems:"center",gap:6,background:hist.length?"rgba(52,211,153,0.12)":undefined,color:hist.length?"#34d399":undefined}}><Undo2 size={14}/> Undo</button>
         </div>
       </div>
       {view==="main"&&(
@@ -2086,7 +2086,7 @@ const Supplier = () => {
                       sub={q?"Try a different supplier name":"Add your first supplier using Add Supplier"}/>
                   ):fil.map(s=>(
                     <tr key={s.id} className="tr">
-                      <td className="td" style={{color:"#38bdf8",fontWeight:500}}>{s.name}</td>
+                      <td className="td" style={{color:"#34d399",fontWeight:500}}>{s.name}</td>
                       <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{s.contact}</td>
                       <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{s.email}</td>
                       <td className="td" style={{color:"rgba(255,255,255,0.55)"}}>{s.products}</td>
@@ -2109,13 +2109,13 @@ const Supplier = () => {
             {[{name:"Kenzo",delay:"0s"},{name:"Mel Chor",delay:"-6s"}].map(d=>(
               <div key={d.name} className="card" style={{marginBottom:12}}>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:18}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,color:"rgba(255,255,255,0.5)",fontSize:13}}><MapPin size={13} color="#38bdf8"/>Supplier ({d.name})</div>
+                  <div style={{display:"flex",alignItems:"center",gap:8,color:"rgba(255,255,255,0.5)",fontSize:13}}><MapPin size={13} color="#34d399"/>Supplier ({d.name})</div>
                   <div style={{display:"flex",alignItems:"center",gap:8,color:"rgba(255,255,255,0.5)",fontSize:13}}>Your Store <Store size={13} color="#34d399"/></div>
                 </div>
                 <div style={{position:"relative",height:6,background:"rgba(255,255,255,0.06)",borderRadius:99,marginTop:20,marginBottom:6}}>
-                  <div style={{position:"absolute",top:0,left:0,height:"100%",borderRadius:99,background:"linear-gradient(90deg,#38bdf8,#34d399)",animation:`pGrow 12s ease-in-out infinite`,animationDelay:d.delay}}/>
+                  <div style={{position:"absolute",top:0,left:0,height:"100%",borderRadius:99,background:"linear-gradient(90deg,#34d399,#34d399)",animation:`pGrow 12s ease-in-out infinite`,animationDelay:d.delay}}/>
                   <div style={{position:"absolute",top:"50%",transform:"translateY(-50%) translateX(-50%)",animation:`tMove 12s ease-in-out infinite`,animationDelay:d.delay}}>
-                    <Truck size={30} color="#fff" style={{filter:"drop-shadow(0 0 8px rgba(56,189,248,0.5))"}}/>
+                    <Truck size={30} color="#fff" style={{filter:"drop-shadow(0 0 8px rgba(52,211,153,0.5))"}}/>
                   </div>
                 </div>
               </div>
@@ -2130,7 +2130,7 @@ const Supplier = () => {
             {Object.values(supErrors).some(Boolean)&&(
               <div style={{display:"flex",alignItems:"center",gap:7,padding:"7px 14px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
                 <span style={{fontSize:14}}>⚠️</span>
-                <span style={{fontSize:12,fontWeight:600,color:"#fda4af"}}>Please fill in all required fields</span>
+                <span style={{fontSize:12,fontWeight:600,color:"#ef4444"}}>Please fill in all required fields</span>
               </div>
             )}
           </div>
@@ -2140,8 +2140,8 @@ const Supplier = () => {
               return (
                 <div key={f}>
                   <div style={{display:"flex",alignItems:"flex-start",gap:16}}>
-                    <label style={{width:180,fontSize:14,color:hasErr?"#fda4af":"rgba(255,255,255,0.5)",fontWeight:500,flexShrink:0,paddingTop:10}}>
-                      {l}{req&&<span style={{color:"#fb7185",marginLeft:3}}>*</span>}
+                    <label style={{width:180,fontSize:14,color:hasErr?"#ef4444":"rgba(255,255,255,0.5)",fontWeight:500,flexShrink:0,paddingTop:10}}>
+                      {l}{req&&<span style={{color:"#ef4444",marginLeft:3}}>*</span>}
                     </label>
                     <div style={{flex:1}}>
                       <input value={(nS as any)[f]}
@@ -2179,7 +2179,7 @@ const Supplier = () => {
           </div>
           {dS&&(
             <div style={{maxWidth:520,padding:20,borderRadius:14,background:"rgba(251,113,133,0.06)",border:"1px solid rgba(251,113,133,0.15)",marginBottom:16}}>
-              <p style={{color:"rgba(255,255,255,0.45)",fontSize:14,marginBottom:14}}>Delete <span style={{color:"#fda4af",fontWeight:600}}>{dS.name}</span>?</p>
+              <p style={{color:"rgba(255,255,255,0.45)",fontSize:14,marginBottom:14}}>Delete <span style={{color:"#ef4444",fontWeight:600}}>{dS.name}</span>?</p>
               <div style={{display:"flex",gap:10}}>
                 <button onClick={delS} className="btn-r">CONFIRM DELETE</button>
                 <button onClick={()=>setdS(null)} className="btn">CANCEL</button>
@@ -2223,9 +2223,9 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
   const [urgFilter, setUrgFilter] = useState("All");
 
   const urgMap: Record<string,{label:string,chip:string,color:string,bg:string,border:string}> = {
-    critical: {label:"Critical",  chip:"badge-r",  color:"#fb7185", bg:"rgba(251,113,133,0.08)", border:"rgba(251,113,133,0.2)"},
+    critical: {label:"Critical",  chip:"badge-r",  color:"#ef4444", bg:"rgba(251,113,133,0.08)", border:"rgba(251,113,133,0.2)"},
     high:     {label:"High",      chip:"badge-a",  color:"#fbbf24", bg:"rgba(251,191,36,0.07)",  border:"rgba(251,191,36,0.2)"},
-    medium:   {label:"Medium",    chip:"badge-v",  color:"#818cf8", bg:"rgba(129,140,248,0.07)", border:"rgba(129,140,248,0.2)"},
+    medium:   {label:"Medium",    chip:"badge-v",  color:"#34d399", bg:"rgba(255,255,255,0.07)", border:"rgba(255,255,255,0.2)"},
     low:      {label:"Low",       chip:"badge-g",  color:"#34d399", bg:"rgba(52,211,153,0.07)",  border:"rgba(52,211,153,0.2)"},
   };
 
@@ -2280,22 +2280,22 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
         </div>
         <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:8,background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:10,padding:"6px 14px"}}>
           <div style={{width:7,height:7,borderRadius:"50%",background:"#fbbf24"}} className="pulse"/>
-          <span style={{fontSize:12,color:"#fde68a",fontWeight:600}}>Model: Active</span>
+          <span style={{fontSize:12,color:"#fbbf24",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
       {critical.length > 0 && (
         <div className="fu2" style={{background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:14,padding:"14px 20px",display:"flex",flexDirection:"column",gap:8}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:2}}>
-            <AlertTriangle size={16} color="#fb7185"/>
-            <span style={{fontSize:13,fontWeight:700,color:"#fb7185"}}>Critical Stock Alerts — Immediate Restocking Required</span>
+            <AlertTriangle size={16} color="#ef4444"/>
+            <span style={{fontSize:13,fontWeight:700,color:"#ef4444"}}>Critical Stock Alerts — Immediate Restocking Required</span>
           </div>
           <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
             {critical.map(p => (
               <div key={p.id} style={{background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.25)",borderRadius:10,padding:"8px 14px",display:"flex",alignItems:"center",gap:10}}>
-                <AlertTriangle size={13} color="#fb7185"/>
+                <AlertTriangle size={13} color="#ef4444"/>
                 <span style={{fontSize:12,color:"rgba(255,255,255,0.8)",fontWeight:500}}>
-                  <span style={{color:"#fda4af",fontWeight:700}}>{p.name}</span>
-                  {" "}— may run out in <span style={{color:"#fb7185",fontWeight:700}}>{p.daysLeft} {p.daysLeft === 1 ? "day" : "days"}</span>. Stock: {p.stock} / Demand: {p.demand}
+                  <span style={{color:"#ef4444",fontWeight:700}}>{p.name}</span>
+                  {" "}— may run out in <span style={{color:"#ef4444",fontWeight:700}}>{p.daysLeft} {p.daysLeft === 1 ? "day" : "days"}</span>. Stock: {p.stock} / Demand: {p.demand}
                 </span>
               </div>
             ))}
@@ -2304,9 +2304,9 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
       )}
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
-          {label:"Critical Items",    value:String(INV_PRODUCTS.filter(p=>p.urgency==="critical").length), sub:"Need restock today",   color:"#fb7185", bg:"rgba(251,113,133,0.1)", I:AlertTriangle},
+          {label:"Critical Items",    value:String(INV_PRODUCTS.filter(p=>p.urgency==="critical").length), sub:"Need restock today",   color:"#ef4444", bg:"rgba(251,113,133,0.1)", I:AlertTriangle},
           {label:"High Priority",     value:String(INV_PRODUCTS.filter(p=>p.urgency==="high").length),    sub:"Restock within 7 days",color:"#fbbf24", bg:"rgba(251,191,36,0.1)",  I:TrendingUp},
-          {label:"Total Restock Qty", value:String(INV_PRODUCTS.reduce((a,p)=>a+Math.max(0,p.restock-p.stock),0)), sub:"Units to order", color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:Boxes},
+          {label:"Total Restock Qty", value:String(INV_PRODUCTS.reduce((a,p)=>a+Math.max(0,p.restock-p.stock),0)), sub:"Units to order", color:"#34d399", bg:"rgba(255,255,255,0.1)", I:Boxes},
           {label:"Products Monitored",value:String(INV_PRODUCTS.length), sub:"Across all categories", color:"#34d399", bg:"rgba(52,211,153,0.1)", I:PackageCheck},
         ].map((s,i) => (
           <div key={i} className="stat-forecast">
@@ -2329,9 +2329,9 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
           <div className="card-title">
             Stock Level vs Predicted Demand
             <div style={{display:"flex",gap:14,fontSize:11}}>
-              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#818cf8",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Current Stock</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#34d399",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Current Stock</span></span>
               <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#fbbf24",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Demand</span></span>
-              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#fb7185",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Restock Gap</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#ef4444",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Restock Gap</span></span>
             </div>
           </div>
           <div style={{height:260}}>
@@ -2339,16 +2339,16 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
               <BarChart data={stockDemandData} margin={{top:8,right:8,left:-10,bottom:44}} barGap={3}>
                 <defs>
                   <linearGradient id="stG" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#818cf8" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#6366f1" stopOpacity={0.4}/>
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={1}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0.4}/>
                   </linearGradient>
                   <linearGradient id="dmD" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#fbbf24" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#d97706" stopOpacity={0.4}/>
+                    <stop offset="100%" stopColor="#fbbf24" stopOpacity={0.4}/>
                   </linearGradient>
                   <linearGradient id="rkG" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#fb7185" stopOpacity={0.9}/>
-                    <stop offset="100%" stopColor="#e11d48" stopOpacity={0.3}/>
+                    <stop offset="0%" stopColor="#ef4444" stopOpacity={0.9}/>
+                    <stop offset="100%" stopColor="#ef4444" stopOpacity={0.3}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
@@ -2421,19 +2421,19 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
                       <td className="td" style={{textAlign:"left",paddingLeft:20,color:"#e2e8f0",fontWeight:500}}>{p.name}</td>
                       <td className="td"><span className="badge-a" style={{fontSize:10}}>{p.cat}</span></td>
                       <td className="td">
-                        <span style={{color: p.stock <= 20 ? "#fb7185" : p.stock <= 50 ? "#fbbf24" : "#34d399", fontWeight:700}}>
+                        <span style={{color: p.stock <= 20 ? "#ef4444" : p.stock <= 50 ? "#fbbf24" : "#34d399", fontWeight:700}}>
                           {p.stock}
                         </span>
                       </td>
                       <td className="td" style={{color:"#fbbf24",fontWeight:600}}>{p.demand}</td>
-                      <td className="td" style={{color:"#818cf8",fontWeight:600}}>{p.restock}</td>
+                      <td className="td" style={{color:"#34d399",fontWeight:600}}>{p.restock}</td>
                       <td className="td">
-                        <span style={{background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:8,padding:"3px 10px",fontSize:12,fontWeight:700,color:"#6ee7b7"}}>
+                        <span style={{background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:8,padding:"3px 10px",fontSize:12,fontWeight:700,color:"#34d399"}}>
                           +{reorderQty}
                         </span>
                       </td>
                       <td className="td">
-                        <span style={{color: p.daysLeft <= 3 ? "#fb7185" : p.daysLeft <= 7 ? "#fbbf24" : "rgba(255,255,255,0.5)", fontWeight:600, fontSize:12}}>
+                        <span style={{color: p.daysLeft <= 3 ? "#ef4444" : p.daysLeft <= 7 ? "#fbbf24" : "rgba(255,255,255,0.5)", fontWeight:600, fontSize:12}}>
                           {p.daysLeft <= 3
                             ? `⚠ ${p.daysLeft}d`
                             : `${p.daysLeft} days`}
@@ -2453,7 +2453,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
       <div className="fu5">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
           <div style={{width:34,height:34,borderRadius:10,background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <AlertTriangle size={16} color="#fb7185"/>
+            <AlertTriangle size={16} color="#ef4444"/>
           </div>
           <div>
             <h3 style={{fontSize:15,fontWeight:700,color:"#fff"}}>Urgent Restock Required</h3>
@@ -2481,7 +2481,7 @@ const InventoryPlanning = ({ onBack }: { onBack: () => void }) => {
                   {[
                     {l:"Current",   v:p.stock,      c:"rgba(255,255,255,0.7)"},
                     {l:"Demand",    v:p.demand,     c:u.color},
-                    {l:"Reorder",   v:"+"+reorderQty, c:"#6ee7b7"},
+                    {l:"Reorder",   v:"+"+reorderQty, c:"#34d399"},
                   ].map(s=>(
                     <div key={s.l} style={{background:"rgba(0,0,0,0.2)",borderRadius:8,padding:"8px",textAlign:"center"}}>
                       <div style={{fontSize:15,fontWeight:700,color:s.c}}>{s.v}</div>
@@ -2523,10 +2523,10 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
   const profitGrowth  = (((nextMonth.profit   - lastMonth.profit)   / lastMonth.profit)   * 100).toFixed(1);
 
   const insights = [
-    {pct:`+${profitGrowth}%`,  color:"#38bdf8", text:`Profit is expected to increase by ${profitGrowth}% compared to last month (Dec), driven by higher predicted sales revenue.`},
+    {pct:`+${profitGrowth}%`,  color:"#34d399", text:`Profit is expected to increase by ${profitGrowth}% compared to last month (Dec), driven by higher predicted sales revenue.`},
     {pct:`+${revenueGrowth}%`, color:"#34d399", text:`Revenue forecast for January is ₱${nextMonth.revenue.toLocaleString()}, a ${revenueGrowth}% jump reflecting continued post-holiday demand growth.`},
     {pct:`+${expenseGrowth}%`, color:"#fbbf24", text:`Expenses are projected to rise ${expenseGrowth}% due to increased supplier orders driven by higher demand forecasts.`},
-    {pct:"+46.4%",              color:"#818cf8", text:`March profit forecast (₱${PROFIT_HISTORY[8].profit.toLocaleString()}) shows a 46.4% quarterly improvement vs Q3 average, signaling strong growth momentum.`},
+    {pct:"+46.4%",              color:"#34d399", text:`March profit forecast (₱${PROFIT_HISTORY[8].profit.toLocaleString()}) shows a 46.4% quarterly improvement vs Q3 average, signaling strong growth momentum.`},
   ];
 
   const ProfitTT = ({ active, payload, label }: any) => {
@@ -2552,25 +2552,25 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           <ArrowLeft size={15}/> Back
         </button>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
-          <div style={{width:42,height:42,borderRadius:12,background:"rgba(56,189,248,0.15)",border:"1px solid rgba(56,189,248,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <DollarSign size={21} color="#38bdf8"/>
+          <div style={{width:42,height:42,borderRadius:12,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <DollarSign size={21} color="#34d399"/>
           </div>
           <div>
             <h1 style={{fontSize:22,fontWeight:700,color:"#fff"}}>Profit Forecast</h1>
             <p style={{fontSize:13,color:"rgba(255,255,255,0.35)",marginTop:2}}>AI-predicted revenue, expenses and net profit based on historical trends</p>
           </div>
         </div>
-        <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:8,background:"rgba(56,189,248,0.08)",border:"1px solid rgba(56,189,248,0.2)",borderRadius:10,padding:"6px 14px"}}>
-          <div style={{width:7,height:7,borderRadius:"50%",background:"#38bdf8"}} className="pulse"/>
-          <span style={{fontSize:12,color:"#7dd3fc",fontWeight:600}}>Model: Active</span>
+        <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:8,background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:10,padding:"6px 14px"}}>
+          <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
+          <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Predicted Revenue",  value:`₱${nextMonth.revenue.toLocaleString()}`,  sub:"January 2026",    color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:TrendingUp,  change:`+${revenueGrowth}%`, up:true},
-          {label:"Predicted Expenses", value:`₱${nextMonth.expenses.toLocaleString()}`, sub:"January 2026",    color:"#fb7185", bg:"rgba(251,113,133,0.1)", I:Receipt,     change:`+${expenseGrowth}%`, up:false},
-          {label:"Predicted Net Profit",value:`₱${nextMonth.profit.toLocaleString()}`,  sub:"January 2026",    color:"#38bdf8", bg:"rgba(56,189,248,0.1)",  I:DollarSign,  change:`+${profitGrowth}%`,  up:true},
-          {label:"Profit Margin",      value:`${((nextMonth.profit/nextMonth.revenue)*100).toFixed(1)}%`,  sub:"vs Dec 37.3%", color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:BarChart3, change:"+2.5pp", up:true},
+          {label:"Predicted Expenses", value:`₱${nextMonth.expenses.toLocaleString()}`, sub:"January 2026",    color:"#ef4444", bg:"rgba(251,113,133,0.1)", I:Receipt,     change:`+${expenseGrowth}%`, up:false},
+          {label:"Predicted Net Profit",value:`₱${nextMonth.profit.toLocaleString()}`,  sub:"January 2026",    color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:DollarSign,  change:`+${profitGrowth}%`,  up:true},
+          {label:"Profit Margin",      value:`${((nextMonth.profit/nextMonth.revenue)*100).toFixed(1)}%`,  sub:"vs Dec 37.3%", color:"#34d399", bg:"rgba(255,255,255,0.1)", I:BarChart3, change:"+2.5pp", up:true},
         ].map((s,i)=>(
           <div key={i} className="stat-forecast">
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
@@ -2592,8 +2592,8 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           <div className="card-title">
             Profit Trend — Historical vs Predicted
             <div style={{display:"flex",gap:14,fontSize:11}}>
-              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#38bdf8",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Actual</span></span>
-              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:14,height:3,background:"#818cf8",borderRadius:99,opacity:0.7,borderTop:"1px dashed #818cf8"}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Predicted</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:10,height:3,background:"#34d399",borderRadius:99}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Actual</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:14,height:3,background:"#34d399",borderRadius:99,opacity:0.7,borderTop:"1px dashed #34d399"}}/><span style={{color:"rgba(255,255,255,0.45)"}}>Predicted</span></span>
             </div>
           </div>
           <div style={{height:250}}>
@@ -2601,8 +2601,8 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
               <LineChart data={PROFIT_TREND} margin={{top:10,right:12,left:-10,bottom:0}}>
                 <defs>
                   <linearGradient id="ptA" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#38bdf8" stopOpacity={0.2}/>
-                    <stop offset="100%" stopColor="#38bdf8" stopOpacity={0}/>
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={0.2}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
@@ -2611,10 +2611,10 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
                 <RechartsTip content={<ProfitTT/>}/>
                 <ReferenceLine x="Jan" stroke="rgba(255,255,255,0.08)" strokeDasharray="4 4"
                   label={{value:"Forecast →",position:"insideTopRight",fill:"rgba(255,255,255,0.2)",fontSize:10}}/>
-                <Line type="monotone" dataKey="profit"    name="actual"    stroke="#38bdf8" strokeWidth={2.5}
-                  dot={{fill:"#38bdf8",r:4,strokeWidth:0}} connectNulls={false}/>
-                <Line type="monotone" dataKey="predicted" name="predicted" stroke="#818cf8" strokeWidth={2.5}
-                  strokeDasharray="6 3" dot={{fill:"#818cf8",r:4,strokeWidth:0}} connectNulls={false}/>
+                <Line type="monotone" dataKey="profit"    name="actual"    stroke="#34d399" strokeWidth={2.5}
+                  dot={{fill:"#34d399",r:4,strokeWidth:0}} connectNulls={false}/>
+                <Line type="monotone" dataKey="predicted" name="predicted" stroke="#34d399" strokeWidth={2.5}
+                  strokeDasharray="6 3" dot={{fill:"#34d399",r:4,strokeWidth:0}} connectNulls={false}/>
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -2640,15 +2640,15 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
                 <defs>
                   <linearGradient id="rvG" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#34d399" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#059669" stopOpacity={0.4}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0.4}/>
                   </linearGradient>
                   <linearGradient id="exG" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#fb7185" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#e11d48" stopOpacity={0.4}/>
+                    <stop offset="0%" stopColor="#ef4444" stopOpacity={1}/>
+                    <stop offset="100%" stopColor="#ef4444" stopOpacity={0.4}/>
                   </linearGradient>
                   <linearGradient id="prG" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#38bdf8" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#0284c7" stopOpacity={0.4}/>
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={1}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0.4}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
@@ -2662,7 +2662,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
             </ResponsiveContainer>
           </div>
           <div style={{display:"flex",gap:16,marginTop:10,flexWrap:"wrap"}}>
-            {[{c:"#34d399",l:"Revenue"},{c:"#fb7185",l:"Expenses"},{c:"#38bdf8",l:"Net Profit"}].map(x=>(
+            {[{c:"#34d399",l:"Revenue"},{c:"#ef4444",l:"Expenses"},{c:"#34d399",l:"Net Profit"}].map(x=>(
               <span key={x.l} style={{display:"flex",alignItems:"center",gap:5,fontSize:11,color:"rgba(255,255,255,0.4)"}}>
                 <div style={{width:8,height:8,borderRadius:"50%",background:x.c}}/>{x.l}
               </span>
@@ -2676,8 +2676,8 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:12,marginBottom:20}}>
             {[
               {label:"Revenue",  last:lastMonth.revenue,  next:nextMonth.revenue,  color:"#34d399"},
-              {label:"Expenses", last:lastMonth.expenses, next:nextMonth.expenses, color:"#fb7185"},
-              {label:"Profit",   last:lastMonth.profit,   next:nextMonth.profit,   color:"#38bdf8"},
+              {label:"Expenses", last:lastMonth.expenses, next:nextMonth.expenses, color:"#ef4444"},
+              {label:"Profit",   last:lastMonth.profit,   next:nextMonth.profit,   color:"#34d399"},
             ].map(c=>{
               const g = (((c.next-c.last)/c.last)*100).toFixed(1);
               const up = +g > 0;
@@ -2708,8 +2708,8 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
                   <tr key={i} className="tr">
                     <td className="td" style={{color:"rgba(255,255,255,0.7)",fontWeight:600}}>{r.month}</td>
                     <td className="td" style={{color:"#34d399",fontWeight:600}}>₱{r.revenue.toLocaleString()}</td>
-                    <td className="td" style={{color:"#fda4af"}}>₱{r.expenses.toLocaleString()}</td>
-                    <td className="td" style={{color:"#38bdf8",fontWeight:700}}>₱{r.profit.toLocaleString()}</td>
+                    <td className="td" style={{color:"#ef4444"}}>₱{r.expenses.toLocaleString()}</td>
+                    <td className="td" style={{color:"#34d399",fontWeight:700}}>₱{r.profit.toLocaleString()}</td>
                     <td className="td" style={{color:"rgba(255,255,255,0.5)"}}>{margin}%</td>
                     <td className="td">
                       <span className={r.predicted?"badge-v":"badge-g"} style={{fontSize:10}}>
@@ -2725,17 +2725,17 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <Sparkles size={15} color="#38bdf8"/>
+              <Sparkles size={15} color="#34d399"/>
               AI Profit Insights
             </div>
           </div>
           <div style={{
-            background:"linear-gradient(135deg,rgba(56,189,248,0.12),rgba(129,140,248,0.06))",
-            border:"1px solid rgba(56,189,248,0.25)",borderRadius:14,padding:"18px 20px",marginBottom:16,
+            background:"linear-gradient(135deg,rgba(52,211,153,0.12),rgba(255,255,255,0.06))",
+            border:"1px solid rgba(52,211,153,0.25)",borderRadius:14,padding:"18px 20px",marginBottom:16,
           }}>
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-              <div style={{width:40,height:40,borderRadius:10,background:"rgba(56,189,248,0.15)",border:"1px solid rgba(56,189,248,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                <DollarSign size={20} color="#38bdf8"/>
+              <div style={{width:40,height:40,borderRadius:10,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                <DollarSign size={20} color="#34d399"/>
               </div>
               <div>
                 <div style={{fontSize:13,fontWeight:700,color:"#fff"}}>Primary Forecast</div>
@@ -2744,7 +2744,7 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
               <span className="chip-up" style={{marginLeft:"auto"}}><TrendingUp size={10}/>+{profitGrowth}%</span>
             </div>
             <p style={{fontSize:14,color:"rgba(255,255,255,0.75)",lineHeight:1.7,fontStyle:"italic"}}>
-              "Profit is expected to increase by <span style={{color:"#38bdf8",fontWeight:700}}>{profitGrowth}%</span> compared to the previous month (December), with net profit reaching <span style={{color:"#38bdf8",fontWeight:700}}>₱{nextMonth.profit.toLocaleString()}</span> in January 2026."
+              "Profit is expected to increase by <span style={{color:"#34d399",fontWeight:700}}>{profitGrowth}%</span> compared to the previous month (December), with net profit reaching <span style={{color:"#34d399",fontWeight:700}}>₱{nextMonth.profit.toLocaleString()}</span> in January 2026."
             </p>
           </div>
 
@@ -2774,8 +2774,8 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
           const margin = ((m.profit/m.revenue)*100).toFixed(1);
           return (
             <div key={i} style={{
-              background:"linear-gradient(135deg,rgba(56,189,248,0.07),rgba(129,140,248,0.04))",
-              border:"1px solid rgba(56,189,248,0.18)",borderRadius:14,padding:"20px 22px",
+              background:"linear-gradient(135deg,rgba(52,211,153,0.07),rgba(255,255,255,0.04))",
+              border:"1px solid rgba(52,211,153,0.18)",borderRadius:14,padding:"20px 22px",
             }}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
                 <div>
@@ -2789,8 +2789,8 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
               <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10,marginBottom:14}}>
                 {[
                   {l:"Revenue",  v:`₱${(m.revenue/1000).toFixed(0)}k`,  c:"#34d399"},
-                  {l:"Expenses", v:`₱${(m.expenses/1000).toFixed(0)}k`, c:"#fb7185"},
-                  {l:"Profit",   v:`₱${(m.profit/1000).toFixed(0)}k`,   c:"#38bdf8"},
+                  {l:"Expenses", v:`₱${(m.expenses/1000).toFixed(0)}k`, c:"#ef4444"},
+                  {l:"Profit",   v:`₱${(m.profit/1000).toFixed(0)}k`,   c:"#34d399"},
                 ].map(s=>(
                   <div key={s.l} style={{textAlign:"center",background:"rgba(0,0,0,0.2)",borderRadius:8,padding:"8px 4px"}}>
                     <div style={{fontSize:15,fontWeight:700,color:s.c}}>{s.v}</div>
@@ -2799,10 +2799,10 @@ const ProfitForecast = ({ onBack }: { onBack: () => void }) => {
                 ))}
               </div>
               <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"rgba(255,255,255,0.35)",marginBottom:6}}>
-                <span>Profit Margin</span><span style={{color:"#38bdf8",fontWeight:600}}>{margin}%</span>
+                <span>Profit Margin</span><span style={{color:"#34d399",fontWeight:600}}>{margin}%</span>
               </div>
               <div style={{height:5,background:"rgba(255,255,255,0.06)",borderRadius:99,overflow:"hidden"}}>
-                <div style={{height:"100%",width:`${margin}%`,background:"linear-gradient(90deg,#38bdf8,#818cf8)",borderRadius:99}}/>
+                <div style={{height:"100%",width:`${margin}%`,background:"linear-gradient(90deg,#34d399,#34d399)",borderRadius:99}}/>
               </div>
             </div>
           );
@@ -2885,7 +2885,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
         </button>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
           <div style={{width:42,height:42,borderRadius:12,background:"rgba(251,113,133,0.15)",border:"1px solid rgba(251,113,133,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <Receipt size={20} color="#fb7185"/>
+            <Receipt size={20} color="#ef4444"/>
           </div>
           <div>
             <h1 style={{fontSize:22,fontWeight:700,color:"#fff"}}>Expense Prediction</h1>
@@ -2893,8 +2893,8 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
         <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:8,background:"rgba(251,113,133,0.08)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:10,padding:"6px 14px"}}>
-          <div style={{width:7,height:7,borderRadius:"50%",background:"#fb7185"}} className="pulse"/>
-          <span style={{fontSize:12,color:"#fda4af",fontWeight:600}}>Model: Active</span>
+          <div style={{width:7,height:7,borderRadius:"50%",background:"#ef4444"}} className="pulse"/>
+          <span style={{fontSize:12,color:"#ef4444",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
       <div className="fu2 grid-5col" style={{display:"grid",gridTemplateColumns:colsW(5),gap:14}}>
@@ -2926,18 +2926,18 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
         <div style={{background:"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.04))",border:"1px solid rgba(251,113,133,0.22)",borderRadius:16,padding:"22px 24px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
           <div>
             <div style={{fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.35)",letterSpacing:"0.07em",textTransform:"uppercase",marginBottom:6}}>Total Estimated Expenses</div>
-            <div style={{fontSize:36,fontWeight:700,color:"#fb7185",marginBottom:4}}>₱{nextTotal.toLocaleString()}</div>
+            <div style={{fontSize:36,fontWeight:700,color:"#ef4444",marginBottom:4}}>₱{nextTotal.toLocaleString()}</div>
             <div style={{fontSize:12,color:"rgba(255,255,255,0.3)"}}>January 2026 · All categories</div>
           </div>
           <div style={{marginTop:18}}>
             <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"rgba(255,255,255,0.3)",marginBottom:6}}>
               <span>vs December 2025</span>
-              <span style={{color:+totalGrowth>0?"#fb7185":"#34d399",fontWeight:700}}>
+              <span style={{color:+totalGrowth>0?"#ef4444":"#34d399",fontWeight:700}}>
                 {+totalGrowth>0?"+":""}{totalGrowth}%
               </span>
             </div>
             <div style={{height:5,background:"rgba(255,255,255,0.06)",borderRadius:99,overflow:"hidden"}}>
-              <div style={{height:"100%",width:`${Math.min(100,Math.abs(+totalGrowth)*8)}%`,background:"linear-gradient(90deg,#fb7185,#fda4af88)",borderRadius:99}}/>
+              <div style={{height:"100%",width:`${Math.min(100,Math.abs(+totalGrowth)*8)}%`,background:"linear-gradient(90deg,#ef4444,#ef444488)",borderRadius:99}}/>
             </div>
             <div style={{marginTop:12,display:"flex",gap:8}}>
               <div style={{flex:1,textAlign:"center",background:"rgba(255,255,255,0.04)",borderRadius:8,padding:"8px 4px"}}>
@@ -2945,7 +2945,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:2}}>Last Month</div>
               </div>
               <div style={{flex:1,textAlign:"center",background:"rgba(251,113,133,0.08)",border:"1px solid rgba(251,113,133,0.15)",borderRadius:8,padding:"8px 4px"}}>
-                <div style={{fontSize:13,fontWeight:700,color:"#fb7185"}}>₱{nextTotal.toLocaleString()}</div>
+                <div style={{fontSize:13,fontWeight:700,color:"#ef4444"}}>₱{nextTotal.toLocaleString()}</div>
                 <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:2}}>Predicted</div>
               </div>
             </div>
@@ -3060,7 +3060,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
                   tick={({x,y,payload})=>(
                     <g transform={`translate(${x},${y})`}>
                       <text x={0} y={0} dy={14} textAnchor="middle"
-                        fill={barDataShown.find(d=>d.month===payload.value)?.predicted?"#818cf8":"rgba(255,255,255,0.28)"}
+                        fill={barDataShown.find(d=>d.month===payload.value)?.predicted?"#34d399":"rgba(255,255,255,0.28)"}
                         fontSize={11}>
                         {payload.value}{barDataShown.find(d=>d.month===payload.value)?.predicted?" ✦":""}
                       </text>
@@ -3085,14 +3085,14 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
                 {c.label}
               </span>
             ))}
-            <span style={{fontSize:11,color:"rgba(129,140,248,0.7)",marginLeft:"auto"}}>✦ Predicted months</span>
+            <span style={{fontSize:11,color:"rgba(255,255,255,0.7)",marginLeft:"auto"}}>✦ Predicted months</span>
           </div>
         </div>
       </div>
       <div className="fu4">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
           <div style={{width:34,height:34,borderRadius:10,background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <Sparkles size={16} color="#fb7185"/>
+            <Sparkles size={16} color="#ef4444"/>
           </div>
           <div>
             <h3 style={{fontSize:15,fontWeight:700,color:"#fff"}}>AI Expense Insights</h3>
@@ -3101,7 +3101,7 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
         </div>
         <div style={{background:"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.03))",border:"1px solid rgba(251,113,133,0.25)",borderRadius:14,padding:"18px 22px",marginBottom:16,display:"flex",gap:16,alignItems:"flex-start"}}>
           <div style={{width:52,height:52,borderRadius:12,background:"rgba(251,113,133,0.15)",border:"1px solid rgba(251,113,133,0.25)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-            <Receipt size={24} color="#fb7185"/>
+            <Receipt size={24} color="#ef4444"/>
           </div>
           <div style={{flex:1}}>
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
@@ -3110,8 +3110,8 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
               <span className="chip-down" style={{marginLeft:"auto"}}><TrendingUp size={10}/>+{totalGrowth}%</span>
             </div>
             <p style={{fontSize:14,color:"rgba(255,255,255,0.7)",lineHeight:1.7,fontStyle:"italic"}}>
-              "Total expenses are projected to reach <span style={{color:"#fb7185",fontWeight:700}}>₱{nextTotal.toLocaleString()}</span> in January 2026,
-              an increase of <span style={{color:"#fb7185",fontWeight:700}}>{totalGrowth}%</span> compared to December 2025.
+              "Total expenses are projected to reach <span style={{color:"#ef4444",fontWeight:700}}>₱{nextTotal.toLocaleString()}</span> in January 2026,
+              an increase of <span style={{color:"#ef4444",fontWeight:700}}>{totalGrowth}%</span> compared to December 2025.
               The main drivers are rising salary costs and higher utility usage due to seasonal demand."
             </p>
           </div>
@@ -3140,8 +3140,8 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
       </div>
       <div className="fu5">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
-          <div style={{width:34,height:34,borderRadius:10,background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <BarChart3 size={16} color="#38bdf8"/>
+          <div style={{width:34,height:34,borderRadius:10,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <BarChart3 size={16} color="#34d399"/>
           </div>
           <h3 style={{fontSize:15,fontWeight:700,color:"#fff"}}>3-Month Expense Forecast</h3>
         </div>
@@ -3165,14 +3165,14 @@ const ExpensePrediction = ({ onBack }: { onBack: () => void }) => {
                   return (
                     <tr key={i} className="tr">
                       <td className="td" style={{textAlign:"left",paddingLeft:20,color:"rgba(255,255,255,0.75)",fontWeight:600}}>
-                        {r.month} {r.predicted && <span style={{fontSize:10,color:"#818cf8"}}>2026</span>}
+                        {r.month} {r.predicted && <span style={{fontSize:10,color:"#34d399"}}>2026</span>}
                       </td>
                       {EXP_CATEGORIES.map(c=>(
                         <td key={c.key} className="td" style={{color:c.color,fontWeight:r.predicted?700:400}}>
                           ₱{(r as any)[c.key].toLocaleString()}
                         </td>
                       ))}
-                      <td className="td" style={{color:r.predicted?"#fda4af":"rgba(255,255,255,0.6)",fontWeight:r.predicted?700:500}}>
+                      <td className="td" style={{color:r.predicted?"#ef4444":"rgba(255,255,255,0.6)",fontWeight:r.predicted?700:500}}>
                         ₱{t.toLocaleString()}
                       </td>
                       <td className="td">
@@ -3211,14 +3211,14 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
   // Heat colour: 0=transparent → violet → purple → pink
   const heatColor = (v: number) => {
     if (v === 0)  return "rgba(255,255,255,0.02)";
-    if (v < 20)   return `rgba(129,140,248,${(v/20)*0.25})`;
-    if (v < 50)   return `rgba(167,139,250,${0.25+(v-20)/30*0.35})`;
+    if (v < 20)   return `rgba(255,255,255,${(v/20)*0.25})`;
+    if (v < 50)   return `rgba(255,255,255,${0.25+(v-20)/30*0.35})`;
     if (v < 80)   return `rgba(251,113,133,${0.45+(v-50)/30*0.35})`;
     return `rgba(251,113,133,${0.75+(v-80)/20*0.25})`;
   };
 
   const tierColor: Record<string,string> = {
-    Platinum:"#e2e8f0", Gold:"#fbbf24", Silver:"#94a3b8", Bronze:"#fb7185",
+    Platinum:"#e2e8f0", Gold:"#fbbf24", Silver:"#94a3b8", Bronze:"#ef4444",
   };
 
   return (
@@ -3229,10 +3229,10 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
         </button>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
           <div style={{width:42,height:42,borderRadius:12,
-            background:"linear-gradient(135deg,rgba(167,139,250,0.2),rgba(129,140,248,0.12))",
-            border:"1px solid rgba(167,139,250,0.3)",
+            background:"linear-gradient(135deg,rgba(255,255,255,0.2),rgba(255,255,255,0.12))",
+            border:"1px solid rgba(255,255,255,0.3)",
             display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <Users size={20} color="#a78bfa"/>
+            <Users size={20} color="#34d399"/>
           </div>
           <div>
             <h1 style={{fontSize:22,fontWeight:700,color:"#fff"}}>Customer Behavior Prediction</h1>
@@ -3240,9 +3240,9 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           </div>
         </div>
         <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:8,
-          background:"rgba(167,139,250,0.08)",border:"1px solid rgba(167,139,250,0.22)",borderRadius:10,padding:"6px 14px"}}>
-          <div style={{width:7,height:7,borderRadius:"50%",background:"#a78bfa"}} className="pulse"/>
-          <span style={{fontSize:12,color:"#c4b5fd",fontWeight:600}}>Model: Active</span>
+          background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.22)",borderRadius:10,padding:"6px 14px"}}>
+          <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
+          <span style={{fontSize:12,color:"rgba(255,255,255,0.6)",fontWeight:600}}>Model: Active</span>
         </div>
       </div>
       <div className="fu2" style={{display:"flex",alignItems:"center",gap:12}}>
@@ -3253,15 +3253,15 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           ))}
         </div>
         <div style={{marginLeft:"auto",fontSize:12,color:"rgba(255,255,255,0.25)"}}>
-          Showing: <span style={{color:"#a78bfa",fontWeight:600,textTransform:"capitalize"}}>{filter}</span> patterns
+          Showing: <span style={{color:"#34d399",fontWeight:600,textTransform:"capitalize"}}>{filter}</span> patterns
         </div>
       </div>
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
-          {label:"Peak Shopping Hour",  value: peaks[0].label.split("–")[0].trim(), sub:`${filter} peak window`, color:"#a78bfa", bg:"rgba(167,139,250,0.1)", I:Users},
+          {label:"Peak Shopping Hour",  value: peaks[0].label.split("–")[0].trim(), sub:`${filter} peak window`, color:"#34d399", bg:"rgba(255,255,255,0.1)", I:Users},
           {label:"Top Product",         value:"Coca-Cola 1.5L",        sub:`#1 most purchased`,       color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:Package},
           {label:"Loyal Customers",     value:"7 VIPs",                sub:"Active loyalty members",  color:"#fbbf24", bg:"rgba(251,191,36,0.1)",  I:Star},
-          {label:"Top Basket Combo",    value:"Cola + Chippy",         sub:"68% co-purchase rate",    color:"#38bdf8", bg:"rgba(56,189,248,0.1)",  I:Sparkles},
+          {label:"Top Basket Combo",    value:"Cola + Chippy",         sub:"68% co-purchase rate",    color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:Sparkles},
         ].map((s,i)=>(
           <div key={i} className="stat-forecast" style={{borderColor:`${s.color}22`}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
@@ -3279,8 +3279,8 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
       <div className="fu3 card" style={{padding:"20px 20px 16px"}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:18,flexWrap:"wrap",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:32,height:32,borderRadius:9,background:"rgba(167,139,250,0.12)",border:"1px solid rgba(167,139,250,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <BarChart3 size={15} color="#a78bfa"/>
+            <div style={{width:32,height:32,borderRadius:9,background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <BarChart3 size={15} color="#34d399"/>
             </div>
             <div>
               <div style={{fontSize:13,fontWeight:600,color:"rgba(255,255,255,0.7)"}}>Purchase Activity Heatmap</div>
@@ -3289,7 +3289,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
           </div>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
             <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Low</span>
-            <div style={{width:120,height:10,borderRadius:99,background:"linear-gradient(90deg,rgba(129,140,248,0.15),rgba(167,139,250,0.5),rgba(251,113,133,0.65),rgba(251,113,133,0.97))",border:"1px solid rgba(255,255,255,0.06)"}}/>
+            <div style={{width:120,height:10,borderRadius:99,background:"linear-gradient(90deg,rgba(255,255,255,0.15),rgba(255,255,255,0.5),rgba(251,113,133,0.65),rgba(251,113,133,0.97))",border:"1px solid rgba(255,255,255,0.06)"}}/>
             <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>High</span>
           </div>
         </div>
@@ -3332,7 +3332,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
               const avg = Math.round(heatmap.reduce((s,row)=>s+row[hi],0)/DAYS.length);
               const maxAvg = 80;
               const h = Math.max(3, Math.round((avg/maxAvg)*40));
-              const col = avg<20?"rgba(129,140,248,0.4)":avg<50?"rgba(167,139,250,0.65)":avg<75?"rgba(251,113,133,0.75)":"rgba(251,113,133,1)";
+              const col = avg<20?"rgba(255,255,255,0.4)":avg<50?"rgba(255,255,255,0.65)":avg<75?"rgba(251,113,133,0.75)":"rgba(251,113,133,1)";
               return (
                 <div key={hi} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
                   <div style={{
@@ -3350,7 +3350,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
         </div>{/* end heatmap scroll */}
         <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:10,marginTop:14}}>
           {peaks.map((p,i)=>{
-            const colors=["#fb7185","#fbbf24","#a78bfa"];
+            const colors=["#ef4444","#fbbf24","#34d399"];
             const c=colors[i];
             const labels=["🔴 Busiest","🟡 2nd Peak","🟣 3rd Peak"];
             return (
@@ -3372,7 +3372,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <div style={{width:7,height:7,borderRadius:"50%",background:"#a78bfa"}} className="pulse"/>
+              <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
               Activity by Day of Week
             </div>
           </div>
@@ -3381,7 +3381,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
               const avg = Math.round(heatmap[di].reduce((s,v)=>s+v,0)/24);
               const max = 60;
               const pct = Math.min(100,(avg/max)*100);
-              const c = avg<20?"#818cf8":avg<35?"#a78bfa":avg<50?"#fbbf24":"#fb7185";
+              const c = avg<20?"#34d399":avg<35?"#34d399":avg<50?"#fbbf24":"#ef4444";
               const label = avg<20?"Low":avg<35?"Moderate":avg<50?"High":"Very High";
               return (
                 <div key={day}>
@@ -3401,7 +3401,7 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:6}}>
-              <Sparkles size={13} color="#a78bfa"/>
+              <Sparkles size={13} color="#34d399"/>
               Frequently Bought Together
             </div>
             <span className="badge-v" style={{fontSize:10}}>Co-purchase %</span>
@@ -3484,14 +3484,14 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
                   const tc = tierColor[c.tier];
                   const isTop3 = i < 3;
                   return (
-                    <tr key={i} className="tr" style={{background:isTop3?`rgba(167,139,250,0.03)`:undefined}}>
+                    <tr key={i} className="tr" style={{background:isTop3?`rgba(255,255,255,0.03)`:undefined}}>
                       <td className="td" style={{paddingLeft:20,fontSize:18}}>
                         {isTop3 ? c.badge : <span style={{fontSize:12,color:"rgba(255,255,255,0.3)",fontWeight:600}}>{c.rank}</span>}
                       </td>
                       <td className="td" style={{textAlign:"left"}}>
                         <div style={{fontSize:13,fontWeight:600,color:isTop3?"#fff":"rgba(255,255,255,0.7)"}}>{c.name}</div>
                       </td>
-                      <td className="td" style={{color:"#a78bfa",fontWeight:600}}>{c.visits}x</td>
+                      <td className="td" style={{color:"#34d399",fontWeight:600}}>{c.visits}x</td>
                       <td className="td" style={{color:"#34d399",fontWeight:700}}>₱{c.totalSpent.toLocaleString()}</td>
                       <td className="td" style={{color:"rgba(255,255,255,0.5)"}}>₱{c.avgOrder.toLocaleString()}</td>
                       <td className="td">
@@ -3511,9 +3511,9 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
       <div className="fu5">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
           <div style={{width:34,height:34,borderRadius:10,
-            background:"rgba(167,139,250,0.12)",border:"1px solid rgba(167,139,250,0.22)",
+            background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.22)",
             display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <BrainCircuit size={16} color="#a78bfa"/>
+            <BrainCircuit size={16} color="#34d399"/>
           </div>
           <div>
             <h3 style={{fontSize:15,fontWeight:700,color:"#fff"}}>AI Behavioral Insights</h3>
@@ -3552,9 +3552,9 @@ const CustomerBehavior = ({ onBack }: { onBack: () => void }) => {
       <div className="fu6">
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
           <div style={{width:34,height:34,borderRadius:10,
-            background:"rgba(56,189,248,0.1)",border:"1px solid rgba(56,189,248,0.2)",
+            background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.2)",
             display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <Sparkles size={16} color="#38bdf8"/>
+            <Sparkles size={16} color="#34d399"/>
           </div>
           <h3 style={{fontSize:15,fontWeight:700,color:"#fff"}}>Frequently Bought Together</h3>
         </div>
@@ -3607,11 +3607,11 @@ const FIN_DAILY = Array.from({length:30},(_,i)=>({
 }));
 const FIN_EXP_CATS = [
   {key:"utilities",    label:"Utilities",          color:"#fbbf24", val:24200},
-  {key:"salaries",     label:"Salaries",            color:"#38bdf8", val:128000},
-  {key:"rent",         label:"Rent",                color:"#818cf8", val:45000},
+  {key:"salaries",     label:"Salaries",            color:"#34d399", val:128000},
+  {key:"rent",         label:"Rent",                color:"#34d399", val:45000},
   {key:"supplies",     label:"Supplies",            color:"#34d399", val:29800},
-  {key:"maintenance",  label:"Maintenance",         color:"#f97316", val:18500},
-  {key:"other",        label:"Other Operational",   color:"#a78bfa", val:19200},
+  {key:"maintenance",  label:"Maintenance",         color:"#fbbf24", val:18500},
+  {key:"other",        label:"Other Operational",   color:"#34d399", val:19200},
 ];
 const BUDGET_LIMIT = 320000;
 const FIN_CURR = FIN_DATA[6]; // Jan (current)
@@ -3681,16 +3681,16 @@ const Finance = () => {
           <ExportMenu label="Export Report"/>
           <div style={{display:"flex",alignItems:"center",gap:8,background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:10,padding:"6px 14px"}}>
             <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399"}} className="pulse"/>
-            <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Live Data</span>
+            <span style={{fontSize:12,color:"#34d399",fontWeight:600}}>Live Data</span>
           </div>
         </div>
       </div>
       <div className="fu2 grid-4col" style={{display:"grid",gridTemplateColumns:colsW(4),gap:16}}>
         {[
           {label:"Daily Profit",   value:`₱${(FIN_CURR_PROFIT/30).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}`, sub:"Avg today",  color:"#34d399",  bg:"rgba(52,211,153,0.1)",  I:TrendingUp,  chg:"+5.2%",  up:true},
-          {label:"Monthly Profit", value:`₱${FIN_CURR_PROFIT.toLocaleString()}`,                                      sub:"January 2026",color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:BarChart3,   chg:`+${FIN_PROFIT_GROWTH}%`, up:true},
-          {label:"Yearly Profit",  value:`₱${(FIN_CURR_PROFIT*12).toLocaleString()}`,                                 sub:"Projected",  color:"#38bdf8",  bg:"rgba(56,189,248,0.1)",  I:DollarSign,  chg:"+18.4%", up:true},
-          {label:"Net Income",     value:`₱${netIncome.toLocaleString()}`,                                             sub:"After all expenses",color:isProfit?"#34d399":"#fb7185",bg:isProfit?"rgba(52,211,153,0.1)":"rgba(251,113,133,0.1)",I:isProfit?TrendingUp:TrendingDown,chg:isProfit?"+Positive":"Deficit",up:isProfit},
+          {label:"Monthly Profit", value:`₱${FIN_CURR_PROFIT.toLocaleString()}`,                                      sub:"January 2026",color:"#34d399", bg:"rgba(255,255,255,0.1)", I:BarChart3,   chg:`+${FIN_PROFIT_GROWTH}%`, up:true},
+          {label:"Yearly Profit",  value:`₱${(FIN_CURR_PROFIT*12).toLocaleString()}`,                                 sub:"Projected",  color:"#34d399",  bg:"rgba(52,211,153,0.1)",  I:DollarSign,  chg:"+18.4%", up:true},
+          {label:"Net Income",     value:`₱${netIncome.toLocaleString()}`,                                             sub:"After all expenses",color:isProfit?"#34d399":"#ef4444",bg:isProfit?"rgba(52,211,153,0.1)":"rgba(251,113,133,0.1)",I:isProfit?TrendingUp:TrendingDown,chg:isProfit?"+Positive":"Deficit",up:isProfit},
         ].map((s,i)=>(
           <div key={i} className="stat-forecast" style={{borderColor:`${s.color}22`}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
@@ -3772,7 +3772,7 @@ const Finance = () => {
             ))}
             <div style={{borderTop:"1px solid rgba(255,255,255,0.07)",marginTop:4,paddingTop:6,display:"flex",justifyContent:"space-between"}}>
               <span style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.5)"}}>Total Expenses</span>
-              <span style={{fontSize:13,fontWeight:700,color:"#fb7185"}}>₱{totalExp.toLocaleString()}</span>
+              <span style={{fontSize:13,fontWeight:700,color:"#ef4444"}}>₱{totalExp.toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -3782,7 +3782,7 @@ const Finance = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={FIN_DATA.slice(-6).map(r=>({name:r.m, Utilities:24200,Salaries:128000,Rent:45000,Supplies:29800,Maintenance:18500,Other:r.exp-24200-128000-45000-29800-18500}))} margin={{top:8,right:8,left:-10,bottom:0}}>
                 <defs>
-                  {[["util","#fbbf24"],["sal","#38bdf8"],["rent","#818cf8"],["sup","#34d399"],["maint","#f97316"],["oth","#a78bfa"]].map(([id,c])=>(
+                  {[["util","#fbbf24"],["sal","#34d399"],["rent","#34d399"],["sup","#34d399"],["maint","#fbbf24"],["oth","#34d399"]].map(([id,c])=>(
                     <linearGradient key={id} id={`feg_${id}`} x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor={c} stopOpacity={1}/>
                       <stop offset="100%" stopColor={c} stopOpacity={0.5}/>
@@ -3803,7 +3803,7 @@ const Finance = () => {
             </ResponsiveContainer>
           </div>
           <div style={{display:"flex",gap:14,flexWrap:"wrap",marginTop:4}}>
-            {[["Utilities","#fbbf24"],["Salaries","#38bdf8"],["Rent","#818cf8"],["Supplies","#34d399"],["Maintenance","#f97316"],["Other","#a78bfa"]].map(([l,c])=>(
+            {[["Utilities","#fbbf24"],["Salaries","#34d399"],["Rent","#34d399"],["Supplies","#34d399"],["Maintenance","#fbbf24"],["Other","#34d399"]].map(([l,c])=>(
               <span key={l} style={{display:"flex",alignItems:"center",gap:5,fontSize:11,color:"rgba(255,255,255,0.4)"}}>
                 <div style={{width:9,height:9,borderRadius:2,background:c}}/>{l}
               </span>
@@ -3815,14 +3815,14 @@ const Finance = () => {
         <div style={{background:isProfit?"linear-gradient(135deg,rgba(52,211,153,0.1),rgba(52,211,153,0.03))":"linear-gradient(135deg,rgba(251,113,133,0.1),rgba(251,113,133,0.03))",border:`1px solid ${isProfit?"rgba(52,211,153,0.25)":"rgba(251,113,133,0.25)"}`,borderRadius:16,padding:"22px 24px"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
             <div style={{width:36,height:36,borderRadius:10,background:isProfit?"rgba(52,211,153,0.15)":"rgba(251,113,133,0.15)",border:`1px solid ${isProfit?"rgba(52,211,153,0.3)":"rgba(251,113,133,0.3)"}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <CircleDollarSign size={18} color={isProfit?"#34d399":"#fb7185"}/>
+              <CircleDollarSign size={18} color={isProfit?"#34d399":"#ef4444"}/>
             </div>
             <span style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.7)"}}>Net Income Computation</span>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {[
               {l:"Total Revenue",  v:`₱${FIN_CURR.rev.toLocaleString()}`,   c:"#34d399"},
-              {l:"Total Expenses", v:`₱${totalExp.toLocaleString()}`,        c:"#fb7185"},
+              {l:"Total Expenses", v:`₱${totalExp.toLocaleString()}`,        c:"#ef4444"},
             ].map(s=>(
               <div key={s.l} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 14px",background:"rgba(255,255,255,0.03)",borderRadius:10}}>
                 <span style={{fontSize:12,color:"rgba(255,255,255,0.5)"}}>{s.l}</span>
@@ -3832,9 +3832,9 @@ const Finance = () => {
             <div style={{height:1,background:"rgba(255,255,255,0.07)"}}/>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 14px",background:isProfit?"rgba(52,211,153,0.08)":"rgba(251,113,133,0.08)",borderRadius:10,border:`1px solid ${isProfit?"rgba(52,211,153,0.2)":"rgba(251,113,133,0.2)"}`}}>
               <span style={{fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.8)"}}>Net Profit</span>
-              <span style={{fontSize:20,fontWeight:800,color:isProfit?"#34d399":"#fb7185"}}>₱{netIncome.toLocaleString()}</span>
+              <span style={{fontSize:20,fontWeight:800,color:isProfit?"#34d399":"#ef4444"}}>₱{netIncome.toLocaleString()}</span>
             </div>
-            <div style={{textAlign:"center",fontSize:11,color:isProfit?"#6ee7b7":"#fda4af",fontWeight:600}}>
+            <div style={{textAlign:"center",fontSize:11,color:isProfit?"#34d399":"#ef4444",fontWeight:600}}>
               {isProfit?"✓ Revenue exceeds expenses — Positive cash position":"⚠ Expenses exceed revenue — Review costs"}
             </div>
           </div>
@@ -3842,7 +3842,7 @@ const Finance = () => {
         <div className="card">
           <div className="card-title" style={{marginBottom:14}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <BarChart3 size={14} color="#818cf8"/>
+              <BarChart3 size={14} color="#34d399"/>
               Month-over-Month Comparison
             </div>
           </div>
@@ -3855,7 +3855,7 @@ const Finance = () => {
               ]} margin={{top:4,right:4,left:-20,bottom:0}} barGap={4}>
                 <defs>
                   <linearGradient id="cmpP" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,255,255,0.2)"/><stop offset="100%" stopColor="rgba(255,255,255,0.06)"/></linearGradient>
-                  <linearGradient id="cmpC" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#818cf8"/><stop offset="100%" stopColor="#6366f1" stopOpacity={0.5}/></linearGradient>
+                  <linearGradient id="cmpC" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#34d399"/><stop offset="100%" stopColor="#34d399" stopOpacity={0.5}/></linearGradient>
                 </defs>
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:10}}/>
@@ -3869,8 +3869,8 @@ const Finance = () => {
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {[
               {l:"Profit Growth",  v:`+${FIN_PROFIT_GROWTH}%`, c:"#34d399"},
-              {l:"Revenue Growth", v:`+${(((FIN_CURR.rev-FIN_PREV.rev)/FIN_PREV.rev)*100).toFixed(1)}%`, c:"#818cf8"},
-              {l:"YTD Revenue",    v:`₱${(YTD.rev/1000000).toFixed(2)}M`,                              c:"#38bdf8"},
+              {l:"Revenue Growth", v:`+${(((FIN_CURR.rev-FIN_PREV.rev)/FIN_PREV.rev)*100).toFixed(1)}%`, c:"#34d399"},
+              {l:"YTD Revenue",    v:`₱${(YTD.rev/1000000).toFixed(2)}M`,                              c:"#34d399"},
             ].map(s=>(
               <div key={s.l} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 12px",background:"rgba(255,255,255,0.03)",borderRadius:8}}>
                 <span style={{fontSize:11,color:"rgba(255,255,255,0.45)"}}>{s.l}</span>
@@ -3879,7 +3879,7 @@ const Finance = () => {
             ))}
           </div>
           <div style={{marginTop:10,padding:"8px 12px",background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.15)",borderRadius:8}}>
-            <p style={{fontSize:11,color:"#6ee7b7",fontStyle:"italic"}}>
+            <p style={{fontSize:11,color:"#34d399",fontStyle:"italic"}}>
               "Profit increased by <strong>{FIN_PROFIT_GROWTH}%</strong> compared to last month."
             </p>
           </div>
@@ -3887,15 +3887,15 @@ const Finance = () => {
         <div className="card">
           <div className="card-title" style={{marginBottom:14}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <TrendingUp size={14} color="#38bdf8"/>
+              <TrendingUp size={14} color="#34d399"/>
               Profit Margin Analysis
             </div>
           </div>
           <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:10,marginBottom:14}}>
             {[
               {l:"Gross Profit",  v:`₱${grossProfit.toLocaleString()}`,   c:"#34d399"},
-              {l:"Net Profit",    v:`₱${FIN_CURR_PROFIT.toLocaleString()}`,c:"#818cf8"},
-              {l:"Gross Margin",  v:`${grossMargin}%`,                     c:"#38bdf8"},
+              {l:"Net Profit",    v:`₱${FIN_CURR_PROFIT.toLocaleString()}`,c:"#34d399"},
+              {l:"Gross Margin",  v:`${grossMargin}%`,                     c:"#34d399"},
               {l:"Net Margin",    v:`${netMargin}%`,                       c:"#fbbf24"},
             ].map(s=>(
               <div key={s.l} style={{background:"rgba(255,255,255,0.03)",borderRadius:10,padding:"12px",textAlign:"center"}}>
@@ -3915,10 +3915,10 @@ const Finance = () => {
                   if(!active||!payload?.length) return null;
                   return <div style={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,padding:"6px 10px",fontSize:11}}>
                     <span style={{color:"rgba(255,255,255,0.4)"}}>{label}: </span>
-                    <span style={{color:"#38bdf8",fontWeight:700}}>{payload[0].value}%</span>
+                    <span style={{color:"#34d399",fontWeight:700}}>{payload[0].value}%</span>
                   </div>;
                 }}/>
-                <Line type="monotone" dataKey="margin" stroke="#38bdf8" strokeWidth={2} dot={{fill:"#38bdf8",r:3,strokeWidth:0}}/>
+                <Line type="monotone" dataKey="margin" stroke="#34d399" strokeWidth={2} dot={{fill:"#34d399",r:3,strokeWidth:0}}/>
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -3928,15 +3928,15 @@ const Finance = () => {
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <Wallet size={14} color="#a78bfa"/>
+              <Wallet size={14} color="#34d399"/>
               Cash Flow — January
             </div>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:12,marginTop:4}}>
             {[
               {l:"Cash Inflow",   v:`₱${FIN_CURR.inflow.toLocaleString()}`,  c:"#34d399", bg:"rgba(52,211,153,0.08)",   border:"rgba(52,211,153,0.2)",   pct:100},
-              {l:"Cash Outflow",  v:`₱${FIN_CURR.outflow.toLocaleString()}`, c:"#fb7185", bg:"rgba(251,113,133,0.08)",  border:"rgba(251,113,133,0.2)",  pct:Math.round((FIN_CURR.outflow/FIN_CURR.inflow)*100)},
-              {l:"Net Cash Balance",v:`₱${cashBal.toLocaleString()}`,        c:"#a78bfa", bg:"rgba(167,139,250,0.08)",  border:"rgba(167,139,250,0.2)",  pct:Math.round((cashBal/FIN_CURR.inflow)*100)},
+              {l:"Cash Outflow",  v:`₱${FIN_CURR.outflow.toLocaleString()}`, c:"#ef4444", bg:"rgba(251,113,133,0.08)",  border:"rgba(251,113,133,0.2)",  pct:Math.round((FIN_CURR.outflow/FIN_CURR.inflow)*100)},
+              {l:"Net Cash Balance",v:`₱${cashBal.toLocaleString()}`,        c:"#34d399", bg:"rgba(255,255,255,0.08)",  border:"rgba(255,255,255,0.2)",  pct:Math.round((cashBal/FIN_CURR.inflow)*100)},
             ].map(s=>(
               <div key={s.l} style={{background:s.bg,border:`1px solid ${s.border}`,borderRadius:12,padding:"14px 16px"}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
@@ -3959,23 +3959,23 @@ const Finance = () => {
               <LineChart data={FIN_DATA.map(r=>({name:r.m,inflow:r.inflow,outflow:r.outflow,balance:r.inflow-r.outflow}))} margin={{top:8,right:12,left:-10,bottom:0}}>
                 <defs>
                   <linearGradient id="cfBal" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#a78bfa" stopOpacity={0.18}/>
-                    <stop offset="100%" stopColor="#a78bfa" stopOpacity={0}/>
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={0.18}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4"/>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}}/>
                 <YAxis axisLine={false} tickLine={false} tick={{fill:"rgba(255,255,255,0.28)",fontSize:11}} tickFormatter={v=>`₱${(v/1000).toFixed(0)}k`}/>
                 <RechartsTip content={<FinTT/>}/>
-                <Area type="monotone" dataKey="balance" stroke="#a78bfa" strokeWidth={0} fill="url(#cfBal)"/>
+                <Area type="monotone" dataKey="balance" stroke="#34d399" strokeWidth={0} fill="url(#cfBal)"/>
                 <Line type="monotone" dataKey="inflow"  name="Inflow"  stroke="#34d399" strokeWidth={2} dot={false}/>
-                <Line type="monotone" dataKey="outflow" name="Outflow" stroke="#fb7185" strokeWidth={2} dot={false} strokeDasharray="5 3"/>
-                <Line type="monotone" dataKey="balance" name="Balance" stroke="#a78bfa" strokeWidth={2.5} dot={{fill:"#a78bfa",r:3,strokeWidth:0}}/>
+                <Line type="monotone" dataKey="outflow" name="Outflow" stroke="#ef4444" strokeWidth={2} dot={false} strokeDasharray="5 3"/>
+                <Line type="monotone" dataKey="balance" name="Balance" stroke="#34d399" strokeWidth={2.5} dot={{fill:"#34d399",r:3,strokeWidth:0}}/>
               </LineChart>
             </ResponsiveContainer>
           </div>
           <div style={{display:"flex",gap:16,marginTop:6}}>
-            {[["Inflow","#34d399"],["Outflow","#fb7185"],["Balance","#a78bfa"]].map(([l,c])=>(
+            {[["Inflow","#34d399"],["Outflow","#ef4444"],["Balance","#34d399"]].map(([l,c])=>(
               <span key={l} style={{display:"flex",alignItems:"center",gap:5,fontSize:11,color:"rgba(255,255,255,0.4)"}}>
                 <div style={{width:10,height:3,background:c,borderRadius:99}}/>{l}
               </span>
@@ -4002,21 +4002,21 @@ const Finance = () => {
             {label:"Cleaning Services",  val:700,  icon:"🧹", note:"Weekly contract"},
             {label:"Other Maintenance",  val:300,  icon:"🔩", note:"Misc repairs"},
           ].map(m=>(
-            <div key={m.label} style={{padding:"12px 14px",background:"rgba(249,115,22,0.06)",border:"1px solid rgba(249,115,22,0.15)",borderRadius:12}}>
+            <div key={m.label} style={{padding:"12px 14px",background:"rgba(251,191,36,0.06)",border:"1px solid rgba(251,191,36,0.15)",borderRadius:12}}>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
                 <span style={{fontSize:18}}>{m.icon}</span>
                 <span style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.6)"}}>{m.label}</span>
               </div>
-              <div style={{fontSize:20,fontWeight:800,color:"#f97316"}}>₱{m.val.toLocaleString()}</div>
+              <div style={{fontSize:20,fontWeight:800,color:"#fbbf24"}}>₱{m.val.toLocaleString()}</div>
               <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:3}}>{m.note}</div>
             </div>
           ))}
         </div>
         {/* Maintenance total + progress vs budget */}
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",background:"rgba(249,115,22,0.08)",border:"1px solid rgba(249,115,22,0.18)",borderRadius:10}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.18)",borderRadius:10}}>
           <div>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:3}}>TOTAL MAINTENANCE THIS MONTH</div>
-            <div style={{fontSize:24,fontWeight:800,color:"#f97316"}}>₱18,500</div>
+            <div style={{fontSize:24,fontWeight:800,color:"#fbbf24"}}>₱18,500</div>
           </div>
           <div style={{textAlign:"right"}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:3}}>vs. last month</div>
@@ -4046,18 +4046,18 @@ const Finance = () => {
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:10}}>
               <div>
                 <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginBottom:4}}>Budget Used</div>
-                <div style={{fontSize:32,fontWeight:800,color:budgetUsed>90?"#fb7185":budgetUsed>70?"#fbbf24":"#34d399"}}>{budgetUsed.toFixed(1)}%</div>
+                <div style={{fontSize:32,fontWeight:800,color:budgetUsed>90?"#ef4444":budgetUsed>70?"#fbbf24":"#34d399"}}>{budgetUsed.toFixed(1)}%</div>
               </div>
               <div style={{textAlign:"right"}}>
                 <div style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Remaining</div>
-                <div style={{fontSize:18,fontWeight:700,color:budgetRem>0?"#34d399":"#fb7185"}}>₱{Math.abs(budgetRem).toLocaleString()}{budgetRem<0?" over":""}</div>
+                <div style={{fontSize:18,fontWeight:700,color:budgetRem>0?"#34d399":"#ef4444"}}>₱{Math.abs(budgetRem).toLocaleString()}{budgetRem<0?" over":""}</div>
               </div>
             </div>
             <div style={{height:12,background:"rgba(255,255,255,0.05)",borderRadius:99,overflow:"hidden",position:"relative"}}>
               <div style={{
                 height:"100%",
                 width:`${Math.min(100,budgetUsed)}%`,
-                background:budgetUsed>90?"linear-gradient(90deg,#fb7185,#fda4af)":budgetUsed>70?"linear-gradient(90deg,#fbbf24,#fde68a)":"linear-gradient(90deg,#34d399,#6ee7b7)",
+                background:budgetUsed>90?"linear-gradient(90deg,#ef4444,#ef4444)":budgetUsed>70?"linear-gradient(90deg,#fbbf24,#fbbf24)":"linear-gradient(90deg,#34d399,#34d399)",
                 borderRadius:99,transition:"width 0.6s ease",
                 boxShadow:budgetUsed>90?"0 0 12px rgba(251,113,133,0.4)":budgetUsed>70?"0 0 12px rgba(251,191,36,0.4)":"0 0 12px rgba(52,211,153,0.35)",
               }}/>
@@ -4071,8 +4071,8 @@ const Finance = () => {
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {[
               {l:"Budget Limit",   v:`₱${budget.toLocaleString()}`,       c:"rgba(255,255,255,0.6)"},
-              {l:"Current Spending",v:`₱${totalExp.toLocaleString()}`,    c:budgetUsed>90?"#fb7185":budgetUsed>70?"#fbbf24":"#34d399"},
-              {l:"Remaining",     v:`₱${Math.abs(budgetRem).toLocaleString()}${budgetRem<0?" over":""}`, c:budgetRem>=0?"#34d399":"#fb7185"},
+              {l:"Current Spending",v:`₱${totalExp.toLocaleString()}`,    c:budgetUsed>90?"#ef4444":budgetUsed>70?"#fbbf24":"#34d399"},
+              {l:"Remaining",     v:`₱${Math.abs(budgetRem).toLocaleString()}${budgetRem<0?" over":""}`, c:budgetRem>=0?"#34d399":"#ef4444"},
             ].map(s=>(
               <div key={s.l} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px",background:"rgba(255,255,255,0.03)",borderRadius:9}}>
                 <span style={{fontSize:12,color:"rgba(255,255,255,0.45)"}}>{s.l}</span>
@@ -4084,7 +4084,7 @@ const Finance = () => {
         <div className="card">
           <div className="card-title">
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <BarChart3 size={14} color="#38bdf8"/>
+              <BarChart3 size={14} color="#34d399"/>
               Year-to-Date Performance
             </div>
             <span className="badge-v" style={{fontSize:10}}>Jul 2025 – Jan 2026</span>
@@ -4092,8 +4092,8 @@ const Finance = () => {
           <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:10,marginBottom:14}}>
             {[
               {l:"YTD Revenue",  v:`₱${(YTD.rev/1000000).toFixed(2)}M`,  c:"#34d399",  bg:"rgba(52,211,153,0.08)",  border:"rgba(52,211,153,0.2)"},
-              {l:"YTD Expenses", v:`₱${(YTD.exp/1000000).toFixed(2)}M`,  c:"#fb7185",  bg:"rgba(251,113,133,0.08)", border:"rgba(251,113,133,0.2)"},
-              {l:"YTD Profit",   v:`₱${((YTD.rev-YTD.exp)/1000000).toFixed(2)}M`, c:"#818cf8", bg:"rgba(129,140,248,0.08)", border:"rgba(129,140,248,0.2)"},
+              {l:"YTD Expenses", v:`₱${(YTD.exp/1000000).toFixed(2)}M`,  c:"#ef4444",  bg:"rgba(251,113,133,0.08)", border:"rgba(251,113,133,0.2)"},
+              {l:"YTD Profit",   v:`₱${((YTD.rev-YTD.exp)/1000000).toFixed(2)}M`, c:"#34d399", bg:"rgba(255,255,255,0.08)", border:"rgba(255,255,255,0.2)"},
               {l:"YTD Margin",   v:`${(((YTD.rev-YTD.exp)/YTD.rev)*100).toFixed(1)}%`, c:"#fbbf24", bg:"rgba(251,191,36,0.08)", border:"rgba(251,191,36,0.2)"},
             ].map(s=>(
               <div key={s.l} style={{background:s.bg,border:`1px solid ${s.border}`,borderRadius:12,padding:"14px",textAlign:"center"}}>
@@ -4107,8 +4107,8 @@ const Finance = () => {
               <BarChart data={FIN_DATA.slice(0,7).map(r=>({name:r.m,profit:r.rev-r.exp}))} margin={{top:4,right:4,left:-20,bottom:0}}>
                 <defs>
                   <linearGradient id="ytdG" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#38bdf8" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#0ea5e9" stopOpacity={0.4}/>
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={1}/>
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0.4}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="rgba(255,255,255,0.04)" strokeDasharray="4 4" vertical={false}/>
@@ -4124,7 +4124,7 @@ const Finance = () => {
       <div className="fu5 card">
         <div className="card-title" style={{marginBottom:16}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
-            <ClipboardList size={15} color="#818cf8"/>
+            <ClipboardList size={15} color="#34d399"/>
             Financial Reports
           </div>
           <span style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Download or export financial statements</span>
@@ -4132,8 +4132,8 @@ const Finance = () => {
         <div style={{display:"grid",gridTemplateColumns:colsW(3),gap:12}}>
           {[
             {title:"Profit & Loss Summary", desc:"Revenue, expenses, and net profit breakdown for the selected period.", icon:TrendingUp,  color:"#34d399"},
-            {title:"Expense Report",        desc:"Detailed categorized expense report with monthly comparisons.",        icon:Receipt,     color:"#fb7185"},
-            {title:"Financial Summary",     desc:"Full financial overview including cash flow, margins, and YTD stats.", icon:BarChart3,   color:"#818cf8"},
+            {title:"Expense Report",        desc:"Detailed categorized expense report with monthly comparisons.",        icon:Receipt,     color:"#ef4444"},
+            {title:"Financial Summary",     desc:"Full financial overview including cash flow, margins, and YTD stats.", icon:BarChart3,   color:"#34d399"},
           ].map((r,i)=>(
             <div key={i} style={{background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:14,padding:"18px 20px"}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
@@ -4196,7 +4196,7 @@ const PERMISSIONS: {feature:string; admin:boolean; manager:boolean; staff:boolea
   {feature:"Delete Records",            admin:true,  manager:false, staff:false},
 ];
 const ROLE_COLORS: Record<URole,{c:string;bg:string;border:string;chip:string}> = {
-  Admin:   {c:"#fb7185",bg:"rgba(251,113,133,0.12)",border:"rgba(251,113,133,0.25)",chip:"badge-r"},
+  Admin:   {c:"#ef4444",bg:"rgba(251,113,133,0.12)",border:"rgba(251,113,133,0.25)",chip:"badge-r"},
   Manager: {c:"#fbbf24",bg:"rgba(251,191,36,0.12)", border:"rgba(251,191,36,0.25)", chip:"badge-a"},
   Staff:   {c:"#34d399",bg:"rgba(52,211,153,0.12)", border:"rgba(52,211,153,0.25)", chip:"badge-g"},
 };
@@ -4206,10 +4206,10 @@ const STATUS_COLORS: Record<UStatus,{c:string;chip:string}> = {
   Disabled:  {c:"rgba(255,255,255,0.3)", chip:"badge-r"},
 };
 const LOG_COLORS: Record<string,{c:string;icon:string}> = {
-  auth:      {c:"#818cf8", icon:"🔑"},
+  auth:      {c:"#34d399", icon:"🔑"},
   sales:     {c:"#34d399", icon:"💰"},
-  inventory: {c:"#38bdf8", icon:"📦"},
-  security:  {c:"#fb7185", icon:"🚨"},
+  inventory: {c:"#34d399", icon:"📦"},
+  security:  {c:"#ef4444", icon:"🚨"},
 };
 const EMPTY_USER: Omit<AppUser,"id"> = {name:"",username:"",email:"",role:"Staff",status:"Active",lastLogin:"—",twoFA:false,failedAttempts:0};
 
@@ -4273,7 +4273,7 @@ const UserPage = () => {
     suspended:users.filter(u=>u.status==="Suspended").length,
   };
   const pieRoleData = [
-    {name:"Admin",   value:stats.admins,   color:"#fb7185"},
+    {name:"Admin",   value:stats.admins,   color:"#ef4444"},
     {name:"Manager", value:stats.managers, color:"#fbbf24"},
     {name:"Staff",   value:stats.staff,    color:"#34d399"},
   ];
@@ -4300,11 +4300,11 @@ const UserPage = () => {
       </div>
       <div className="fu2 grid-5col" style={{display:"grid",gridTemplateColumns:colsW(5),gap:14}}>
         {[
-          {label:"Total Users",    value:stats.total,    color:"#818cf8", bg:"rgba(129,140,248,0.1)", I:Users},
+          {label:"Total Users",    value:stats.total,    color:"#34d399", bg:"rgba(255,255,255,0.1)", I:Users},
           {label:"Active Users",   value:stats.active,   color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:PackageCheck},
-          {label:"Admins",         value:stats.admins,   color:"#fb7185", bg:"rgba(251,113,133,0.1)", I:User},
+          {label:"Admins",         value:stats.admins,   color:"#ef4444", bg:"rgba(251,113,133,0.1)", I:User},
           {label:"Managers",       value:stats.managers, color:"#fbbf24", bg:"rgba(251,191,36,0.1)",  I:Briefcase},
-          {label:"Staff Members",  value:stats.staff,    color:"#38bdf8", bg:"rgba(56,189,248,0.1)",  I:Users},
+          {label:"Staff Members",  value:stats.staff,    color:"#34d399", bg:"rgba(52,211,153,0.1)",  I:Users},
         ].map((s,i)=>(
           <div key={i} className="stat-forecast" style={{borderColor:`${s.color}22`}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
@@ -4326,8 +4326,8 @@ const UserPage = () => {
         </div>
         {suspicious.length>0&&(
           <div style={{display:"flex",alignItems:"center",gap:7,background:"rgba(251,113,133,0.08)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:10,padding:"6px 12px",marginLeft:"auto"}}>
-            <AlertTriangle size={13} color="#fb7185"/>
-            <span style={{fontSize:12,color:"#fda4af",fontWeight:600}}>{suspicious.length} suspicious account{suspicious.length>1?"s":""} detected</span>
+            <AlertTriangle size={13} color="#ef4444"/>
+            <span style={{fontSize:12,color:"#ef4444",fontWeight:600}}>{suspicious.length} suspicious account{suspicious.length>1?"s":""} detected</span>
           </div>
         )}
       </div>
@@ -4388,7 +4388,7 @@ const UserPage = () => {
                             <button onClick={()=>toggleStatus(u)} className="btn" style={{padding:"5px 10px",fontSize:11,color:u.status==="Active"?"#fbbf24":"#34d399",borderColor:u.status==="Active"?"rgba(251,191,36,0.3)":"rgba(52,211,153,0.3)"}}>
                               {u.status==="Active"?"Suspend":"Activate"}
                             </button>
-                            <button onClick={()=>openDelete(u)} style={{background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:8,padding:"5px 8px",cursor:"pointer",color:"#fda4af",display:"flex",alignItems:"center"}}>
+                            <button onClick={()=>openDelete(u)} style={{background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:8,padding:"5px 8px",cursor:"pointer",color:"#ef4444",display:"flex",alignItems:"center"}}>
                               <Trash2 size={13}/>
                             </button>
                           </div>
@@ -4521,7 +4521,7 @@ const UserPage = () => {
                 </thead>
                 <tbody>
                   {filteredLogs.map(l=>{
-                    const lc=LOG_COLORS[l.type]||{c:"#818cf8",icon:"📋"};
+                    const lc=LOG_COLORS[l.type]||{c:"#34d399",icon:"📋"};
                     return (
                       <tr key={l.id} className="tr">
                         <td className="td">
@@ -4547,15 +4547,15 @@ const UserPage = () => {
           {suspicious.length>0&&(
             <div style={{background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.22)",borderRadius:14,padding:"16px 20px"}}>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                <AlertTriangle size={16} color="#fb7185"/>
-                <span style={{fontSize:13,fontWeight:700,color:"#fb7185"}}>Suspicious Activity Detected</span>
+                <AlertTriangle size={16} color="#ef4444"/>
+                <span style={{fontSize:13,fontWeight:700,color:"#ef4444"}}>Suspicious Activity Detected</span>
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:8}}>
                 {suspicious.map(u=>(
                   <div key={u.id} style={{background:"rgba(251,113,133,0.08)",border:"1px solid rgba(251,113,133,0.18)",borderRadius:10,padding:"10px 16px",display:"flex",alignItems:"center",gap:12}}>
-                    <AlertTriangle size={13} color="#fb7185" style={{flexShrink:0}}/>
+                    <AlertTriangle size={13} color="#ef4444" style={{flexShrink:0}}/>
                     <span style={{fontSize:12,color:"rgba(255,255,255,0.75)",flex:1}}>
-                      <span style={{color:"#fda4af",fontWeight:700}}>{u.name}</span> (@{u.username}) — <span style={{color:"#fb7185",fontWeight:700}}>{u.failedAttempts} failed login attempt{u.failedAttempts!==1?"s":""}</span>. Account is currently <span style={{fontWeight:700}}>{u.status}</span>.
+                      <span style={{color:"#ef4444",fontWeight:700}}>{u.name}</span> (@{u.username}) — <span style={{color:"#ef4444",fontWeight:700}}>{u.failedAttempts} failed login attempt{u.failedAttempts!==1?"s":""}</span>. Account is currently <span style={{fontWeight:700}}>{u.status}</span>.
                     </span>
                     <button onClick={()=>toggleStatus(u)} className="btn" style={{padding:"5px 12px",fontSize:11,color:"#fbbf24",borderColor:"rgba(251,191,36,0.3)",flexShrink:0}}>
                       {u.status==="Suspended"?"Reactivate":"Suspend"}
@@ -4570,7 +4570,7 @@ const UserPage = () => {
               {icon:"🔐",title:"Password Encryption",   status:"Active",   color:"#34d399", desc:"All passwords are hashed using bcrypt with salt rounds. No plaintext passwords stored."},
               {icon:"🚪",title:"Login / Logout System", status:"Active",   color:"#34d399", desc:"Session-based authentication with auto-logout after 30 minutes of inactivity."},
               {icon:"🛡️",title:"Failed Login Detection",status:"Active",   color:"#fbbf24", desc:"Accounts are automatically suspended after 5 consecutive failed login attempts."},
-              {icon:"📲",title:"Two-Factor Auth (2FA)", status:"Optional", color:"#818cf8", desc:"TOTP-based 2FA available for all roles. Currently enabled for Admins by default."},
+              {icon:"📲",title:"Two-Factor Auth (2FA)", status:"Optional", color:"#34d399", desc:"TOTP-based 2FA available for all roles. Currently enabled for Admins by default."},
             ].map((f,i)=>(
               <div key={i} style={{background:`${f.color}0a`,border:`1px solid ${f.color}25`,borderRadius:14,padding:"18px 20px",display:"flex",gap:14}}>
                 <div style={{width:46,height:46,borderRadius:12,background:`${f.color}15`,border:`1px solid ${f.color}28`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:20}}>{f.icon}</div>
@@ -4601,7 +4601,7 @@ const UserPage = () => {
                     </div>
                     <span style={{fontSize:11,fontWeight:700,color:u.twoFA?"#34d399":"rgba(255,255,255,0.25)"}}>{u.twoFA?"2FA ON":"2FA OFF"}</span>
                   </div>
-                  {u.failedAttempts>0&&<span style={{fontSize:11,color:"#fb7185",fontWeight:600}}>⚠ {u.failedAttempts} failed</span>}
+                  {u.failedAttempts>0&&<span style={{fontSize:11,color:"#ef4444",fontWeight:600}}>⚠ {u.failedAttempts} failed</span>}
                 </div>
               ))}
             </div>
@@ -4616,15 +4616,15 @@ const UserPage = () => {
               {Object.values(userErrors).some(Boolean)&&(
                 <div style={{display:"flex",alignItems:"center",gap:7,padding:"6px 12px",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.3)",borderRadius:10}}>
                   <span style={{fontSize:13}}>⚠️</span>
-                  <span style={{fontSize:11,fontWeight:700,color:"#fda4af"}}>Fill required fields</span>
+                  <span style={{fontSize:11,fontWeight:700,color:"#ef4444"}}>Fill required fields</span>
                 </div>
               )}
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
               <div>
-                <label style={{fontSize:11,fontWeight:700,color:userErrors.name?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
-                  FULL NAME <span style={{color:"#fb7185"}}>*</span>
+                <label style={{fontSize:11,fontWeight:700,color:userErrors.name?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                  FULL NAME <span style={{color:"#ef4444"}}>*</span>
                 </label>
                 <input value={form.name}
                   onChange={e=>{
@@ -4642,8 +4642,8 @@ const UserPage = () => {
 
               <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
                 <div>
-                  <label style={{fontSize:11,fontWeight:700,color:userErrors.username?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
-                    USERNAME <span style={{color:"#fb7185"}}>*</span>
+                  <label style={{fontSize:11,fontWeight:700,color:userErrors.username?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                    USERNAME <span style={{color:"#ef4444"}}>*</span>
                   </label>
                   <input value={form.username}
                     onChange={e=>{setForm(f=>({...f,username:e.target.value}));userClearErr("username");}}
@@ -4652,8 +4652,8 @@ const UserPage = () => {
                   {userErrors.username&&<div className="err-msg"><span>⚠</span>Username is required</div>}
                 </div>
                 <div>
-                  <label style={{fontSize:11,fontWeight:700,color:userErrors.email?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
-                    EMAIL <span style={{color:"#fb7185"}}>*</span>
+                  <label style={{fontSize:11,fontWeight:700,color:userErrors.email?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.07em",display:"block",marginBottom:6}}>
+                    EMAIL <span style={{color:"#ef4444"}}>*</span>
                   </label>
                   <input value={form.email} type="text"
                     onChange={e=>{setForm(f=>({...f,email:e.target.value}));userClearErr("email");}}
@@ -4695,11 +4695,11 @@ const UserPage = () => {
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:200}}>
           <div style={{background:"#13131f",border:"1px solid rgba(251,113,133,0.25)",borderRadius:20,padding:36,maxWidth:380,width:"90%",textAlign:"center"}}>
             <div style={{width:52,height:52,borderRadius:"50%",background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.25)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 16px"}}>
-              <Trash2 size={22} color="#fb7185"/>
+              <Trash2 size={22} color="#ef4444"/>
             </div>
             <h3 style={{fontSize:18,fontWeight:700,color:"#fff",marginBottom:8}}>Delete User?</h3>
             <p style={{color:"rgba(255,255,255,0.4)",fontSize:13,marginBottom:24,lineHeight:1.6}}>
-              Remove <span style={{color:"#fda4af",fontWeight:700}}>{selected.name}</span> (@{selected.username})? This action cannot be undone.
+              Remove <span style={{color:"#ef4444",fontWeight:700}}>{selected.name}</span> (@{selected.username})? This action cannot be undone.
             </p>
             <div style={{display:"flex",gap:10}}>
               <button onClick={doDelete} className="btn-r" style={{flex:1}}>Yes, Delete</button>
@@ -4715,19 +4715,19 @@ const UserPage = () => {
 
 /* ── AI FORECASTING HUB ───────────────────────────────────────────── */
 const aiFeatItems = [
-  {key:"predict",I:LineChartIcon,c:"#818cf8",bg:"rgba(129,140,248,0.1)",b:"rgba(129,140,248,0.2)",t:"Predict Sales",d:"Estimates future daily, monthly, or yearly sales based on previous sales data.",h:"Click to open sales forecasting with AI-powered predictions and trend analysis."},
+  {key:"predict",I:LineChartIcon,c:"#34d399",bg:"rgba(255,255,255,0.1)",b:"rgba(255,255,255,0.2)",t:"Predict Sales",d:"Estimates future daily, monthly, or yearly sales based on previous sales data.",h:"Click to open sales forecasting with AI-powered predictions and trend analysis."},
   {key:"demand",I:Package,c:"#34d399",bg:"rgba(52,211,153,0.1)",b:"rgba(52,211,153,0.2)",t:"Demand Forecasting",d:"Predicts how many products customers will buy.",h:"Click to see predicted demand per product, trend graphs, and AI recommendations."},
   {key:"inventory",I:Boxes,c:"#fbbf24",bg:"rgba(251,191,36,0.1)",b:"rgba(251,191,36,0.2)",t:"Inventory Planning",d:"Forecasts which products will run out soon.",h:"Click to see restocking recommendations, stock vs demand charts, and urgent alerts."},
-  {key:"profit",I:DollarSign,c:"#38bdf8",bg:"rgba(56,189,248,0.1)",b:"rgba(56,189,248,0.2)",t:"Profit Forecast",d:"Predicts future profit or loss by analyzing expenses, pricing, and sales trends.",h:"Click to see revenue, expenses, and net profit forecasts with AI growth insights."},
-  {key:"expense",I:Receipt,c:"#fb7185",bg:"rgba(251,113,133,0.1)",b:"rgba(251,113,133,0.2)",t:"Expense Prediction",d:"Estimates future business costs like electricity, supplies, or employee salaries.",h:"Click to see predicted rent, salaries, utilities, supplies, and AI cost insights."},
-  {key:"customer",I:Users,c:"#a78bfa",bg:"rgba(167,139,250,0.1)",b:"rgba(167,139,250,0.2)",t:"Customer Behavior Prediction",d:"Predicts what customers will likely buy next based on their past purchases.",h:"Click to explore purchase heatmaps, loyalty rankings, and AI behavioral insights."},
+  {key:"profit",I:DollarSign,c:"#34d399",bg:"rgba(52,211,153,0.1)",b:"rgba(52,211,153,0.2)",t:"Profit Forecast",d:"Predicts future profit or loss by analyzing expenses, pricing, and sales trends.",h:"Click to see revenue, expenses, and net profit forecasts with AI growth insights."},
+  {key:"expense",I:Receipt,c:"#ef4444",bg:"rgba(251,113,133,0.1)",b:"rgba(251,113,133,0.2)",t:"Expense Prediction",d:"Estimates future business costs like electricity, supplies, or employee salaries.",h:"Click to see predicted rent, salaries, utilities, supplies, and AI cost insights."},
+  {key:"customer",I:Users,c:"#34d399",bg:"rgba(255,255,255,0.1)",b:"rgba(255,255,255,0.2)",t:"Customer Behavior Prediction",d:"Predicts what customers will likely buy next based on their past purchases.",h:"Click to explore purchase heatmaps, loyalty rankings, and AI behavioral insights."},
 ];
 
 const AIHub = ({ onOpen }: { onOpen: (key: string) => void }) => (
   <div>
     <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:18}}>
-      <div style={{width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,rgba(99,102,241,0.28),rgba(139,92,246,0.18))",border:"1px solid rgba(139,92,246,0.28)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <BrainCircuit size={20} color="#a78bfa"/>
+      <div style={{width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,rgba(52,211,153,0.28),rgba(139,92,246,0.18))",border:"1px solid rgba(139,92,246,0.28)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <BrainCircuit size={20} color="#34d399"/>
       </div>
       <div>
         <h2 style={{fontSize:17,fontWeight:700,color:"#fff"}}>AI Forecasting & Predictions</h2>
@@ -4738,7 +4738,7 @@ const AIHub = ({ onOpen }: { onOpen: (key: string) => void }) => (
       {aiFeatItems.map(item=>(
         <div key={item.key} className="ai-card" onClick={()=>onOpen(item.key)} style={{position:"relative"}}>
           {(item.key==="predict"||item.key==="demand"||item.key==="inventory"||item.key==="profit"||item.key==="expense"||item.key==="customer") && (
-            <div style={{position:"absolute",top:12,right:12,background:"rgba(129,140,248,0.2)",border:"1px solid rgba(129,140,248,0.3)",borderRadius:999,padding:"2px 10px",fontSize:10,color:"#818cf8",fontWeight:700,letterSpacing:"0.04em"}}>LIVE</div>
+            <div style={{position:"absolute",top:12,right:12,background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:999,padding:"2px 10px",fontSize:10,color:"#34d399",fontWeight:700,letterSpacing:"0.04em"}}>LIVE</div>
           )}
           <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
             <div style={{width:36,height:36,borderRadius:10,background:item.bg,border:`1px solid ${item.b}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
@@ -4855,7 +4855,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
         <div style={{position:"absolute",inset:0,background:"linear-gradient(160deg,#0a0a1a 0%,#0d1a2e 40%,#0a1520 70%,#080d18 100%)"}}/>
         <div style={{position:"absolute",bottom:0,left:0,right:0,height:"45%",background:"linear-gradient(180deg,transparent 0%,rgba(10,15,30,0.95) 100%)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:0,left:0,right:0,height:"30%",background:"linear-gradient(180deg,transparent 0%,#050510 100%)"}}/>
-        <svg style={{position:"absolute",bottom:0,left:0,right:0,width:"100%",opacity:0.18}} viewBox="0 0 800 200" preserveAspectRatio="none"><path d="M0 80h40v120H0zM10 60h20v20H10zM50 110h30v90H50zM90 50h50v150H90zM100 20h10v25h-10zM150 90h35v110H150zM195 40h55v160H195zM218 20h10v24h-10zM260 70h40v130H260zM310 100h30v100H310zM350 55h60v145H350zM370 30h20v28H370zM420 85h35v115H420zM465 45h50v155H465zM487 22h8v26h-8zM525 75h40v125H525zM575 95h30v105H575zM615 50h55v150H615zM635 28h12v24H635zM680 80h38v120H680zM728 60h45v140H728zM748 35h8v28H748z" fill="#d4af37"/><rect x="0" y="140" width="800" height="60" fill="#d4af37" opacity="0.5"/></svg>
+        <svg style={{position:"absolute",bottom:0,left:0,right:0,width:"100%",opacity:0.18}} viewBox="0 0 800 200" preserveAspectRatio="none"><path d="M0 80h40v120H0zM10 60h20v20H10zM50 110h30v90H50zM90 50h50v150H90zM100 20h10v25h-10zM150 90h35v110H150zM195 40h55v160H195zM218 20h10v24h-10zM260 70h40v130H260zM310 100h30v100H310zM350 55h60v145H350zM370 30h20v28H370zM420 85h35v115H420zM465 45h50v155H465zM487 22h8v26h-8zM525 75h40v125H525zM575 95h30v105H575zM615 50h55v150H615zM635 28h12v24H635zM680 80h38v120H680zM728 60h45v140H728zM748 35h8v28H748z" fill="#fbbf24"/><rect x="0" y="140" width="800" height="60" fill="#fbbf24" opacity="0.5"/></svg>
         <div style={{position:"relative",zIndex:2,textAlign:"center",padding:"0 48px",animation:"authSlideL 0.7s ease both"}}>
           <div style={{position:"relative",width:100,height:100,margin:"0 auto 28px",animation:"logoGlow 3s ease infinite"}}>
             <div style={{position:"absolute",inset:-8,borderRadius:"50%",border:"1.5px solid transparent",borderTopColor:"rgba(212,175,55,0.6)",borderRightColor:"rgba(212,175,55,0.2)",animation:"spinRing 3s linear infinite"}}/>
@@ -4873,7 +4873,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               </div>
               <div style={{
                 fontSize:32,fontWeight:900,letterSpacing:"0.06em",marginBottom:20,
-                background:"linear-gradient(90deg,#b8860b,#d4af37,#f0c040,#d4af37,#b8860b)",
+                background:"linear-gradient(90deg,#fbbf24,#fbbf24,#fbbf24,#fbbf24,#fbbf24)",
                 backgroundSize:"200% auto",
                 WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",
                 animation:"shimmerGold 3s linear infinite",
@@ -4883,7 +4883,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               </p>
               <button onClick={()=>switchMode("signup")} style={{
                 background:"rgba(212,175,55,0.1)",border:"1.5px solid rgba(212,175,55,0.35)",
-                borderRadius:12,padding:"13px 40px",color:"#d4af37",fontSize:14,fontWeight:700,
+                borderRadius:12,padding:"13px 40px",color:"#fbbf24",fontSize:14,fontWeight:700,
                 cursor:"pointer",letterSpacing:"0.05em",transition:"all 0.2s",fontFamily:"'Inter',sans-serif",
               }}
                 onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(212,175,55,0.18)";(e.currentTarget as HTMLButtonElement).style.boxShadow="0 0 20px rgba(212,175,55,0.2)";}}
@@ -4901,7 +4901,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               </p>
               <button onClick={()=>switchMode("login")} style={{
                 background:"rgba(212,175,55,0.1)",border:"1.5px solid rgba(212,175,55,0.35)",
-                borderRadius:12,padding:"13px 40px",color:"#d4af37",fontSize:14,fontWeight:700,
+                borderRadius:12,padding:"13px 40px",color:"#fbbf24",fontSize:14,fontWeight:700,
                 cursor:"pointer",letterSpacing:"0.05em",transition:"all 0.2s",fontFamily:"'Inter',sans-serif",
               }}
                 onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(212,175,55,0.18)";(e.currentTarget as HTMLButtonElement).style.boxShadow="0 0 20px rgba(212,175,55,0.2)";}}
@@ -4942,7 +4942,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                 </div>
                 <div style={{
                   fontSize:20,fontWeight:900,letterSpacing:"0.06em",
-                  background:"linear-gradient(90deg,#b8860b,#d4af37,#f0c040)",
+                  background:"linear-gradient(90deg,#fbbf24,#fbbf24,#fbbf24)",
                   WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",
                 }}>BARYALYTICS</div>
               </div>
@@ -4954,14 +4954,14 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             <div style={{fontSize:13,color:"rgba(255,255,255,0.3)"}}>
               {isLogin?"Welcome back — enter your credentials":"Create your Baryalytics account"}
             </div>
-            <div style={{width:48,height:3,background:"linear-gradient(90deg,#b8860b,#d4af37)",borderRadius:99,margin:"14px auto 0",boxShadow:"0 0 10px rgba(212,175,55,0.4)"}}/>
+            <div style={{width:48,height:3,background:"linear-gradient(90deg,#fbbf24,#fbbf24)",borderRadius:99,margin:"14px auto 0",boxShadow:"0 0 10px rgba(212,175,55,0.4)"}}/>
           </div>
           {/* ── Form fields ── */}
           <div style={{display:"flex",flexDirection:"column",gap:16,animation:`shake ${shake?"0.4s ease":"0s"}`}}>
 
             {/* Name */}
             <div>
-              <label style={{fontSize:11,fontWeight:700,color:errors.name?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>NAME</label>
+              <label style={{fontSize:11,fontWeight:700,color:errors.name?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>NAME</label>
               <div style={{position:"relative"}}>
                 <input
                   value={name}
@@ -4973,13 +4973,13 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                 />
                 <div style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",color:errors.name?"rgba(251,113,133,0.5)":"rgba(255,255,255,0.2)",pointerEvents:"none",fontSize:16}}>{errors.name?"⚠️":"👤"}</div>
               </div>
-              {errors.name&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#fda4af",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.name}</div>}
+              {errors.name&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#ef4444",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.name}</div>}
             </div>
 
             {/* Email — signup only */}
             {!isLogin&&(
               <div>
-                <label style={{fontSize:11,fontWeight:700,color:errors.email?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>EMAIL ADDRESS</label>
+                <label style={{fontSize:11,fontWeight:700,color:errors.email?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>EMAIL ADDRESS</label>
                 <div style={{position:"relative"}}>
                   <input
                     value={email}
@@ -5008,14 +5008,14 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                     {errors.email?"❌":email&&isValidEmail(email)===""?"✅":"✉️"}
                   </div>
                 </div>
-                {errors.email&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#fda4af",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.email}</div>}
-                {!errors.email&&email&&isValidEmail(email)===""&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#6ee7b7",animation:"errSlide 0.2s ease both"}}><span>✓</span>Looks good!</div>}
+                {errors.email&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#ef4444",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.email}</div>}
+                {!errors.email&&email&&isValidEmail(email)===""&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#34d399",animation:"errSlide 0.2s ease both"}}><span>✓</span>Looks good!</div>}
               </div>
             )}
 
             {/* Password */}
             <div>
-              <label style={{fontSize:11,fontWeight:700,color:errors.pass?"#fda4af":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>PASSWORD</label>
+              <label style={{fontSize:11,fontWeight:700,color:errors.pass?"#ef4444":"rgba(255,255,255,0.4)",letterSpacing:"0.08em",marginBottom:7,display:"block"}}>PASSWORD</label>
               <div style={{position:"relative"}}>
                 <input
                   value={pass}
@@ -5030,12 +5030,12 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
                   {showPass?"🙈":"🔒"}
                 </button>
               </div>
-              {errors.pass&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#fda4af",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.pass}</div>}
+              {errors.pass&&<div style={{display:"flex",alignItems:"center",gap:5,marginTop:5,fontSize:11,color:"#ef4444",fontWeight:600,animation:"errSlide 0.2s ease both"}}><span>⚠</span>{errors.pass}</div>}
             </div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
               <label style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",userSelect:"none"}}>
                 <div onClick={()=>setRemember(v=>!v)} style={{width:18,height:18,borderRadius:5,border:`1.5px solid ${remember?"rgba(212,175,55,0.7)":"rgba(255,255,255,0.2)"}`,background:remember?"rgba(212,175,55,0.15)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",transition:"all 0.15s"}}>
-                  {remember&&<span style={{fontSize:11,color:"#d4af37",fontWeight:700}}>✓</span>}
+                  {remember&&<span style={{fontSize:11,color:"#fbbf24",fontWeight:700}}>✓</span>}
                 </div>
                 <span style={{fontSize:12,color:"rgba(255,255,255,0.4)"}}>Remember me</span>
               </label>
@@ -5045,7 +5045,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
               width:"100%",padding:"15px",
               background:loading
                 ?"rgba(212,175,55,0.15)"
-                :"linear-gradient(135deg,#b8860b,#d4af37,#c9a227)",
+                :"linear-gradient(135deg,#fbbf24,#fbbf24,#c9a227)",
               border:"none",borderRadius:12,
               color:loading?"rgba(212,175,55,0.6)":"#0a0a0a",
               fontSize:15,fontWeight:800,cursor:loading?"not-allowed":"pointer",
@@ -5058,7 +5058,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             >
               {loading
                 ? <span style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-                    <span style={{display:"inline-block",width:16,height:16,border:"2px solid rgba(212,175,55,0.3)",borderTopColor:"#d4af37",borderRadius:"50%",animation:"spinRing 0.6s linear infinite"}}/>
+                    <span style={{display:"inline-block",width:16,height:16,border:"2px solid rgba(212,175,55,0.3)",borderTopColor:"#fbbf24",borderRadius:"50%",animation:"spinRing 0.6s linear infinite"}}/>
                     Authenticating…
                   </span>
                 : isLogin ? "Login →" : "Create Account →"
@@ -5072,7 +5072,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             <div style={{display:"flex",gap:12,justifyContent:"center"}}>
               {[
                 {icon:"G",bg:"linear-gradient(135deg,#4285f4,#34a853,#fbbc05,#ea4335)",label:"Google"},
-                {icon:"f",bg:"#1877f2",label:"Facebook"},
+                {icon:"f",bg:"#34d399",label:"Facebook"},
                 {icon:"𝕏",bg:"#000",label:"X (Twitter)"},
               ].map(s=>(
                 <button key={s.label} className="auth-social" title={`Continue with ${s.label}`}>
@@ -5085,7 +5085,7 @@ const AuthPage = ({onAuth}:{onAuth:(name:string)=>void}) => {
             <span style={{fontSize:13,color:"rgba(255,255,255,0.3)"}}>
               {isLogin?"Don't have an account? ":"Already have an account? "}
             </span>
-            <button onClick={()=>switchMode(isLogin?"signup":"login")} style={{background:"none",border:"none",color:"#d4af37",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",textDecoration:"underline",textUnderlineOffset:3}}>
+            <button onClick={()=>switchMode(isLogin?"signup":"login")} style={{background:"none",border:"none",color:"#fbbf24",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",textDecoration:"underline",textUnderlineOffset:3}}>
               {isLogin?"Sign up":"Login"}
             </button>
           </div>
@@ -5137,9 +5137,9 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
       </radialGradient>
       {/* Gold */}
       <linearGradient id="goldTrim" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#fde68a"/>
-        <stop offset="40%" stopColor="#d4af37"/>
-        <stop offset="100%" stopColor="#92400e"/>
+        <stop offset="0%" stopColor="#fbbf24"/>
+        <stop offset="40%" stopColor="#fbbf24"/>
+        <stop offset="100%" stopColor="#b8860b"/>
       </linearGradient>
       {/* Shoe sole grid */}
       <radialGradient id="soleGrad" cx="50%" cy="50%" r="60%">
@@ -5148,7 +5148,7 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
       </radialGradient>
       {/* Glove */}
       <radialGradient id="gloveGrad" cx="35%" cy="30%" r="65%">
-        <stop offset="0%" stopColor="#f0fff4"/>
+        <stop offset="0%" stopColor="#f0fdf4"/>
         <stop offset="100%" stopColor="#c6f6d5"/>
       </radialGradient>
       <filter id="dropShadow">
@@ -5176,7 +5176,7 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
     {/* Gold rim band — the coin edge band at the bottom of the helmet */}
     <path d="M32 148 Q120 165 208 148 Q208 155 120 172 Q32 155 32 148Z" fill="url(#goldTrim)"/>
     {/* Gold rim top edge shimmer */}
-    <path d="M36 148 Q120 162 204 148" stroke="#fde68a" strokeWidth="2.5" fill="none" opacity="0.7"/>
+    <path d="M36 148 Q120 162 204 148" stroke="#fbbf24" strokeWidth="2.5" fill="none" opacity="0.7"/>
 
     {/* Inner dome circle — the face viewport */}
     <ellipse cx="120" cy="108" rx="72" ry="65" fill="url(#domeInner)"/>
@@ -5210,8 +5210,8 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
     <circle cx={133+px} cy={119+py} r="1.5" fill="rgba(255,255,255,0.55)"/>
 
     {/* Rosy cheeks */}
-    <ellipse cx="83" cy="122" rx="11" ry="7" fill="#f87171" opacity="0.28"/>
-    <ellipse cx="157" cy="122" rx="11" ry="7" fill="#f87171" opacity="0.28"/>
+    <ellipse cx="83" cy="122" rx="11" ry="7" fill="#ef4444" opacity="0.28"/>
+    <ellipse cx="157" cy="122" rx="11" ry="7" fill="#ef4444" opacity="0.28"/>
 
     {/* Smile — gentle curve */}
     <path d="M105 132 Q120 143 135 132" stroke="#1a3d1e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
@@ -5230,11 +5230,11 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
     <path d="M100 168 Q120 178 140 168 L140 185 Q120 195 100 185Z" fill="#f0fdf4" opacity="0.92"/>
 
     {/* Gold lapel trim - left */}
-    <path d="M100 168 L86 180 L80 200 L90 196 Q104 184 100 168Z" fill="#1a5c24" stroke="#d4af37" strokeWidth="2"/>
-    <path d="M100 168 L88 182 L82 198" stroke="#fde68a" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.8"/>
+    <path d="M100 168 L86 180 L80 200 L90 196 Q104 184 100 168Z" fill="#1a5c24" stroke="#fbbf24" strokeWidth="2"/>
+    <path d="M100 168 L88 182 L82 198" stroke="#fbbf24" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.8"/>
     {/* Gold lapel trim - right */}
-    <path d="M140 168 L154 180 L160 200 L150 196 Q136 184 140 168Z" fill="#1a5c24" stroke="#d4af37" strokeWidth="2"/>
-    <path d="M140 168 L152 182 L158 198" stroke="#fde68a" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.8"/>
+    <path d="M140 168 L154 180 L160 200 L150 196 Q136 184 140 168Z" fill="#1a5c24" stroke="#fbbf24" strokeWidth="2"/>
+    <path d="M140 168 L152 182 L158 198" stroke="#fbbf24" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.8"/>
 
     {/* Black bow tie */}
     <path d="M108 170 Q114 166 120 170 Q114 174 108 170Z" fill="#1a1a1a"/>
@@ -5242,35 +5242,35 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
     <ellipse cx="120" cy="170" rx="5" ry="4" fill="#2d2d2d"/>
 
     {/* Gold ₱ on chest */}
-    <text x="120" y="216" textAnchor="middle" fontSize="22" fontWeight="900" fill="#d4af37" fontFamily="Georgia,serif" filter="url(#softGlow)">₱</text>
+    <text x="120" y="216" textAnchor="middle" fontSize="22" fontWeight="900" fill="#fbbf24" fontFamily="Georgia,serif" filter="url(#softGlow)">₱</text>
 
     {/* Jacket buttons */}
-    <circle cx="120" cy="228" r="3.5" fill="#d4af37"/>
-    <circle cx="120" cy="240" r="3.5" fill="#d4af37"/>
+    <circle cx="120" cy="228" r="3.5" fill="#fbbf24"/>
+    <circle cx="120" cy="240" r="3.5" fill="#fbbf24"/>
 
     {/* ═══ ARMS (A-pose — spread wide) ═══ */}
     {/* Left arm */}
     <path d="M68 185 Q42 195 16 196" stroke="#1a5c24" strokeWidth="28" fill="none" strokeLinecap="round"/>
     <path d="M68 185 Q42 195 16 196" stroke="#0d3614" strokeWidth="28" fill="none" strokeLinecap="round" opacity="0.3" strokeDasharray="0"/>
     {/* Left gold cuff */}
-    <ellipse cx="16" cy="196" rx="15" ry="10" fill="#d4af37" transform="rotate(-5,16,196)"/>
+    <ellipse cx="16" cy="196" rx="15" ry="10" fill="#fbbf24" transform="rotate(-5,16,196)"/>
     <ellipse cx="16" cy="196" rx="13" ry="8" fill="#1a5c24" transform="rotate(-5,16,196)"/>
     {/* Left glove — flat Mickey style */}
     <ellipse cx="7" cy="200" rx="16" ry="13" fill="url(#gloveGrad)" transform="rotate(-10,7,200)"/>
     <ellipse cx="-1" cy="193" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(-25,-1,193)"/>
-    <path d="M-3 190 Q2 183 8 186" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
+    <path d="M-3 190 Q2 183 8 186" stroke="#34d399" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
 
     {/* Right arm — waving when active */}
     <g style={{transformOrigin:"172px 185px", animation:waving?"mascotWave 0.8s ease-in-out infinite":"none"}}>
       <path d="M172 185 Q198 195 224 196" stroke="#1a5c24" strokeWidth="28" fill="none" strokeLinecap="round"/>
       <path d="M172 185 Q198 195 224 196" stroke="#0d3614" strokeWidth="28" fill="none" strokeLinecap="round" opacity="0.3"/>
       {/* Right gold cuff */}
-      <ellipse cx="224" cy="196" rx="15" ry="10" fill="#d4af37" transform="rotate(5,224,196)"/>
+      <ellipse cx="224" cy="196" rx="15" ry="10" fill="#fbbf24" transform="rotate(5,224,196)"/>
       <ellipse cx="224" cy="196" rx="13" ry="8" fill="#1a5c24" transform="rotate(5,224,196)"/>
       {/* Right glove */}
       <ellipse cx="233" cy="200" rx="16" ry="13" fill="url(#gloveGrad)" transform="rotate(10,233,200)"/>
       <ellipse cx="241" cy="193" rx="7" ry="5.5" fill="url(#gloveGrad)" transform="rotate(25,241,193)"/>
-      <path d="M243 190 Q238 183 232 186" stroke="#d1fae5" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
+      <path d="M243 190 Q238 183 232 186" stroke="#34d399" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.6"/>
     </g>
 
     {/* ═══ LEGS ═══ */}
@@ -5282,7 +5282,7 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
     {/* Left shoe */}
     <ellipse cx="96" cy="290" rx="24" ry="14" fill="#0d3614"/>
     {/* Gold top band */}
-    <path d="M73 283 Q96 276 119 283" stroke="#d4af37" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    <path d="M73 283 Q96 276 119 283" stroke="#fbbf24" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
     {/* Shoe sole with grid pattern (from bottom view in reference) */}
     <ellipse cx="96" cy="296" rx="22" ry="8" fill="url(#soleGrad)"/>
     {/* Grid lines on sole */}
@@ -5298,7 +5298,7 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
     {/* Right shoe */}
     <ellipse cx="144" cy="290" rx="24" ry="14" fill="#0d3614"/>
     {/* Gold top band */}
-    <path d="M121 283 Q144 276 167 283" stroke="#d4af37" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    <path d="M121 283 Q144 276 167 283" stroke="#fbbf24" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
     {/* Sole */}
     <ellipse cx="144" cy="296" rx="22" ry="8" fill="url(#soleGrad)"/>
     <line x1="128" y1="292" x2="130" y2="300" stroke="#8B6914" strokeWidth="1.2" opacity="0.7"/>
@@ -5311,11 +5311,11 @@ const BaryMascot = ({size=200, waving=false, gazeX=0, gazeY=0}:{size?:number;wav
 
     {/* ═══ SPARKLES ═══ */}
     <g opacity="0.85">
-      <path d="M195 38 L198 47 L207 44 L198 47 L201 56 L198 47 L189 50 L198 47 Z" fill="#fde68a"/>
+      <path d="M195 38 L198 47 L207 44 L198 47 L201 56 L198 47 L189 50 L198 47 Z" fill="#fbbf24"/>
       <path d="M22 55 L24 62 L31 59 L24 62 L26 69 L24 62 L17 65 L24 62 Z" fill="#4ade80"/>
       <circle cx="208" cy="72" r="3.5" fill="#fbbf24" opacity="0.9"/>
-      <circle cx="18" cy="88" r="2.5" fill="#6ee7b7" opacity="0.9"/>
-      <circle cx="200" cy="168" r="2.5" fill="#fde68a" opacity="0.7"/>
+      <circle cx="18" cy="88" r="2.5" fill="#34d399" opacity="0.9"/>
+      <circle cx="200" cy="168" r="2.5" fill="#fbbf24" opacity="0.7"/>
       <circle cx="18" cy="162" r="2" fill="#86efac" opacity="0.7"/>
     </g>
   </svg>
@@ -5540,7 +5540,7 @@ const TutorialOverlay = ({
       trailTimer+=16;
       if(trailTimer>300){
         trailTimer=0;
-        const colors=["#34d399","#fde68a","#86efac","#4ade80","#d4af37"];
+        const colors=["#34d399","#fbbf24","#86efac","#4ade80","#fbbf24"];
         const dot={id:Date.now()+Math.random(),x:bx+70,y:by+90,color:colors[Math.floor(Math.random()*colors.length)]};
         setTrailDots(prev=>[...prev.slice(-8),dot]);
         setTimeout(()=>setTrailDots(p=>p.filter(d=>d.id!==dot.id)),900);
@@ -5795,7 +5795,7 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
         <div style={{padding:"20px 20px 0",borderBottom:`1px solid ${border}`}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:34,height:34,borderRadius:10,background:"rgba(56,189,248,0.12)",border:"1px solid rgba(56,189,248,0.22)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🛟</div>
+              <div style={{width:34,height:34,borderRadius:10,background:"rgba(52,211,153,0.12)",border:"1px solid rgba(52,211,153,0.22)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>🛟</div>
               <div>
                 <div style={{fontSize:15,fontWeight:700,color:text}}>Help & Feedback</div>
                 <div style={{fontSize:11,color:muted}}>FAQs, guides & send us your thoughts</div>
@@ -5810,9 +5810,9 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
                 padding:"7px 18px",borderRadius:"8px 8px 0 0",border:"none",cursor:"pointer",
                 fontFamily:"'Inter',sans-serif",fontSize:12,fontWeight:700,letterSpacing:"0.04em",
                 textTransform:"capitalize",transition:"all 0.15s",
-                background:tab===t?"rgba(56,189,248,0.12)":"transparent",
-                color:tab===t?"#38bdf8":muted,
-                borderBottom:tab===t?"2px solid #38bdf8":"2px solid transparent",
+                background:tab===t?"rgba(52,211,153,0.12)":"transparent",
+                color:tab===t?"#34d399":muted,
+                borderBottom:tab===t?"2px solid #34d399":"2px solid transparent",
               }}>{t==="help"?"🛟 Help & Support":"💬 Feedback"}</button>
             ))}
           </div>
@@ -5827,7 +5827,7 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
               {/* Quick contact */}
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
                 {[
-                  {icon:"📧",label:"Email",val:"support@baryalytics.ph",c:"#38bdf8"},
+                  {icon:"📧",label:"Email",val:"support@baryalytics.ph",c:"#34d399"},
                   {icon:"💬",label:"Live Chat",val:"Start chat →",c:"#34d399",action:true},
                 ].map(ct=>(
                   <div key={ct.label} style={{padding:"12px 14px",background:`${ct.c}08`,border:`1px solid ${ct.c}20`,borderRadius:12}}>
@@ -5841,7 +5841,7 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
               {/* Status */}
               <div style={{display:"flex",alignItems:"center",gap:8,padding:"9px 14px",background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:10}}>
                 <div style={{width:7,height:7,borderRadius:"50%",background:"#34d399",flexShrink:0}} className="pulse"/>
-                <span style={{fontSize:12,color:"#6ee7b7",fontWeight:600}}>Support is online</span>
+                <span style={{fontSize:12,color:"#34d399",fontWeight:600}}>Support is online</span>
                 <span style={{fontSize:11,color:muted,marginLeft:"auto"}}>Mon–Fri · 8AM–6PM PHT</span>
               </div>
 
@@ -5881,12 +5881,12 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
               <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:10}}>QUICK GUIDES</div>
                 <div style={{display:"flex",flexDirection:"column",gap:8}}>
                   {[
-                    {icon:"📦",title:"Managing Inventory",       c:"#38bdf8"},
+                    {icon:"📦",title:"Managing Inventory",       c:"#34d399"},
                     {icon:"💰",title:"Reading Sales Reports",     c:"#34d399"},
                     {icon:"📊",title:"Finance Dashboard",         c:"#fbbf24"},
-                    {icon:"🤖",title:"AI Forecasting Features",   c:"#818cf8"},
-                    {icon:"👤",title:"User Roles & Permissions",  c:"#fb7185"},
-                    {icon:"🔐",title:"Security & 2FA Setup",      c:"#a78bfa"},
+                    {icon:"🤖",title:"AI Forecasting Features",   c:"#34d399"},
+                    {icon:"👤",title:"User Roles & Permissions",  c:"#ef4444"},
+                    {icon:"🔐",title:"Security & 2FA Setup",      c:"#34d399"},
                   ].map(g=>(
                     <button key={g.title} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:`${g.c}07`,border:`1px solid ${g.c}18`,borderRadius:10,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",transition:"background 0.15s"}}
                       onMouseEnter={e=>(e.currentTarget as HTMLButtonElement).style.background=`${g.c}13`}
@@ -5911,8 +5911,8 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
                         gap:10,padding:"12px 14px",background:"none",border:"none",
                         cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
                       }}>
-                        <span style={{fontSize:12,fontWeight:600,color:openFaq===i?"#38bdf8":text}}>{faq.q}</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={openFaq===i?"#38bdf8":muted} strokeWidth="2.5" strokeLinecap="round"
+                        <span style={{fontSize:12,fontWeight:600,color:openFaq===i?"#34d399":text}}>{faq.q}</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={openFaq===i?"#34d399":muted} strokeWidth="2.5" strokeLinecap="round"
                           style={{transform:openFaq===i?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.18s",flexShrink:0}}>
                           <polyline points="6 9 12 15 18 9"/>
                         </svg>
@@ -5937,9 +5937,9 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
                   {["General","Bug Report","Feature Request","Compliment"].map(t=>(
                     <button key={t} onClick={()=>setFbType(t)} style={{
                       padding:"5px 12px",borderRadius:999,
-                      border:`1.5px solid ${fbType===t?"rgba(167,139,250,0.5)":"rgba(255,255,255,0.08)"}`,
-                      background:fbType===t?"rgba(167,139,250,0.12)":"rgba(255,255,255,0.03)",
-                      color:fbType===t?"#c4b5fd":muted,
+                      border:`1.5px solid ${fbType===t?"rgba(255,255,255,0.5)":"rgba(255,255,255,0.08)"}`,
+                      background:fbType===t?"rgba(255,255,255,0.12)":"rgba(255,255,255,0.03)",
+                      color:fbType===t?"rgba(255,255,255,0.6)":muted,
                       fontSize:11,fontWeight:fbType===t?700:500,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s",
                     }}>{t}</button>
                   ))}
@@ -5967,8 +5967,8 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
 
               {/* Message */}
               <div>
-                <div style={{fontSize:11,fontWeight:700,color:fbErr?"#fda4af":muted,letterSpacing:"0.07em",marginBottom:8}}>
-                  MESSAGE <span style={{color:"#fb7185"}}>*</span>
+                <div style={{fontSize:11,fontWeight:700,color:fbErr?"#ef4444":muted,letterSpacing:"0.07em",marginBottom:8}}>
+                  MESSAGE <span style={{color:"#ef4444"}}>*</span>
                 </div>
                 <textarea value={fbMsg}
                   onChange={e=>{setFbMsg(e.target.value);setFbErr(false);}}
@@ -5996,8 +5996,8 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
               <div>
                 <div style={{fontSize:11,fontWeight:700,color:muted,letterSpacing:"0.07em",marginBottom:10}}>RECENT FEEDBACK</div>
                 {[
-                  {user:"Maria S.", type:"Feature Request", msg:"Would love a dark/light toggle directly on the dashboard.", stars:5, time:"2d ago", c:"#a78bfa"},
-                  {user:"Carlo M.", type:"Bug Report",      msg:"Heatmap on mobile needs a smoother horizontal scroll.",   stars:4, time:"5d ago", c:"#fb7185"},
+                  {user:"Maria S.", type:"Feature Request", msg:"Would love a dark/light toggle directly on the dashboard.", stars:5, time:"2d ago", c:"#34d399"},
+                  {user:"Carlo M.", type:"Bug Report",      msg:"Heatmap on mobile needs a smoother horizontal scroll.",   stars:4, time:"5d ago", c:"#ef4444"},
                   {user:"Ana R.",   type:"Compliment",      msg:"AI forecasting is incredibly useful for weekly planning!", stars:5, time:"1w ago", c:"#34d399"},
                 ].map((fb,i)=>(
                   <div key={i} style={{padding:"10px 12px",background:rowBg,border:`1px solid ${border}`,borderRadius:10,marginBottom:8}}>
@@ -6022,13 +6022,13 @@ const HelpPanel = ({onClose, lm, onStartTutorial}:{onClose:()=>void; lm:boolean;
 };
 
 const NOTIF_META: Record<NotifCat,{icon:string; color:string; bg:string; label:string}> = {
-  delivery: {icon:"🚚", color:"#38bdf8", bg:"rgba(56,189,248,0.12)",  label:"Delivery"},
+  delivery: {icon:"🚚", color:"#34d399", bg:"rgba(52,211,153,0.12)",  label:"Delivery"},
   stock:    {icon:"📦", color:"#fbbf24", bg:"rgba(251,191,36,0.12)",  label:"Stock"},
   finance:  {icon:"💰", color:"#34d399", bg:"rgba(52,211,153,0.12)",  label:"Finance"},
-  security: {icon:"🔐", color:"#fb7185", bg:"rgba(251,113,133,0.12)", label:"Security"},
-  user:     {icon:"👤", color:"#a78bfa", bg:"rgba(167,139,250,0.12)", label:"User"},
-  alert:    {icon:"⚠️", color:"#f97316", bg:"rgba(249,115,22,0.12)",  label:"Alert"},
-  system:   {icon:"⚙️", color:"#818cf8", bg:"rgba(129,140,248,0.12)", label:"System"},
+  security: {icon:"🔐", color:"#ef4444", bg:"rgba(251,113,133,0.12)", label:"Security"},
+  user:     {icon:"👤", color:"#34d399", bg:"rgba(255,255,255,0.12)", label:"User"},
+  alert:    {icon:"⚠️", color:"#fbbf24", bg:"rgba(251,191,36,0.12)",  label:"Alert"},
+  system:   {icon:"⚙️", color:"#34d399", bg:"rgba(255,255,255,0.12)", label:"System"},
 };
 
 const INIT_NOTIFS: Notif[] = [
@@ -6080,8 +6080,8 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
         <div style={{padding:"20px 20px 0",borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:34,height:34,borderRadius:10,background:"rgba(129,140,248,0.12)",border:"1px solid rgba(129,140,248,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <Bell size={16} color="#818cf8"/>
+              <div style={{width:34,height:34,borderRadius:10,background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <Bell size={16} color="#34d399"/>
               </div>
               <div>
                 <div style={{fontSize:15,fontWeight:700,color:"#fff"}}>Notifications</div>
@@ -6090,7 +6090,7 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
             </div>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
               <button onClick={markAll} style={{fontSize:11,color:"rgba(255,255,255,0.35)",background:"none",border:"none",cursor:"pointer",fontFamily:"'Inter',sans-serif",padding:"4px 8px",borderRadius:6,transition:"color 0.15s"}}
-                onMouseEnter={e=>(e.currentTarget.style.color="#818cf8")} onMouseLeave={e=>(e.currentTarget.style.color="rgba(255,255,255,0.35)")}>
+                onMouseEnter={e=>(e.currentTarget.style.color="#34d399")} onMouseLeave={e=>(e.currentTarget.style.color="rgba(255,255,255,0.35)")}>
                 Mark all read
               </button>
               <button onClick={onClose} style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.08)",cursor:"pointer",color:"rgba(255,255,255,0.4)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>✕</button>
@@ -6102,9 +6102,9 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
                 padding:"6px 14px",borderRadius:"8px 8px 0 0",border:"none",cursor:"pointer",
                 fontFamily:"'Inter',sans-serif",fontSize:11,fontWeight:700,letterSpacing:"0.05em",
                 textTransform:"capitalize",transition:"all 0.15s",
-                background:filter===f?"rgba(129,140,248,0.15)":"transparent",
-                color:filter===f?"#818cf8":"rgba(255,255,255,0.3)",
-                borderBottom:filter===f?"2px solid #818cf8":"2px solid transparent",
+                background:filter===f?"rgba(255,255,255,0.15)":"transparent",
+                color:filter===f?"#34d399":"rgba(255,255,255,0.3)",
+                borderBottom:filter===f?"2px solid #34d399":"2px solid transparent",
               }}>{f==="all"?`All (${notifs.length})`:f==="unread"?`Unread (${unreadCount})`:`Urgent (${notifs.filter(n=>n.urgent).length})`}</button>
             ))}
           </div>
@@ -6133,7 +6133,7 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
                 onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.background=n.read?"transparent":"rgba(255,255,255,0.018)"}
                 onClick={()=>markOne(n.id)}
               >
-                {!n.read&&<div style={{position:"absolute",left:6,top:"50%",transform:"translateY(-50%)",width:4,height:4,borderRadius:"50%",background:"#818cf8",boxShadow:"0 0 6px #818cf8"}}/>}
+                {!n.read&&<div style={{position:"absolute",left:6,top:"50%",transform:"translateY(-50%)",width:4,height:4,borderRadius:"50%",background:"#34d399",boxShadow:"0 0 6px #34d399"}}/>}
 
                 <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
                   <div style={{
@@ -6144,17 +6144,17 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
                   }}>
                     {(n as any).icon||m.icon}
                     {n.urgent&&!n.read&&(
-                      <div style={{position:"absolute",top:-3,right:-3,width:10,height:10,borderRadius:"50%",background:"#fb7185",border:"2px solid #0f0f1e",animation:"urgentPulse 1.5s ease infinite"}}/>
+                      <div style={{position:"absolute",top:-3,right:-3,width:10,height:10,borderRadius:"50%",background:"#ef4444",border:"2px solid #0f0f1e",animation:"urgentPulse 1.5s ease infinite"}}/>
                     )}
                   </div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:3}}>
                       <div style={{display:"flex",alignItems:"center",gap:6}}>
                         <span style={{fontSize:12,fontWeight:700,color:n.read?"rgba(255,255,255,0.6)":"#fff",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:200}}>{n.title}</span>
-                        {n.urgent&&<span style={{fontSize:9,fontWeight:800,color:"#fb7185",background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:999,padding:"1px 6px",flexShrink:0,letterSpacing:"0.06em"}}>URGENT</span>}
+                        {n.urgent&&<span style={{fontSize:9,fontWeight:800,color:"#ef4444",background:"rgba(251,113,133,0.12)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:999,padding:"1px 6px",flexShrink:0,letterSpacing:"0.06em"}}>URGENT</span>}
                       </div>
                       <button onClick={e=>{e.stopPropagation();dismiss(n.id);}} style={{background:"none",border:"none",cursor:"pointer",color:"rgba(255,255,255,0.18)",fontSize:14,padding:0,flexShrink:0,lineHeight:1,transition:"color 0.12s"}}
-                        onMouseEnter={e=>(e.currentTarget.style.color="#fb7185")} onMouseLeave={e=>(e.currentTarget.style.color="rgba(255,255,255,0.18)")}>✕</button>
+                        onMouseEnter={e=>(e.currentTarget.style.color="#ef4444")} onMouseLeave={e=>(e.currentTarget.style.color="rgba(255,255,255,0.18)")}>✕</button>
                     </div>
                     <p style={{fontSize:11,color:"rgba(255,255,255,0.38)",lineHeight:1.55,margin:"0 0 6px"}}>{n.body}</p>
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -6168,9 +6168,9 @@ const NotifPanel = ({onClose}:{onClose:()=>void}) => {
           })}
         </div>
         <div style={{padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,0.06)",display:"flex",gap:8}}>
-          <button style={{flex:1,padding:"9px",background:"rgba(129,140,248,0.1)",border:"1px solid rgba(129,140,248,0.2)",borderRadius:10,color:"#818cf8",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}}
-            onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(129,140,248,0.2)";}}
-            onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(129,140,248,0.1)";}}
+          <button style={{flex:1,padding:"9px",background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:10,color:"#34d399",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}}
+            onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(255,255,255,0.2)";}}
+            onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(255,255,255,0.1)";}}
           >View All Notifications</button>
           <button onClick={()=>setNotifs(n=>n.filter(x=>!x.read))} style={{padding:"9px 14px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:10,color:"rgba(255,255,255,0.35)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}}
             onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background="rgba(255,255,255,0.08)";}}
@@ -6247,17 +6247,17 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
   const PALETTE = [
     {hex:"#34d399",name:"Emerald"},
-    {hex:"#38bdf8",name:"Sky"},
-    {hex:"#818cf8",name:"Indigo"},
-    {hex:"#a78bfa",name:"Violet"},
-    {hex:"#fb7185",name:"Rose"},
+    {hex:"#34d399",name:"Sky"},
+    {hex:"#34d399",name:"Indigo"},
+    {hex:"#34d399",name:"Violet"},
+    {hex:"#ef4444",name:"Rose"},
     {hex:"#fbbf24",name:"Amber"},
-    {hex:"#f97316",name:"Orange"},
-    {hex:"#e879f9",name:"Fuchsia"},
-    {hex:"#f43f5e",name:"Red"},
-    {hex:"#06b6d4",name:"Cyan"},
-    {hex:"#d4af37",name:"Gold"},
-    {hex:"#84cc16",name:"Lime"},
+    {hex:"#fbbf24",name:"Orange"},
+    {hex:"#ef4444",name:"Fuchsia"},
+    {hex:"#fb7185",name:"Red"},
+    {hex:"#34d399",name:"Cyan"},
+    {hex:"#fbbf24",name:"Gold"},
+    {hex:"#34d399",name:"Lime"},
   ];
 
   const Toggle = ({on,set}:{on:boolean;set:(v:boolean)=>void}) => (
@@ -6283,7 +6283,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
     </select>
   );
 
-  const Card = ({title,icon,color="#818cf8",children}:{title:string;icon:string;color?:string;children?:React.ReactNode}) => (
+  const Card = ({title,icon,color="#34d399",children}:{title:string;icon:string;color?:string;children?:React.ReactNode}) => (
     <div className="card fu1" style={{marginBottom:16}}>
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20}}>
         <div style={{width:36,height:36,borderRadius:10,background:`${color}18`,border:`1px solid ${color}28`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{icon}</div>
@@ -6314,14 +6314,14 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
 
   const content: Record<string,React.ReactNode> = {
     profile: (
-      <Card title="Profile Settings" icon="👤" color="#818cf8">
+      <Card title="Profile Settings" icon="👤" color="#34d399">
         <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:16}}>
           <Field label="FULL NAME"><SInp value={pName} onChange={setPName} placeholder="e.g. Juan dela Cruz"/></Field>
           <Field label="EMAIL ADDRESS"><SInp value={pEmail} onChange={setPEmail} placeholder="email@example.com" type="email"/></Field>
           <Field label="CONTACT NUMBER"><SInp value={pPhone} onChange={setPPhone} placeholder="+63 9XX XXX XXXX"/></Field>
           <Field label="PROFILE PICTURE">
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:42,height:42,borderRadius:"50%",background:"rgba(129,140,248,0.12)",border:"1px solid rgba(129,140,248,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>
+              <div style={{width:42,height:42,borderRadius:"50%",background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>
                 {pPic?<img src={pPic} style={{width:"100%",height:"100%",borderRadius:"50%",objectFit:"cover"}} alt="avatar"/>:"👤"}
               </div>
               <label style={{cursor:"pointer"}}>
@@ -6395,12 +6395,12 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
     ),
 
     notifs: (
-      <Card title="Notification Settings" icon="🔔" color="#38bdf8">
+      <Card title="Notification Settings" icon="🔔" color="#34d399">
         <NotifRow icon="📦" label="Low Stock Alerts" sub="Get notified when items fall below threshold" on={nLowStock} set={setNLowStock}/>
         <NotifRow icon="📅" label="Product Expiration Notifications" sub="Alerts for items nearing or past expiry date" on={nExpiry} set={setNExpiry}/>
         <NotifRow icon="🚚" label="Supplier Delivery Notifications" sub="Notify when a delivery is confirmed or arriving" on={nDelivery} set={setNDelivery}/>
         <NotifRow icon="📈" label="Sales Milestone Alerts" sub="Celebrate and track when sales targets are hit" on={nSales} set={setNSales}/>
-        <div style={{marginTop:8,padding:"12px 16px",background:"rgba(56,189,248,0.05)",border:"1px solid rgba(56,189,248,0.15)",borderRadius:12}}>
+        <div style={{marginTop:8,padding:"12px 16px",background:"rgba(52,211,153,0.05)",border:"1px solid rgba(52,211,153,0.15)",borderRadius:12}}>
           <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.5)",marginBottom:4}}>Notification Delivery</div>
           <div style={{fontSize:11,color:"rgba(255,255,255,0.3)"}}>Notifications appear in the bell icon at the top of the dashboard in real time. Email delivery coming in a future update.</div>
         </div>
@@ -6409,11 +6409,11 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
     ),
 
     security: (
-      <Card title="Security Settings" icon="🔐" color="#fb7185">
+      <Card title="Security Settings" icon="🔐" color="#ef4444">
         <div style={{padding:"12px 16px",background:"rgba(251,113,133,0.07)",border:"1px solid rgba(251,113,133,0.2)",borderRadius:12,marginBottom:20,display:"flex",alignItems:"center",gap:10}}>
           <span style={{fontSize:18}}>⚠️</span>
           <div>
-            <div style={{fontSize:12,fontWeight:700,color:"#fda4af"}}>Suspicious Activity Detected</div>
+            <div style={{fontSize:12,fontWeight:700,color:"#ef4444"}}>Suspicious Activity Detected</div>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginTop:2}}>Liza Pangilinan's account had 4 failed login attempts today. Account has been auto-suspended.</div>
           </div>
         </div>
@@ -6443,9 +6443,9 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
     ),
 
     backup: (
-      <Card title="Backup & Restore" icon="💾" color="#a78bfa">
+      <Card title="Backup & Restore" icon="💾" color="#34d399">
         <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12,marginBottom:20}}>
-          {[{icon:"📅",label:"Last Backup",value:lastBackup,c:"#818cf8"},{icon:"📦",label:"Backup Size",value:backupSize,c:"#34d399"}].map(s=>(
+          {[{icon:"📅",label:"Last Backup",value:lastBackup,c:"#34d399"},{icon:"📦",label:"Backup Size",value:backupSize,c:"#34d399"}].map(s=>(
             <div key={s.label} style={{padding:"16px",background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:12}}>
               <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
                 <span>{s.icon}</span>
@@ -6457,9 +6457,9 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {[
-            {icon:"💾",label:"Create Manual Backup",sub:"Snapshot current system data",color:"#a78bfa",action:()=>showSaved("Backup created! File ready to download.")},
-            {icon:"⬇️",label:"Download Backup File",sub:"Save the latest backup to your device",color:"#38bdf8",action:()=>showSaved("Download started for last backup.")},
-            {icon:"🔄",label:"Restore System Data",sub:"Overwrite current data with a backup file",color:"#fb7185",action:()=>showSaved("Restore initiated — system will reload shortly.")},
+            {icon:"💾",label:"Create Manual Backup",sub:"Snapshot current system data",color:"#34d399",action:()=>showSaved("Backup created! File ready to download.")},
+            {icon:"⬇️",label:"Download Backup File",sub:"Save the latest backup to your device",color:"#34d399",action:()=>showSaved("Download started for last backup.")},
+            {icon:"🔄",label:"Restore System Data",sub:"Overwrite current data with a backup file",color:"#ef4444",action:()=>showSaved("Restore initiated — system will reload shortly.")},
           ].map(btn=>(
             <button key={btn.label} onClick={btn.action} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 16px",background:`${btn.color}08`,border:`1px solid ${btn.color}22`,borderRadius:12,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s",textAlign:"left"}}
               onMouseEnter={e=>(e.currentTarget as HTMLButtonElement).style.background=`${btn.color}15`}
@@ -6487,9 +6487,9 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
         }}>
           {[
             {deg:"-30deg", c:appColor,    op:0.35, dur:6,  delay:0},
-            {deg:"20deg",  c:"#818cf8",   op:0.25, dur:9,  delay:1.5},
-            {deg:"60deg",  c:"#38bdf8",   op:0.2,  dur:7,  delay:3},
-            {deg:"-60deg", c:"#e879f9",   op:0.18, dur:11, delay:0.8},
+            {deg:"20deg",  c:"#34d399",   op:0.25, dur:9,  delay:1.5},
+            {deg:"60deg",  c:"#34d399",   op:0.2,  dur:7,  delay:3},
+            {deg:"-60deg", c:"#ef4444",   op:0.18, dur:11, delay:0.8},
             {deg:"45deg",  c:appColor,    op:0.15, dur:8,  delay:4},
             {deg:"-10deg", c:"#fbbf24",   op:0.12, dur:13, delay:2},
           ].map((r,i)=>(
@@ -6506,7 +6506,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             }}/>
           ))}
           <div style={{position:"absolute",top:"-20%",left:"10%",width:320,height:320,borderRadius:"50%",background:`radial-gradient(circle,${appColor}28 0%,transparent 70%)`,filter:"blur(40px)",pointerEvents:"none"}}/>
-          <div style={{position:"absolute",bottom:"-30%",right:"5%",width:280,height:280,borderRadius:"50%",background:"radial-gradient(circle,rgba(129,140,248,0.2) 0%,transparent 70%)",filter:"blur(50px)",pointerEvents:"none"}}/>
+          <div style={{position:"absolute",bottom:"-30%",right:"5%",width:280,height:280,borderRadius:"50%",background:"radial-gradient(circle,rgba(255,255,255,0.2) 0%,transparent 70%)",filter:"blur(50px)",pointerEvents:"none"}}/>
           <div style={{position:"absolute",inset:0,opacity:isDark?0.03:0.015,
             backgroundImage:"url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
             backgroundRepeat:"repeat",backgroundSize:"120px",pointerEvents:"none",
@@ -6536,7 +6536,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
           <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"0.07em",marginBottom:16}}>COLOR MODE</div>
           <div style={{display:"grid",gridTemplateColumns:colsW(2),gap:12}}>
             {[
-              {id:true,  emoji:"🌙", title:"Dark Mode",  sub:"Easy on the eyes, reduces glare",   accent:"#818cf8"},
+              {id:true,  emoji:"🌙", title:"Dark Mode",  sub:"Easy on the eyes, reduces glare",   accent:"#34d399"},
               {id:false, emoji:"☀️", title:"Light Mode", sub:"Clean and bright for daytime use",  accent:"#fbbf24"},
             ].map(m=>(
               <button key={String(m.id)} onClick={()=>{setIsDark(m.id);}} style={{
@@ -6592,13 +6592,13 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
           <div style={{display:"grid",gridTemplateColumns:"repeat(8,1fr)",gap:10,marginBottom:16}}>
             {[
               {c:"#34d399",name:"Emerald"},
-              {c:"#38bdf8",name:"Sky"},
-              {c:"#818cf8",name:"Indigo"},
-              {c:"#a78bfa",name:"Violet"},
-              {c:"#fb7185",name:"Rose"},
+              {c:"#34d399",name:"Sky"},
+              {c:"#34d399",name:"Indigo"},
+              {c:"#34d399",name:"Violet"},
+              {c:"#ef4444",name:"Rose"},
               {c:"#fbbf24",name:"Amber"},
-              {c:"#f97316",name:"Orange"},
-              {c:"#e879f9",name:"Fuchsia"},
+              {c:"#fbbf24",name:"Orange"},
+              {c:"#ef4444",name:"Fuchsia"},
             ].map(({c,name})=>{
               const sel = appColor===c;
               return (
@@ -6704,7 +6704,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
           </Field>
         </div>
         <div style={{marginTop:16,display:"grid",gridTemplateColumns:colsW(3),gap:10}}>
-          {[{label:"Tax Rate",value:`${taxRate}%`,c:"#34d399"},{label:"Profit Margin",value:`${margin}%`,c:"#38bdf8"},{label:"Low Stock at",value:`${lowStockTh} units`,c:"#fbbf24"}].map(s=>(
+          {[{label:"Tax Rate",value:`${taxRate}%`,c:"#34d399"},{label:"Profit Margin",value:`${margin}%`,c:"#34d399"},{label:"Low Stock at",value:`${lowStockTh} units`,c:"#fbbf24"}].map(s=>(
             <div key={s.label} style={{padding:"12px 14px",background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:11,textAlign:"center"}}>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",marginBottom:4}}>{s.label}</div>
               <div style={{fontSize:18,fontWeight:800,color:s.c}}>{s.value}</div>
@@ -6726,7 +6726,7 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
       {saved&&ReactDOM.createPortal(
         <div style={{position:"fixed",bottom:28,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.35)",borderRadius:999,padding:"11px 24px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 8px 32px rgba(0,0,0,0.5)",animation:"fadeUp 0.2s ease both",backdropFilter:"blur(12px)"}}>
           <span style={{fontSize:15}}>✅</span>
-          <span style={{fontSize:13,fontWeight:600,color:"#6ee7b7"}}>{saved}</span>
+          <span style={{fontSize:13,fontWeight:600,color:"#34d399"}}>{saved}</span>
         </div>,
         document.body
       )}
@@ -6737,15 +6737,15 @@ const SettingsPage = ({authName, onNameChange, appColor, setAppColor, isDark, se
             {sections.map((s,i)=>(
               <button key={s.id} onClick={()=>setActiveSection(s.id)} style={{
                 width:"100%",display:"flex",alignItems:"center",gap:11,
-                padding:"12px 16px",background:activeSection===s.id?"rgba(129,140,248,0.1)":"none",
-                border:"none",borderLeft:`3px solid ${activeSection===s.id?"#818cf8":"transparent"}`,
+                padding:"12px 16px",background:activeSection===s.id?"rgba(255,255,255,0.1)":"none",
+                border:"none",borderLeft:`3px solid ${activeSection===s.id?"#34d399":"transparent"}`,
                 cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left",
                 borderBottom:i<sections.length-1?"1px solid rgba(255,255,255,0.04)":"none",
                 transition:"all 0.15s",
               }}>
                 <span style={{fontSize:17}}>{s.icon}</span>
                 <div>
-                  <div style={{fontSize:12,fontWeight:700,color:activeSection===s.id?"#c7d2fe":"rgba(255,255,255,0.6)"}}>{s.label}</div>
+                  <div style={{fontSize:12,fontWeight:700,color:activeSection===s.id?"rgba(255,255,255,0.5)":"rgba(255,255,255,0.6)"}}>{s.label}</div>
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:1}}>{s.sub}</div>
                 </div>
               </button>
@@ -6806,7 +6806,7 @@ export default function App() {
       --border:     ${lm ? "rgba(0,0,40,0.1)"  : "rgba(255,255,255,0.07)"};
       --border2:    ${lm ? "rgba(0,0,40,0.06)" : "rgba(255,255,255,0.04)"};
       --text:       ${lm ? "#1a1a2e"            : "#e2e8f0"};
-      --text2:      ${lm ? "#3a3a5c"            : "#94a3b8"};
+      --text2:      ${lm ? "#1a2a1a"            : "#94a3b8"};
       --text3:      ${lm ? "rgba(0,0,40,0.5)"  : "rgba(255,255,255,0.45)"};
       --text4:      ${lm ? "rgba(0,0,40,0.35)" : "rgba(255,255,255,0.3)"};
       --text5:      ${lm ? "rgba(0,0,40,0.22)" : "rgba(255,255,255,0.18)"};
@@ -6825,10 +6825,10 @@ export default function App() {
     .card-title { color: var(--text3) !important; }
     .card-x { color: var(--text5) !important; }
     .ai-card { background: var(--bg-card2) !important; border-color: var(--border) !important; }
-    .ai-card:hover { background: ${lm?"#edf0fa":"#1a1a2e"} !important; }
-    .insight-card { background: ${lm?"rgba(129,140,248,0.06)":"linear-gradient(135deg,rgba(129,140,248,0.1),rgba(167,139,250,0.06))"} !important; }
+    .ai-card:hover { background: ${lm?"rgba(255,255,255,0.04)":"#1a1a2e"} !important; }
+    .insight-card { background: ${lm?"rgba(255,255,255,0.06)":"linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0.06))"} !important; }
     .stat-forecast { border-color: rgba(${acR},${acG},${acB},0.2) !important;
-      background: ${lm?"rgba(255,255,255,0.9)":"rgba(129,140,248,0.04)"} !important; }
+      background: ${lm?"rgba(255,255,255,0.9)":"rgba(255,255,255,0.04)"} !important; }
     /* ── Nav bar ── */
     .nav-bar {
       background: ${lm?"rgba(238,240,247,0.92)":"rgba(13,13,22,0.82)"} !important;
@@ -6850,7 +6850,7 @@ export default function App() {
     .btn:hover { background: ${lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.1)"} !important; color: var(--text) !important; }
     .btn-g { background: rgba(${acR},${acG},${acB},0.15) !important; border-color: rgba(${acR},${acG},${acB},0.3) !important; color: ${appColor} !important; }
     .btn-g:hover { background: rgba(${acR},${acG},${acB},0.25) !important; }
-    .btn-r { ${lm?"background:rgba(251,113,133,0.12)!important;border-color:rgba(251,113,133,0.25)!important;color:#e11d48!important;":""} }
+    .btn-r { ${lm?"background:rgba(251,113,133,0.12)!important;border-color:rgba(251,113,133,0.25)!important;color:#ef4444!important;":""} }
     /* ── Tabs ── */
     .tab-wrap { background: ${lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)"} !important;
       border-color: ${lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"} !important; }
@@ -6866,7 +6866,7 @@ export default function App() {
     .badge-g { color: ${appColor} !important; background: rgba(${acR},${acG},${acB},0.12) !important; border-color: rgba(${acR},${acG},${acB},0.25) !important; }
     .badge-r { ${lm?"color:#be123c!important;background:rgba(251,113,133,0.1)!important;border-color:rgba(251,113,133,0.22)!important;":""} }
     .badge-a { ${lm?"color:#b45309!important;background:rgba(251,191,36,0.1)!important;border-color:rgba(251,191,36,0.22)!important;":""} }
-    .badge-v { ${lm?"color:#6d28d9!important;background:rgba(129,140,248,0.1)!important;border-color:rgba(129,140,248,0.22)!important;":""} }
+    .badge-v { ${lm?"color:#6d28d9!important;background:rgba(255,255,255,0.1)!important;border-color:rgba(255,255,255,0.22)!important;":""} }
     .chip-up { background: rgba(${acR},${acG},${acB},0.15) !important; color: ${appColor} !important; }
     .chip-down { ${lm?"color:#be123c!important;background:rgba(251,113,133,0.12)!important;":""} }
     /* ── Alert rows ── */
@@ -6875,7 +6875,7 @@ export default function App() {
     .bg-tl { background: radial-gradient(ellipse at 0% 0%, rgba(${acR},${acG},${acB},${lm?0.08:0.13}) 0%, transparent 70%) !important; }
     .bg-br { background: radial-gradient(ellipse at 100% 100%, rgba(${acR},${acG},${acB},${lm?0.05:0.09}) 0%, transparent 70%) !important; }
     /* ── Export button ── */
-    .export-btn { ${lm?"background:rgba(129,140,248,0.1)!important;color:#4f46e5!important;border-color:rgba(129,140,248,0.3)!important;":""} }
+    .export-btn { ${lm?"background:rgba(255,255,255,0.1)!important;color:#4f46e5!important;border-color:rgba(255,255,255,0.3)!important;":""} }
     /* ── Shimmer ── */
     .shimmer-bar { background: linear-gradient(90deg, transparent 0%, ${lm?"rgba(0,0,40,0.04)":"rgba(255,255,255,0.06)"} 50%, transparent 100%) !important; }
     ${lm ? `
@@ -6983,13 +6983,13 @@ export default function App() {
             })}
           </div>
           <div style={{borderTop:"1px solid rgba(255,255,255,0.07)",paddingTop:16,display:"flex",flexDirection:"column",gap:8}}>
-            <button onClick={()=>{setPage("Settings");setMobileOpen(false);}} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,background:"rgba(129,140,248,0.08)",border:"1px solid rgba(129,140,248,0.15)",cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              <span style={{fontSize:13,fontWeight:600,color:"#818cf8"}}>Settings</span>
+            <button onClick={()=>{setPage("Settings");setMobileOpen(false);}} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.15)",cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              <span style={{fontSize:13,fontWeight:600,color:"#34d399"}}>Settings</span>
             </button>
             <button onClick={()=>setAuthed(false)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,background:"rgba(251,113,133,0.08)",border:"1px solid rgba(251,113,133,0.15)",cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fb7185" strokeWidth="2" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-              <span style={{fontSize:13,fontWeight:600,color:"#fb7185"}}>Logout</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span style={{fontSize:13,fontWeight:600,color:"#ef4444"}}>Logout</span>
             </button>
           </div>
         </div>
@@ -7030,7 +7030,7 @@ export default function App() {
             )}
             <div style={{display:"flex",alignItems:"center",gap:isMob?6:8,flexShrink:0}}>
               {/* ? Help button */}
-              <button onClick={()=>{setShowHelp(v=>!v);setShowNotif(false);}} style={{width:34,height:34,borderRadius:999,background:showHelp?"rgba(56,189,248,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showHelp?"rgba(56,189,248,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showHelp?"#38bdf8":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",fontSize:15,fontWeight:800,fontFamily:"'Inter',sans-serif",transition:"all 0.18s",flexShrink:0}}>
+              <button onClick={()=>{setShowHelp(v=>!v);setShowNotif(false);}} style={{width:34,height:34,borderRadius:999,background:showHelp?"rgba(52,211,153,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showHelp?"rgba(52,211,153,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showHelp?"#34d399":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",fontSize:15,fontWeight:800,fontFamily:"'Inter',sans-serif",transition:"all 0.18s",flexShrink:0}}>
                 ?
               </button>
               {showHelp&&<HelpPanel onClose={()=>setShowHelp(false)} lm={lm} onStartTutorial={()=>{setTutStep(0);setShowTutorial(true);}}/>}
@@ -7047,7 +7047,7 @@ export default function App() {
                 />
               )}
               {/* Bell */}
-              <button onClick={()=>{setShowNotif(v=>!v);setShowHelp(false);}} style={{position:"relative",background:showNotif?"rgba(129,140,248,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showNotif?"rgba(129,140,248,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,borderRadius:999,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showNotif?"#818cf8":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",transition:"all 0.18s"}}>
+              <button onClick={()=>{setShowNotif(v=>!v);setShowHelp(false);}} style={{position:"relative",background:showNotif?"rgba(255,255,255,0.15)":lm?"rgba(0,0,40,0.06)":"rgba(255,255,255,0.05)",border:`1px solid ${showNotif?"rgba(255,255,255,0.3)":lm?"rgba(0,0,40,0.1)":"rgba(255,255,255,0.08)"}`,borderRadius:999,width:34,height:34,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showNotif?"#34d399":lm?"rgba(0,0,40,0.5)":"rgba(255,255,255,0.5)",transition:"all 0.18s"}}>
                 <Bell size={15} className={showNotif?"":"bell-new"}/>
                 <span style={{position:"absolute",top:-3,right:-3,background:"#ef4444",color:"#fff",fontSize:8,fontWeight:700,minWidth:14,height:14,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:99,border:`2px solid ${lm?"#eef0f7":"#0d0d14"}`,padding:"0 2px",animation:"urgentPulse 2s ease infinite"}}>
                   {INIT_NOTIFS.filter(n=>!n.read).length}
@@ -7060,7 +7060,7 @@ export default function App() {
                   style={{display:"flex",alignItems:"center",gap:7,background:showUserMenu?"rgba(212,175,55,0.14)":"rgba(212,175,55,0.07)",border:`1px solid ${showUserMenu?"rgba(212,175,55,0.35)":"rgba(212,175,55,0.18)"}`,borderRadius:999,padding:"4px 10px 4px 5px",cursor:"pointer",transition:"all 0.18s"}}
                 >
                   <div style={{width:24,height:24,borderRadius:"50%",background:"linear-gradient(135deg,rgba(184,134,11,0.6),rgba(212,175,55,0.35))",border:"1px solid rgba(212,175,55,0.4)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    <User size={12} color="#d4af37"/>
+                    <User size={12} color="#fbbf24"/>
                   </div>
                   <span style={{fontSize:12,fontWeight:700,color:lm?"rgba(0,0,40,0.7)":"rgba(255,255,255,0.7)",letterSpacing:"0.04em"}}>{authName.split(" ")[0].toUpperCase()}</span>
                   <ChevronDown size={11} color={lm?"rgba(0,0,40,0.3)":"rgba(255,255,255,0.3)"} style={{transform:showUserMenu?"rotate(180deg)":"rotate(0deg)",transition:"transform 0.18s"}}/>
@@ -7081,7 +7081,7 @@ export default function App() {
                     >
                       <div style={{padding:"14px 16px 12px",borderBottom:`1px solid ${lm?"rgba(0,0,40,0.07)":"rgba(255,255,255,0.06)"}`}}>
                         <div style={{width:36,height:36,borderRadius:"50%",background:"linear-gradient(135deg,rgba(184,134,11,0.5),rgba(212,175,55,0.3))",border:"1px solid rgba(212,175,55,0.3)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8}}>
-                          <User size={16} color="#d4af37"/>
+                          <User size={16} color="#fbbf24"/>
                         </div>
                         <div style={{fontSize:13,fontWeight:700,color:lm?"#1a1a2e":"#fff"}}>{authName}</div>
                         <div style={{fontSize:11,color:lm?"rgba(0,0,40,0.4)":"rgba(255,255,255,0.3)",marginTop:2}}>Administrator</div>
@@ -7089,11 +7089,11 @@ export default function App() {
                       <button
                         onMouseDown={e=>{e.stopPropagation();setPage("Settings");setShowUserMenu(false);}}
                         style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"11px 16px",background:"none",border:"none",cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"background 0.12s"}}
-                        onMouseEnter={e=>(e.currentTarget as HTMLButtonElement).style.background="rgba(129,140,248,0.08)"}
+                        onMouseEnter={e=>(e.currentTarget as HTMLButtonElement).style.background="rgba(255,255,255,0.08)"}
                         onMouseLeave={e=>(e.currentTarget as HTMLButtonElement).style.background="none"}
                       >
-                        <div style={{width:28,height:28,borderRadius:8,background:"rgba(129,140,248,0.1)",border:"1px solid rgba(129,140,248,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <div style={{width:28,height:28,borderRadius:8,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                         </div>
                         <span style={{fontSize:13,fontWeight:600,color:lm?"rgba(0,0,40,0.7)":"rgba(255,255,255,0.7)"}}>Settings</span>
                       </button>
@@ -7105,7 +7105,7 @@ export default function App() {
                         onMouseLeave={e=>(e.currentTarget as HTMLButtonElement).style.background="none"}
                       >
                         <div style={{width:28,height:28,borderRadius:8,background:"rgba(251,113,133,0.1)",border:"1px solid rgba(251,113,133,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fb7185" strokeWidth="2" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                         </div>
                         <span style={{fontSize:13,fontWeight:600,color:"rgba(251,113,133,0.9)"}}>Logout</span>
                       </button>
@@ -7188,7 +7188,7 @@ export default function App() {
                         <span style={{fontSize:11,color:"rgba(255,255,255,0.35)"}}>of 25,000</span>
                       </div>
                       <div style={{marginTop:8,height:5,background:"rgba(255,255,255,0.07)",borderRadius:99,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#10b981)",borderRadius:99}}/>
+                        <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#34d399)",borderRadius:99}}/>
                       </div>
                       <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:3}}>20% complete</div>
                     </div>
@@ -7205,7 +7205,7 @@ export default function App() {
                         </div>
                         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                           <span style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>Expiring soon</span>
-                          <span style={{fontSize:11,fontWeight:700,color:"#f97316",background:"rgba(249,115,22,0.1)",padding:"2px 8px",borderRadius:999}}>3 items</span>
+                          <span style={{fontSize:11,fontWeight:700,color:"#fbbf24",background:"rgba(251,191,36,0.1)",padding:"2px 8px",borderRadius:999}}>3 items</span>
                         </div>
                         <button onClick={()=>setPage("Inventory")} style={{marginTop:4,padding:"5px 0",background:"none",border:"none",color:"rgba(52,211,153,0.7)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",textAlign:"left"}}>
                           Go to Inventory →
@@ -7234,7 +7234,7 @@ export default function App() {
                           {icon:"📦",label:"Adidas Shirt",issue:"Running low on stock",c:"#fbbf24"},
                           {icon:"📦",label:"Taho",issue:"Running low on stock",c:"#fbbf24"},
                           {icon:"📦",label:"iPhone 16",issue:"Running low on stock",c:"#fbbf24"},
-                          {icon:"⏰",label:"Vitamin C 500mg",issue:"Expires in 3 days",c:"#f97316"},
+                          {icon:"⏰",label:"Vitamin C 500mg",issue:"Expires in 3 days",c:"#fbbf24"},
                         ].map(a=>(
                           <div key={a.label} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",background:`${a.c}08`,border:`1px solid ${a.c}18`,borderRadius:10}}>
                             <span style={{fontSize:15}}>{a.icon}</span>
@@ -7272,7 +7272,7 @@ export default function App() {
                         <span style={{fontSize:isSm?11:15,color:"rgba(255,255,255,0.35)"}}>/ 25,000</span>
                       </div>
                       <div style={{marginTop:8,height:4,background:"rgba(255,255,255,0.07)",borderRadius:99,overflow:"hidden"}}>
-                        <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#10b981)",borderRadius:99}}/>
+                        <div style={{height:"100%",width:"20%",background:"linear-gradient(90deg,#34d399,#34d399)",borderRadius:99}}/>
                       </div>
                     </div>
                     <div className="card fu1">
@@ -7308,7 +7308,7 @@ export default function App() {
                             <XAxis dataKey="n" tick={{fill:"rgba(255,255,255,0.35)",fontSize:10}} axisLine={false} tickLine={false}/>
                             <YAxis tick={{fill:"rgba(255,255,255,0.3)",fontSize:9}} axisLine={false} tickLine={false} tickFormatter={v=>`₱${v/1000}k`}/>
                             <RechartsTip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12} as any} labelStyle={{color:"#fff"} as any}/>
-                            <Bar dataKey="v" fill="#34d399" radius={[4,4,0,0]}><Cell fill="#38bdf8"/><Cell fill="#38bdf8"/><Cell fill="#34d399"/><Cell fill="#38bdf8"/><Cell fill="#818cf8"/><Cell fill="#818cf8"/><Cell fill="#818cf8"/></Bar>
+                            <Bar dataKey="v" fill="#34d399" radius={[4,4,0,0]}><Cell fill="#34d399"/><Cell fill="#34d399"/><Cell fill="#34d399"/><Cell fill="#34d399"/><Cell fill="#34d399"/><Cell fill="#34d399"/><Cell fill="#34d399"/></Bar>
                           </BarChart>
                         </ResponsiveContainer>
                       </div>
@@ -7339,7 +7339,7 @@ export default function App() {
                         <ResponsiveContainer width="100%" height={180}>
                           <PieChart>
                             <Pie data={[{name:"Nike Jacket",value:14.6},{name:"Binatog",value:22.8},{name:"Taho",value:13.7},{name:"iPhone 15",value:30.6},{name:"Headset",value:18.3}]} cx="50%" cy="50%" outerRadius={70} dataKey="value" label={({name,value})=>`${value}%`} labelLine={false}>
-                              {["#34d399","#10b981","#059669","#047857","#6ee7b7"].map((c,i)=><Cell key={i} fill={c}/>)}
+                              {["#34d399","#34d399","#34d399","#047857","#34d399"].map((c,i)=><Cell key={i} fill={c}/>)}
                             </Pie>
                             <RechartsTip contentStyle={{background:"#1a1a28",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,fontSize:12} as any}/>
                           </PieChart>
@@ -7358,7 +7358,7 @@ export default function App() {
                           <span style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.3)",width:16,textAlign:"right"}}>{i+1}</span>
                           <div style={{flex:1}}>
                             <div style={{fontSize:12,fontWeight:600,color:"rgba(255,255,255,0.8)",marginBottom:3}}>{item.n}</div>
-                            <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:99}}><div style={{height:"100%",width:`${item.p/30.6*100}%`,background:"linear-gradient(90deg,#34d399,#38bdf8)",borderRadius:99}}/></div>
+                            <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:99}}><div style={{height:"100%",width:`${item.p/30.6*100}%`,background:"linear-gradient(90deg,#34d399,#34d399)",borderRadius:99}}/></div>
                           </div>
                           <span style={{fontSize:11,fontWeight:700,color:"#34d399"}}>{item.p}%</span>
                         </div>
@@ -7398,7 +7398,7 @@ export default function App() {
                           </div>
                         </div>
                       ))}
-                      <button onClick={()=>setPage("Inventory")} style={{width:"100%",marginTop:4,padding:"7px",background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:8,color:"#6ee7b7",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Go to Inventory →</button>
+                      <button onClick={()=>setPage("Inventory")} style={{width:"100%",marginTop:4,padding:"7px",background:"rgba(52,211,153,0.08)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:8,color:"#34d399",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>Go to Inventory →</button>
                     </div>
                   </div>
                 </>
